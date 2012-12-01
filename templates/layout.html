@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+    <head>
+        <title>SweatItOut</title>
+        <link rel="stylesheet/less" type="text/css" href="/static/styles/bootstrap/bootstrap.less">
+        <link rel="stylesheet/less" type="text/css" href="/static/styles/main.less">
+        <script type="text/javascript" src="/static/scripts/less.js"></script>
+        <script type="text/javascript" src="/static/scripts/vendor/jquery.min.js"></script>
+        <script type="text/javascript" src="/static/scripts/main.js"></script>
+    </head>
+    <body>
+        <div class="header">
+            <div class="container">
+                <a class="brand" href="#">Sweat It Out Fitness</a>
+                <ul class="header-links">
+                    {% for href, name in [["/", "Home"], ["/group-fitness", "Group Fitness"], ["/instructors", "Instructors"], ["/contact", "Contact"]]: %}
+                    <li {% if href == request.path %}class="active"{% endif %}><a href="{{ href }}">{{ name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="container content">
+            {% block content %}{% endblock %}
+        </div>
+    </body>
+</html>

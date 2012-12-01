@@ -1,0 +1,127 @@
+@import "bootstrap/variables.less";
+@import "bootstrap/mixins.less";
+@import "bootstrap/forms.less";
+
+@pink: #FF60AD;
+@blue: #01BAEF;
+@green: #B3DE3B;
+@white: #ffffff;
+@grey: #666666;
+@lightGrey: #999999;
+
+.header {
+    background: @green;
+    border-bottom: 1px solid darken(@green, 10%);
+}
+
+.brand {
+    font-size: 30px;
+    width: 30%;
+    color: @white;
+    text-shadow: darken(@green, 25%) 2px 2px 4px;
+    &:hover {
+        color: @pink;
+        text-decoration: none;
+    }
+}
+
+.header-links {
+    width: 60%;
+    display: inline-block;
+    text-align: right;
+    padding: 20px;
+    list-style-type: none;
+    margin: 10px;
+    li {
+        display: inline-block;
+        a {
+            text-transform: lowercase;
+            color: @white;
+            text-shadow: darken(@green, 15%) 2px 2px 4px;
+            border-radius: 8px;
+            border: 1px solid darken(@green, 10%);
+            padding: 10px 15px;
+            margin-left: 10px;
+            &:hover {
+                background: @pink;
+                border: 1px solid darken(@pink, 10%);
+                text-shadow: darken(@pink, 10%) 2px 2px 4px;
+                text-decoration: none;
+            }
+        }
+        &.active {
+            a {
+                background: lighten(@green, 10%);
+                text-shadow: darken(@green, 10%) 2px 2px 4px;
+                &:hover {
+                    background: @pink;
+                    text-shadow: darken(@pink, 10%) 2px 2px 4px;
+                }
+            }
+        }
+    }
+}
+
+body {
+    background: url("../images/logo.png");
+    background-position: -215px 80px;
+    background-repeat: no-repeat;
+}
+
+.content {
+    background: fade(@white, 90%);
+    border-radius: 0 0 5px 5px;
+    padding: 10px;
+}
+
+.instructor {
+    h2 {
+        text-align: center;
+    }
+    p {
+        margin: 8px;
+    }
+}
+
+.instructor-photo {
+    width: 100%;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+.courses {
+    padding-top: 20px;
+
+    .course {
+        .course-info {
+            .course-name {
+                font-size: 30px;
+                font-weight: bold;
+            }
+            .course-schedule {
+                color: @lightGrey;
+                font-size: 18px;
+                margin: 10px 0 0 10px;
+            }
+        }
+        .course-info-long {
+            .makeRow();
+            margin-top: 20px;
+
+            .course-map {
+                .makeColumn(5);
+            }
+            .course-description {
+                .makeColumn(7);
+            }
+        }
+        .course-signup {
+            form {
+                legend {
+                    line-height: 21px;
+                    padding-bottom: 5px;
+                }
+            }
+        }
+    }
+}

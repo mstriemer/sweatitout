@@ -1,0 +1,97 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<script>
+    jQuery(function ($) {
+        $('.sign-up').on('click', function () {
+            $('.course-signup-form').removeClass('hide');
+            $(this).hide();
+        });
+        $('.no-sign-up').on('click', function () {
+            $('.course-signup-form').addClass('hide');
+            $('.sign-up').show();
+        });
+    });
+</script>
+<h1>Group Fitness</h1>
+
+<div class="section-description">
+    Working out in a group is a great way to reach your fitness goals while
+    connecting with other people who are passionate about their bodies. Whether
+    you are a long time step class superstar or just starting a new fitness
+    routine, Sweat It Out has a class that will challenge, motivate and move
+    you! Taught by one of our friendly, energetic and fully certified
+    instructors, Group Fitness classes will have you having fun and sweating it
+    out!
+</div>
+
+<div class="courses">
+    <div class="course">
+        <div class="course-info">
+            <div class="course-name">New Year's Resolution Bootcamp</div>
+            <div class="course-schedule">
+                Mondays and Tursdays, 8:45pm at Revive Fitness Sage Creek
+            </div>
+        </div>
+        <div class="course-info-long">
+            <!--
+            <div class="course-schedule">
+                January 5th through March 23rd<br>
+                Mondays and Tursdays<br>
+                8:45 to 9:45pm<br>
+                Revive Fitness Sage Creek<br>
+                <img src="/static/images/revive-fitness-map.png" alt="Revive Fitness Map">
+            </div>
+            -->
+            <div class="course-description">
+                Kickstart your new year's resolution with Sweat It Out Fitness's
+                bootcamp. Perfect for all fitness levels this dynamic class offers
+                cardio, resistence training, circuits and plyometrics and is
+                different each and every time. Our small class sizes ensure lots of
+                individual attention from Certified Personal Trainer Jenna Hobson
+                and Personal Trainer Specialist Emily Striemer. Challenge yourself,
+                get in shape and start 2013 off sweaty!
+            </div>
+            <div class="course-map">
+                <img src="/static/images/revive-fitness-map.png" alt="Revive Fitness Map">
+            </div>
+        </div>
+        <div class="course-signup">
+            <button class="sign-up btn btn-primary">Sign Me Up!</button>
+            <form class="hide course-signup-form form-horizontal" action="" method="post">
+                <fieldset>
+                    <legend>Sign Me Up</legend>
+                    <div class="control-group">
+                        <label class="control-label" for="first_name">First name</label>
+                        <div class="controls">
+                            <input type="text" name="first_name" xplaceholder="First name">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="last_name">Last name</label>
+                        <div class="controls">
+                            <input type="text" name="last_name" xplaceholder="Last name">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="email">Email address</label>
+                        <div class="controls">
+                            <input type="text" name="email" xplaceholder="Email address">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="phone">Phone number</label>
+                        <div class="controls">
+                            <input type="text" name="phone" xplaceholder="Phone number">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <input type="submit" value="Sign Me Up!" class="btn btn-primary">
+                        <a href="/group-fitness" class="no-sign-up">Not yet</a>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
