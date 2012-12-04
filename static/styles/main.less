@@ -6,8 +6,6 @@
 @blue: #01BAEF;
 @green: #B3DE3B;
 @white: #ffffff;
-@grey: #666666;
-@lightGrey: #999999;
 
 .header {
     background: @green;
@@ -98,16 +96,18 @@ body {
                 font-size: 30px;
                 font-weight: bold;
             }
-            .course-schedule {
-                color: @lightGrey;
-                font-size: 18px;
-                margin: 10px 0 0 10px;
-            }
         }
         .course-info-long {
             .makeRow();
             margin-top: 20px;
 
+            .course-schedule {
+                color: @grayLight;
+                padding-bottom: 10px;
+                strong {
+                    color: @grayDark;
+                }
+            }
             .course-map {
                 .makeColumn(5);
             }
@@ -116,12 +116,14 @@ body {
             }
         }
         .course-signup {
-            form {
-                legend {
-                    line-height: 21px;
-                    padding-bottom: 5px;
-                }
+            .card-expiry-month {
+            }
+            .card-expiry-year {
             }
         }
     }
+}
+
+.credit-card-payment {
+    display: none;
 }
