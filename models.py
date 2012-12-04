@@ -19,10 +19,33 @@ class Registration(Base):
 
 
 class RegistrationForm(object):
-    def __init__(self, session_factory=None, **kwargs):
-        self.kwargs = kwargs
+    fields = [
+        ('first_name', 'First name'),
+        ('last_name', 'Last name'),
+        ('email', 'Email address'),
+        ('phone', 'Phone number'),
+    ]
+    hidden_fields = [
+        ('course_slug', 'Course slug'),
+    ]
+
+    def __init__(self, **kwargs):
         self._valid = True
-        self.session_factory = session_factory
+
+        _fields = self.fields
+        self.fields = []
+        self.fields_by_name = {}
+        for field in _fields:
+            form_field = FormField(field[0], field[1], kwargs.get(field[0], ''))
+            self.fields.append(form_field)
+            self.fields_by_name[field[0]] = form_field
+        _hidden_fields = self.hidden_fields
+        self.hidden_fields = []
+        for field in _hidden_fields:
+            form_field = FormField(field[0], field[1], kwargs.get(field[0], ''))
+            self.hidden_fields.append(form_field)
+        self.all_fields = self.hidden_fields + self.fields
+
 
     def valid(self):
         presence = ['first_name', 'last_name', 'email', 'phone']
@@ -36,16 +59,19 @@ class RegistrationForm(object):
     def build(self):
         if not self.valid():
             raise ValueError('form is invalid')
-        return Registration(**self.kwargs)
+        return Registration(**{f.name: f.value for f in self.all_fields})
 
     def _validate_presence(self, field):
-        self._valid = self._valid and bool(self.kwargs.get(field, None))
+        form_field = self.fields_by_name[field]
+        field_valid = bool(form_field.value)
+        if not field_valid:
+            form_field.errors.append('is required')
+        self._valid = self._valid and field_valid
 
     def _validate_email(self, field):
-        email = self.kwargs.get(field, '')
-        self._valid = (
-                # have to be valid already
-                self._valid and
+        form_field = self.fields_by_name[field]
+        email = form_field.value
+        field_valid = (
                 # there can only be one '@'
                 len(email.split('@')) == 2 and
                 # there needs to be a username before the '@'
@@ -56,12 +82,27 @@ class RegistrationForm(object):
                 bool(email.split('@')[-1].split('.')[0]) and
                 # there needs to be a TLD
                 bool(email.split('.')[-1]))
+        if not field_valid:
+            form_field.errors.append('is not a valid email')
+        self._valid = self._valid and field_valid
 
     def _validate_phone(self, field):
+        form_field = self.fields_by_name[field]
         digit_count = 0
-        for letter in self.kwargs.get(field, ''):
+        for letter in form_field.value:
             if letter in string.digits:
                 digit_count += 1
             if digit_count >= 10:
                 break
-        self._valid = self._valid and digit_count >= 10
+        field_valid = digit_count >= 10
+        if not field_valid:
+            form_field.errors.append('at least 10 digits are required')
+        self._valid = self._valid and field_valid
+
+
+class FormField(object):
+    def __init__(self, name, description, value=''):
+        self.name = name
+        self.description = description
+        self.value = value
+        self.errors = []

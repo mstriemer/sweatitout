@@ -124,6 +124,21 @@ body {
     }
 }
 
+.btn-green.active {
+    color: rgba(255,255,255,.75);
+}
+.btn-green {
+    .buttonBackground(@green, darken(@green, 10%));
+}
+
+a {
+    color: @pink;
+}
+
+a:hover {
+    color: darken(@pink, 10%);
+}
+
 .credit-card-payment {
     display: none;
 }

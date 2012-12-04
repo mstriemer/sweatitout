@@ -7,9 +7,10 @@
             $('.course-signup-form').removeClass('hide');
             $(this).hide();
         });
-        $('.no-sign-up').on('click', function () {
+        $('.no-sign-up').on('click', function (e) {
             $('.course-signup-form').addClass('hide');
             $('.sign-up').show();
+            e.preventDefault();
         });
     });
 </script>
@@ -57,43 +58,28 @@
             </div>
         </div>
         <div class="course-signup">
-            <button class="{% if errors %}hide {% endif %}sign-up btn btn-primary">Sign Me Up!</button>
-            <form class="{% if not errors %}hide {% endif %}course-signup-form form-horizontal stripe-form" action="/new-year-2013/sign-up" method="post">
+            <button class="{% if show_form %}hide {% endif %}sign-up btn btn-green">Sign Me Up!</button>
+            <form class="{% if not show_form %}hide {% endif %}course-signup-form form-horizontal stripe-form" action="/new-year-2013/sign-up" method="post">
                 <fieldset>
                     <legend>Sign Me Up</legend>
-                    <div class="errors">{{ errors }}</div>
-                    {% for field, description in [['first_name', "First name"], ['last_name', "Last name"], ['email', "Email address"], ['phone', "Phone number"]] %}
                     <div class="control-group">
-                        <label class="control-label" for="{{ field }}">{{ description }}</label>
                         <div class="controls">
-                            <input value="{{ request.form.get(field, '') }}" type="text" name="{{ field }}" xplaceholder="{{ description }}">
+                            All fields are required.
+                        </div>
+                    </div>
+                    {% for field in form.fields %}
+                    <div class="control-group{% if field.errors %} error{% endif %}">
+                        <label class="control-label" for="{{ field.name }}">{{ field.description }}</label>
+                        <div class="controls">
+                            <input value="{{ field.value }}" type="text" name="{{ field.name }}" xplaceholder="{{ field.description }}">
+                            {% if field.errors %}
+                            <span class="help-inline">{{ field.errors[0] }}</span>
+                            {% endif %}
                         </div>
                     </div>
                     {% endfor %}
-                    <div class="credit-card-payment">
-                        <div class="control-group">
-                            <label class="control-label" for="card-number-input">Card number</label>
-                            <div class="controls">
-                                <input type="text" size="20" id="card-number-input" class="card-number" xplaceholder="Phone number">
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label" for="cvc-input">CVC</label>
-                            <div class="controls">
-                                <input type="text" size="4" id="cvc-input" class="card-cvc" xplaceholder="Phone number">
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label" for="expiration-month-input">Expiration (mm/yyyy)</label>
-                            <div class="controls">
-                                <input type="text" size="2" id="expiration-month-input" class="card-expiry-month span1" xplaceholder="Phone number">
-                                /
-                                <input type="text" size="4" id="expiration-year-input" class="card-expiry-year span2" xplaceholder="Phone number">
-                            </div>
-                        </div>
-                    </div>
                     <div class="form-actions">
-                        <input type="submit" value="Sign Me Up!" class="btn btn-primary submit-button">
+                        <input type="submit" value="Sign Me Up!" class="btn btn-green submit-button">
                         <a href="/group-fitness" class="no-sign-up">Not yet</a>
                     </div>
                 </fieldset>

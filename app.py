@@ -21,11 +21,8 @@ def instructors():
 
 @app.route("/group-fitness")
 def group_fitness():
-    return render_template("group_fitness.html")
-
-@app.route("/contact-us")
-def contact_us():
-    return render_template("contact_us.html")
+    form = RegistrationForm(course_slug='new-year-2013')
+    return render_template("group_fitness.html", form=form)
 
 @app.route("/new-year-2013/sign-up", methods=['POST'])
 def sign_up():
@@ -39,11 +36,15 @@ def sign_up():
         session = Session()
         return redirect("/thank-you")
     else:
-        return render_template('group_fitness.html', errors='errors')
+        return render_template('group_fitness.html', form=form, show_form=True)
 
 @app.route("/thank-you")
 def thank_you():
     return render_template("thank_you.html")
+
+@app.route("/contact-us")
+def contact_us():
+    return render_template("contact_us.html")
 
 @app.errorhandler(404)
 def page_not_found(e):
