@@ -76,7 +76,7 @@ class RegistrationForm(object):
         form_field = self.fields_by_name[field]
         field_valid = bool(form_field.value)
         if not field_valid:
-            form_field.errors.append('is required')
+            form_field.errors.append('required')
         self._valid = self._valid and field_valid
 
     def _validate_email(self, field):
@@ -94,7 +94,7 @@ class RegistrationForm(object):
                 # there needs to be a TLD
                 bool(email.split('.')[-1]))
         if not field_valid:
-            form_field.errors.append('is not a valid email')
+            form_field.errors.append('not a valid email')
         self._valid = self._valid and field_valid
 
     def _validate_phone(self, field):

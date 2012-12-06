@@ -1,19 +1,6 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<script>
-    jQuery(function ($) {
-        $('.sign-up').on('click', function () {
-            $('.course-signup-form').removeClass('hide');
-            $(this).hide();
-        });
-        $('.no-sign-up').on('click', function (e) {
-            $('.course-signup-form').addClass('hide');
-            $('.sign-up').show();
-            e.preventDefault();
-        });
-    });
-</script>
 <h1>Group Fitness</h1>
 
 <div class="section-description">
@@ -29,18 +16,9 @@
 <div class="courses">
     <div class="course">
         <div class="course-info">
-            <div class="course-name">{{ course.name }}</div>
+            <h2 class="course-name">{{ course.name }} <small>$110 + tax</small></h2>
         </div>
         <div class="course-info-long">
-            <!--
-            <div class="course-schedule">
-                January 5th through March 23rd<br>
-                Mondays and Tursdays<br>
-                8:45 to 9:45pm<br>
-                Revive Fitness Sage Creek<br>
-                <img src="/static/images/revive-fitness-map.png" alt="Revive Fitness Map">
-            </div>
-            -->
             <div class="course-description">
                 <div class="course-schedule">
                     <strong>{{ course.weekdays[0] }}</strong> and <strong>{{ course.weekdays[1] }}</strong> from <strong>{{ course.start_time }} to {{ course.end_time }}</strong> starting <strong>{{ course.start_date }}</strong> and ending <strong>{{ course.end_date }}</strong> at <strong>{{ course.location }}</strong>.
@@ -52,29 +30,42 @@
             </div>
         </div>
         <div class="course-signup">
-            <button class="{% if show_form %}hide {% endif %}sign-up btn btn-green">Sign Me Up!</button>
+            <button class="{% if show_form %}hide {% endif %}signup btn btn-green">Sign Me Up!</button>
             <form class="{% if not show_form %}hide {% endif %}course-signup-form form-horizontal stripe-form" action="/{{ course.slug }}/register" method="post">
                 <fieldset>
-                    <legend>Sign Me Up</legend>
-                    <div class="control-group">
-                        <div class="controls">
-                            All fields are required.
-                        </div>
-                    </div>
+                    <legend>Register for {{ course.name }}</legend>
                     {% for field in form.fields %}
                     <div class="control-group{% if field.errors %} error{% endif %}">
                         <label class="control-label" for="{{ field.name }}">{{ field.description }}</label>
                         <div class="controls">
-                            <input value="{{ field.value }}" type="text" name="{{ field.name }}" xplaceholder="{{ field.description }}">
-                            {% if field.errors %}
-                            <span class="help-inline">{{ field.errors[0] }}</span>
-                            {% endif %}
+                            <input value="{{ field.value }}" type="text" name="{{ field.name }}">
+                            <span class="help-inline">
+                                {% if field.errors %}
+                                {{ field.errors[0] }}
+                                {% else %}
+                                required
+                                {% endif %}
+                            </span>
                         </div>
                     </div>
                     {% endfor %}
+                    <div class="control-group">
+                        <label class="control-label" for="payment_type">Payment method</label>
+                        <div class="controls">
+                            {% for name, description in [["stripe", "Credit Card"], ["paypal", "PayPal"], ["in_person", "In Person"]] %}
+                            <label class="radio inline">
+                                <input value="{{ name }}"{% if request.form.payment_type == name %} checked="checked"{% endif %} type="radio" name="payment_type">
+                                {{ description }}
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% include "stripe.html" %}
+                    {% include "paypal.html" %}
+                    {% include "in_person.html" %}
                     <div class="form-actions">
                         <input type="submit" value="Sign Me Up!" class="btn btn-green submit-button">
-                        <a href="/group-fitness" class="no-sign-up">Not yet</a>
+                        <a href="/group-fitness" class="no-signup">Not yet</a>
                     </div>
                 </fieldset>
             </form>

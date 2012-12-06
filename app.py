@@ -11,7 +11,7 @@ app.secret_key = 'a0s9fa09sfj01h389gef981g38fgq32f23f93'
 
 boot_camp = Course(
         "new-year-2013",
-        "New Year, New Booty-Camp",
+        "New Year's Resolution Bootcamp",
         "Kickstart your new year's resolution with Sweat It Out Fitness's bootcamp. Perfect for all fitness levels this dynamic class offers cardio, resistence training, circuits and plyometrics and is different each and every time. Our small class sizes ensure lots of individual attention from Certified Personal Trainer Jenna Hobson and Personal Trainer Specialist Emily Striemer. Challenge yourself, get in shape and start 2013 off sweaty!",
         ["Mondays", "Thursdays"],
         "January 4th",
@@ -48,14 +48,19 @@ def sign_up():
         session['registration_id'] = registration.id
         return redirect("/thank-you")
     else:
-        return render_template('group_fitness.html', form=form, show_form=True)
+        return render_template('group_fitness.html', form=form, show_form=True,
+                course=boot_camp)
 
 @app.route("/thank-you")
 def thank_you():
-    registration = db_session.query(Registration).filter_by(
-            id=session['registration_id']).one()
-    # del session['registration_id']
-    return render_template("thank_you.html", registration=registration)
+    if 'registration_id' in session:
+        registration = db_session.query(Registration).filter_by(
+                id=session['registration_id']).one()
+        del session['registration_id']
+        return render_template("thank_you.html", registration=registration,
+                course=boot_camp)
+    else:
+        return redirect("/group-fitness")
 
 @app.route("/contact-us")
 def contact_us():
