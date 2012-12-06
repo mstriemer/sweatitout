@@ -29,7 +29,7 @@
 <div class="courses">
     <div class="course">
         <div class="course-info">
-            <div class="course-name">New Year's Resolution Bootcamp</div>
+            <div class="course-name">{{ course.name }}</div>
         </div>
         <div class="course-info-long">
             <!--
@@ -43,15 +43,9 @@
             -->
             <div class="course-description">
                 <div class="course-schedule">
-                    <strong>Mondays</strong> and <strong>Thursdays</strong> from <strong>8:45 to 9:45pm</strong> starting <strong>January 4th</strong> and ending <strong>March 27th, 2013</strong> at <strong>Revive Fitness Sage Creek</strong>.
+                    <strong>{{ course.weekdays[0] }}</strong> and <strong>{{ course.weekdays[1] }}</strong> from <strong>{{ course.start_time }} to {{ course.end_time }}</strong> starting <strong>{{ course.start_date }}</strong> and ending <strong>{{ course.end_date }}</strong> at <strong>{{ course.location }}</strong>.
                 </div>
-                Kickstart your new year's resolution with Sweat It Out Fitness's
-                bootcamp. Perfect for all fitness levels this dynamic class offers
-                cardio, resistence training, circuits and plyometrics and is
-                different each and every time. Our small class sizes ensure lots of
-                individual attention from Certified Personal Trainer Jenna Hobson
-                and Personal Trainer Specialist Emily Striemer. Challenge yourself,
-                get in shape and start 2013 off sweaty!
+                {{ course.description }}
             </div>
             <div class="course-map">
                 <img src="/static/images/revive-fitness-map.png" alt="Revive Fitness Map">
@@ -59,7 +53,7 @@
         </div>
         <div class="course-signup">
             <button class="{% if show_form %}hide {% endif %}sign-up btn btn-green">Sign Me Up!</button>
-            <form class="{% if not show_form %}hide {% endif %}course-signup-form form-horizontal stripe-form" action="/new-year-2013/sign-up" method="post">
+            <form class="{% if not show_form %}hide {% endif %}course-signup-form form-horizontal stripe-form" action="/{{ course.slug }}/register" method="post">
                 <fieldset>
                     <legend>Sign Me Up</legend>
                     <div class="control-group">

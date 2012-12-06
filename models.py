@@ -1,10 +1,22 @@
 import string
 
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
 
+from database import Base
 
-Base = declarative_base()
+
+class Course(object):
+    def __init__(self, slug, name, description, weekdays, start_date, end_date,
+            start_time, end_time, location):
+        self.slug = slug
+        self.name = name
+        self.description = description
+        self.weekdays = weekdays
+        self.start_date = start_date
+        self.end_date = end_date
+        self.start_time = start_time
+        self.end_time = end_time
+        self.location = location
 
 
 class Registration(Base):
@@ -16,7 +28,6 @@ class Registration(Base):
     last_name = Column(String(75), nullable=False)
     email = Column(String(255), nullable=False)
     phone = Column(String(20), nullable=False)
-
 
 class RegistrationForm(object):
     fields = [
