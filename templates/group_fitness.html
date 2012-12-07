@@ -38,7 +38,16 @@
                     <div class="control-group{% if field.errors %} error{% endif %}">
                         <label class="control-label" for="{{ field.name }}">{{ field.description }}</label>
                         <div class="controls">
-                            <input value="{{ field.value }}" type="text" name="{{ field.name }}">
+                            {% if field.options %}
+                                {% for name, description in field.options %}
+                                <label class="radio inline">
+                                    <input value="{{ name }}"{% if field.value == name %} checked="checked"{% endif %} type="radio" name="{{ field.name }}">
+                                    {{ description }}
+                                </label>
+                                {% endfor %}
+                            {% else %}
+                                <input value="{{ field.value }}" type="text" name="{{ field.name }}">
+                            {% endif %}
                             <span class="help-inline">
                                 {% if field.errors %}
                                 {{ field.errors[0] }}
@@ -49,17 +58,6 @@
                         </div>
                     </div>
                     {% endfor %}
-                    <div class="control-group">
-                        <label class="control-label" for="payment_type">Payment method</label>
-                        <div class="controls">
-                            {% for name, description in [["stripe", "Credit Card"], ["paypal", "PayPal"], ["in_person", "In Person"]] %}
-                            <label class="radio inline">
-                                <input value="{{ name }}"{% if request.form.payment_type == name %} checked="checked"{% endif %} type="radio" name="payment_type">
-                                {{ description }}
-                            </label>
-                            {% endfor %}
-                        </div>
-                    </div>
                     {% include "stripe.html" %}
                     {% include "paypal.html" %}
                     {% include "in_person.html" %}

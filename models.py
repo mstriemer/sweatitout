@@ -28,6 +28,7 @@ class Registration(Base):
     last_name = Column(String(75), nullable=False)
     email = Column(String(255), nullable=False)
     phone = Column(String(20), nullable=False)
+    payment_type = Column(String(10), nullable=False)
 
 class RegistrationForm(object):
     fields = [
@@ -35,6 +36,11 @@ class RegistrationForm(object):
         ('last_name', 'Last name'),
         ('email', 'Email address'),
         ('phone', 'Phone number'),
+        ('payment_type', 'Payment type', {'options': [
+            ['stripe', 'Credit card'],
+            ['paypal', 'PayPal'],
+            ['in_person', 'In person'],
+        ]}),
     ]
     hidden_fields = [
         ('course_slug', 'Course slug'),
@@ -47,7 +53,9 @@ class RegistrationForm(object):
         self.fields = []
         self.fields_by_name = {}
         for field in _fields:
-            form_field = FormField(field[0], field[1], kwargs.get(field[0], ''))
+            extra = field[2] if len(field) > 2 else {}
+            form_field = FormField(field[0], field[1], kwargs.get(field[0], ''),
+                    **extra)
             self.fields.append(form_field)
             self.fields_by_name[field[0]] = form_field
         _hidden_fields = self.hidden_fields
@@ -62,7 +70,7 @@ class RegistrationForm(object):
         presence = ['first_name', 'last_name', 'email', 'phone']
         for field in presence:
             self._validate_presence(field)
-
+        self._validate_options('payment_type')
         self._validate_email('email')
         self._validate_phone('phone')
         return self._valid
@@ -110,10 +118,19 @@ class RegistrationForm(object):
             form_field.errors.append('at least 10 digits are required')
         self._valid = self._valid and field_valid
 
+    def _validate_options(self, field):
+        form_field = self.fields_by_name[field]
+        field_valid = form_field.value in form_field.valid_options
+        if not field_valid:
+            form_field.errors.append('not a valid option')
+        self._valid = self._valid and field_valid
+
 
 class FormField(object):
-    def __init__(self, name, description, value=''):
+    def __init__(self, name, description, value='', options=None):
         self.name = name
         self.description = description
         self.value = value
+        self.valid_options = [o[0] for o in options or []]
+        self.options = options or []
         self.errors = []

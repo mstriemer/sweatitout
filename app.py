@@ -40,7 +40,9 @@ def sign_up():
             first_name=request.form.get('first_name', ''),
             last_name=request.form.get('last_name', ''),
             email=request.form.get('email', ''),
-            phone=request.form.get('phone', ''))
+            phone=request.form.get('phone', ''),
+            payment_type=request.form.get('payment_type', ''),
+    )
     if form.valid():
         registration = form.build()
         db_session.add(registration)
