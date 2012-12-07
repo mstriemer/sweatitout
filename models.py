@@ -29,6 +29,8 @@ class Registration(Base):
     email = Column(String(255), nullable=False)
     phone = Column(String(20), nullable=False)
     payment_type = Column(String(10), nullable=False)
+    paypal_email = Column(String(255))
+    stripe_charge_code = Column(String(255))
 
 class RegistrationForm(object):
     fields = [
@@ -44,6 +46,8 @@ class RegistrationForm(object):
     ]
     hidden_fields = [
         ('course_slug', 'Course slug'),
+        ('paypal_email', 'PayPal email address'),
+        ('stripe_charge_code', 'Stripe charge code'),
     ]
 
     def __init__(self, **kwargs):
@@ -63,6 +67,7 @@ class RegistrationForm(object):
         for field in _hidden_fields:
             form_field = FormField(field[0], field[1], kwargs.get(field[0], ''))
             self.hidden_fields.append(form_field)
+            self.fields_by_name[field[0]] = form_field
         self.all_fields = self.hidden_fields + self.fields
 
 
@@ -73,6 +78,14 @@ class RegistrationForm(object):
         self._validate_options('payment_type')
         self._validate_email('email')
         self._validate_phone('phone')
+
+        payment_type = self.fields_by_name['payment_type']
+        if payment_type.value == 'paypal':
+            self._validate_presence('paypal_email')
+            self._validate_email('paypal_email')
+        elif payment_type.value == 'stripe':
+            self._validate_presence('stripe_charge_code')
+
         return self._valid
 
     def build(self):
