@@ -30,7 +30,7 @@ class Registration(Base):
     phone = Column(String(20), nullable=False)
     payment_type = Column(String(10), nullable=False)
     paypal_email = Column(String(255))
-    stripe_charge_code = Column(String(255))
+    stripe_card_token = Column(String(255))
 
 class RegistrationForm(object):
     fields = [
@@ -47,7 +47,7 @@ class RegistrationForm(object):
     hidden_fields = [
         ('course_slug', 'Course slug'),
         ('paypal_email', 'PayPal email address'),
-        ('stripe_charge_code', 'Stripe charge code'),
+        ('stripe_card_token', 'Stripe card token'),
     ]
 
     def __init__(self, **kwargs):
@@ -84,7 +84,7 @@ class RegistrationForm(object):
             self._validate_presence('paypal_email')
             self._validate_email('paypal_email')
         elif payment_type.value == 'stripe':
-            self._validate_presence('stripe_charge_code')
+            self._validate_presence('stripe_card_token')
 
         return self._valid
 

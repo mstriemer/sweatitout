@@ -34,6 +34,15 @@
             <form class="{% if not show_form %}hide {% endif %}course-signup-form form-horizontal stripe-form" action="/{{ course.slug }}/register" method="post">
                 <fieldset>
                     <legend>Register for {{ course.name }}</legend>
+                    {% for field in form.hidden_fields %}
+                    {% if field.errors %}
+                    <div class="control-group error">
+                        <div class="controls">
+                            <span class="help-inline">{{ field.name }} is {{ field.errors[0] }}</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
                     {% for field in form.fields %}
                     <div class="control-group{% if field.errors %} error{% endif %}">
                         <label class="control-label" for="{{ field.name }}">{{ field.description }}</label>

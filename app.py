@@ -30,7 +30,7 @@ def instructors():
 
 @app.route("/group-fitness")
 def group_fitness():
-    form = RegistrationForm(course_slug='new-year-2013')
+    form = RegistrationForm(course_slug=boot_camp.slug)
     return render_template("group_fitness.html", form=form, course=boot_camp)
 
 @app.route("/new-year-2013/register", methods=['POST'])
@@ -42,6 +42,8 @@ def sign_up():
             email=request.form.get('email', ''),
             phone=request.form.get('phone', ''),
             payment_type=request.form.get('payment_type', ''),
+            paypal_email=request.form.get('paypal_email', ''),
+            stripe_card_token=request.form.get('stripe_card_token', ''),
     )
     if form.valid():
         registration = form.build()
