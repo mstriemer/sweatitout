@@ -1,7 +1,8 @@
 import string
 from time import time
 
-from sqlalchemy import Column, Integer, String, DateTime, func
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean, func
+from sqlalchemy.orm import relationship
 
 from database import Base
 
@@ -46,6 +47,8 @@ class Registration(Base):
     payment_type = Column(String(10), nullable=False)
     paypal_email = Column(String(255))
     stripe_card_token = Column(String(255))
+    registration_charge = relationship("RegistrationCharge", uselist=False,
+            backref="registration")
 
     @property
     def descriptive_payment_type(self):
@@ -54,6 +57,22 @@ class Registration(Base):
             'paypal': "PayPal",
             'in_person': "In person",
         }[self.payment_type]
+
+
+class RegistrationCharge(Base):
+    __tablename__ = 'registration_charges'
+
+    id = Column(Integer, primary_key=True)
+    registration_id = Column(Integer, ForeignKey('registrations.id'),
+            nullable=False)
+    stripe_charge_token = Column(String(255), nullable=False)
+    paid = Column(Boolean, nullable=False)
+    last4 = Column(String(4), nullable=False)
+    card_type = Column(String(25), nullable=False)
+    currency = Column(String(3), nullable=False)
+    amount = Column(Integer, nullable=False)
+    fee = Column(Integer, nullable=False)
+    charge_time = Column(DateTime, nullable=False)
 
 class RegistrationForm(object):
     fields = [

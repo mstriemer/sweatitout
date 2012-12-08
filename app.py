@@ -1,14 +1,17 @@
+from datetime import datetime
+
 from flask import Flask, render_template, request, redirect, session
 from database import db_session
 import stripe
 
-from models import Course, Registration, RegistrationForm
+from models import Course, Registration, RegistrationCharge, RegistrationForm
 
 stripe.api_key = 'sk_test_q6yiThbRguk12pWKh0qlRsLn'
 
 app = Flask(__name__)
 app.secret_key = 'a0s9fa09sfj01h389gef981g38fgq32f23f93'
 
+boot_camp_cost = 12320
 boot_camp = Course(
         "new-year-2013",
         "New Year's Resolution Bootcamp",
@@ -27,6 +30,28 @@ def find_card(token):
         return stripe.Token.retrieve(token)['card']
     else:
         return None
+
+def charge_registration(registration, amount):
+    stripe_charge = stripe.Charge.create(
+            amount=amount,
+            currency="cad",
+            card=registration.stripe_card_token,
+            description="{course_name} for {email} - {code}".format(
+                course_name=registration.course_slug,
+                email=registration.email,
+                code=registration.code))
+    charge = RegistrationCharge(
+            registration_id=registration.id,
+            stripe_charge_token=stripe_charge.id,
+            paid=stripe_charge['paid'],
+            last4=stripe_charge['card']['last4'],
+            card_type=stripe_charge['card']['type'],
+            currency=stripe_charge['currency'],
+            amount=stripe_charge['amount'],
+            fee=stripe_charge['fee'],
+            charge_time=datetime.fromtimestamp(stripe_charge['created']))
+    return charge
+
 
 @app.route("/")
 def index():
@@ -62,6 +87,10 @@ def sign_up():
         registration = form.build()
         db_session.add(registration)
         db_session.commit()
+        if registration.payment_type == 'stripe':
+            charge = charge_registration(registration, boot_camp_cost)
+            db_session.add(charge)
+            db_session.commit()
         session['registration_id'] = registration.id
         return redirect("/thank-you")
     else:
