@@ -32,24 +32,30 @@ def find_card(token):
         return None
 
 def charge_registration(registration, amount):
-    stripe_charge = stripe.Charge.create(
-            amount=amount,
-            currency="cad",
-            card=registration.stripe_card_token,
-            description="{course_name} for {email} - {code}".format(
-                course_name=registration.course_slug,
-                email=registration.email,
-                code=registration.code))
-    charge = RegistrationCharge(
-            registration_id=registration.id,
-            stripe_charge_token=stripe_charge.id,
-            paid=stripe_charge['paid'],
-            last4=stripe_charge['card']['last4'],
-            card_type=stripe_charge['card']['type'],
-            currency=stripe_charge['currency'],
-            amount=stripe_charge['amount'],
-            fee=stripe_charge['fee'],
-            charge_time=datetime.fromtimestamp(stripe_charge['created']))
+    try:
+        stripe_charge = stripe.Charge.create(
+                amount=amount,
+                currency="cad",
+                card=registration.stripe_card_token,
+                description="{course_name} for {email} - {code}".format(
+                    course_name=registration.course_slug,
+                    email=registration.email,
+                    code=registration.code))
+        charge = RegistrationCharge(
+                registration_id=registration.id,
+                stripe_charge_token=stripe_charge.id,
+                paid=stripe_charge['paid'],
+                last4=stripe_charge['card']['last4'],
+                card_type=stripe_charge['card']['type'],
+                currency=stripe_charge['currency'],
+                amount=stripe_charge['amount'],
+                fee=stripe_charge['fee'],
+                charge_time=datetime.fromtimestamp(stripe_charge['created']))
+    except stripe.CardError as error:
+        charge = RegistrationCharge(
+                registration_id=registration.id,
+                paid=False,
+                error_code=error.code)
     return charge
 
 

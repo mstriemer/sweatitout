@@ -65,14 +65,15 @@ class RegistrationCharge(Base):
     id = Column(Integer, primary_key=True)
     registration_id = Column(Integer, ForeignKey('registrations.id'),
             nullable=False)
-    stripe_charge_token = Column(String(255), nullable=False)
+    stripe_charge_token = Column(String(255))
     paid = Column(Boolean, nullable=False)
-    last4 = Column(String(4), nullable=False)
-    card_type = Column(String(25), nullable=False)
-    currency = Column(String(3), nullable=False)
-    amount = Column(Integer, nullable=False)
-    fee = Column(Integer, nullable=False)
-    charge_time = Column(DateTime, nullable=False)
+    last4 = Column(String(4))
+    card_type = Column(String(25))
+    currency = Column(String(3))
+    amount = Column(Integer)
+    fee = Column(Integer)
+    charge_time = Column(DateTime)
+    error_code = Column(String(30))
 
 class RegistrationForm(object):
     fields = [
