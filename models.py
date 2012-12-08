@@ -1,6 +1,7 @@
 import string
+from time import time
 
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, DateTime, func
 
 from database import Base
 
@@ -20,10 +21,23 @@ class Course(object):
         self.cost = cost
 
 
+def _make_registration_code(context):
+    row_seed = ''
+    row_seed += context.current_parameters['first_name']
+    row_seed += context.current_parameters['last_name']
+    row_seed += context.current_parameters['course_slug']
+    seed = int(time())
+    for c in row_seed:
+        seed += ord(c)
+    return "{:x}".format(seed % (16 ** 4)).rjust(4, '0')
+
+
 class Registration(Base):
     __tablename__ = 'registrations'
 
     id = Column(Integer, primary_key=True)
+    code = Column(String(10), nullable=False, default=_make_registration_code)
+    registration_date = Column(DateTime, nullable=False, default=func.now())
     course_slug = Column(String(25), nullable=False)
     first_name = Column(String(50), nullable=False)
     last_name = Column(String(75), nullable=False)

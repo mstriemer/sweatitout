@@ -22,6 +22,12 @@ boot_camp = Course(
         "$110 + tax is $123.20 CAD",
         )
 
+def find_card(token):
+    if token:
+        return stripe.Token.retrieve(token)['card']
+    else:
+        return None
+
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -36,16 +42,20 @@ def group_fitness():
     return render_template("group_fitness.html", form=form, course=boot_camp,
             page_title="Group Fitness")
 
-@app.route("/new-year-2013/register", methods=['POST'])
+@app.route("/new-year-2013/register")
+def redirect_to_group_fitness():
+    return redirect("/group-fitness")
+
+@app.route("/new-year-2013/register", methods=["POST"])
 def sign_up():
     form = RegistrationForm(
             course_slug=boot_camp.slug,
-            first_name=request.form.get('first_name', ''),
-            last_name=request.form.get('last_name', ''),
-            email=request.form.get('email', ''),
-            phone=request.form.get('phone', ''),
-            payment_type=request.form.get('payment_type', ''),
-            paypal_email=request.form.get('paypal_email', ''),
+            first_name=request.form['first_name'],
+            last_name=request.form['last_name'],
+            email=request.form['email'],
+            phone=request.form['phone'],
+            payment_type=request.form['payment_type'],
+            paypal_email=request.form['paypal_email'],
             stripe_card_token=request.form.get('stripe_card_token', ''),
     )
     if form.valid():
@@ -55,17 +65,19 @@ def sign_up():
         session['registration_id'] = registration.id
         return redirect("/thank-you")
     else:
+        card = find_card(request.form['stripe_card_token'])
         return render_template('group_fitness.html', form=form, show_form=True,
-                course=boot_camp, page_title="Group Fitness")
+                course=boot_camp, page_title="Group Fitness", card=card)
 
 @app.route("/thank-you")
 def thank_you():
     if 'registration_id' in session:
         registration = db_session.query(Registration).filter_by(
                 id=session['registration_id']).one()
-        # del session['registration_id']
+        card = find_card(registration.stripe_card_token)
+        del session['registration_id']
         return render_template("thank_you.html", registration=registration,
-                course=boot_camp, page_title="Thank You")
+                course=boot_camp, page_title="Thank You", card=card)
     else:
         return redirect("/group-fitness")
 

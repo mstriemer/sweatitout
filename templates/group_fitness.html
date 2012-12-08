@@ -54,7 +54,17 @@
                         </div>
                     </div>
                     {% endfor %}
+                    {% if card %}
+                    <div class="control-group payment-info payment-info-stripe">
+                        <label class="control-label">Credit card</label>
+                        <div class="controls">
+                            <input type="hidden" name="stripe_card_token" value="{{ request.form['stripe_card_token'] }}">
+                            <input type="text" disabled="disabled" readonly value="{{ card.type }} ending in {{ card.last4 }}">
+                        </div>
+                    </div>
+                    {% else %}
                     {% include "stripe.html" %}
+                    {% endif %}
                     {% include "paypal.html" %}
                     {% include "in_person.html" %}
                     <div class="form-actions">

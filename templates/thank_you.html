@@ -4,9 +4,9 @@
 <h1>Thanks, See You Soon!</h1>
 
 <p class="print-info">
-Here's what you signed up for, you may want to
-<a href="javascript:if(window.print)window.print();">print this page</a>
-for your records.
+    Here's what you signed up for, you may want to
+    <a href="javascript:if(window.print)window.print();">print this page</a>
+    for your records.
 </p>
 
 <div class="course">
@@ -16,7 +16,7 @@ for your records.
 <div class="receipt">
     <dl class="registration-receipt">
         <dt>Registration code</dt>
-        <dd>C2AB</dd>
+        <dd>{{ registration.code|upper }}</dd>
         <dt>Course</dt>
         <dd>{{ course.name }}</dd>
         <dt>First name</dt>
@@ -39,9 +39,11 @@ for your records.
         {% elif registration.payment_type == "paypal" %}
         <dt>PayPal account email</dt>
         <dd>{{ registration.paypal_email }}</dd>
+        <dt>PayPal billing info</dt>
+        <dd>You will be invoiced through PayPal using the email address above.</dd>
         {% elif registration.payment_type == "stripe" %}
         <dt>Credit card</dt>
-        <dd>Visa ending in 4242</dd>
+        <dd>{{ card.type }} ending in {{ card.last4 }}</dd>
         {% endif %}
     </dl>
 </div>

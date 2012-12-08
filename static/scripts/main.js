@@ -25,7 +25,7 @@ jQuery(function ($) {
         });
         $('body').animate({scrollTop: $payment_type.offset().top}, 1000);
         if (payment_type == 'paypal') {
-            var $email = $('[name="paypal[email]"]');
+            var $email = $('[name="paypal_email"]');
             if ($email.val() == '')
                 $email.val($('[name="email"]').val());
         } else if (payment_type == 'stripe') {
