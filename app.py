@@ -18,7 +18,9 @@ boot_camp = Course(
         "March 27th, 2013",
         "8:45",
         "9:45pm",
-        "Revive Fitness Sage Creek")
+        "Revive Fitness Sage Creek",
+        "$110 + tax is $123.20 CAD",
+        )
 
 @app.route("/")
 def index():
@@ -26,12 +28,13 @@ def index():
 
 @app.route("/instructors")
 def instructors():
-    return render_template("instructors.html")
+    return render_template("instructors.html", page_title="Instructors")
 
 @app.route("/group-fitness")
 def group_fitness():
     form = RegistrationForm(course_slug=boot_camp.slug)
-    return render_template("group_fitness.html", form=form, course=boot_camp)
+    return render_template("group_fitness.html", form=form, course=boot_camp,
+            page_title="Group Fitness")
 
 @app.route("/new-year-2013/register", methods=['POST'])
 def sign_up():
@@ -53,26 +56,26 @@ def sign_up():
         return redirect("/thank-you")
     else:
         return render_template('group_fitness.html', form=form, show_form=True,
-                course=boot_camp)
+                course=boot_camp, page_title="Group Fitness")
 
 @app.route("/thank-you")
 def thank_you():
     if 'registration_id' in session:
         registration = db_session.query(Registration).filter_by(
                 id=session['registration_id']).one()
-        del session['registration_id']
+        # del session['registration_id']
         return render_template("thank_you.html", registration=registration,
-                course=boot_camp)
+                course=boot_camp, page_title="Thank You")
     else:
         return redirect("/group-fitness")
 
 @app.route("/contact-us")
 def contact_us():
-    return render_template("contact_us.html")
+    return render_template("contact_us.html", page_title="Contact")
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html'), 404
+    return render_template('404.html', page_title="Not Found"), 404
 
 @app.teardown_request
 def shutdown_session(exception=None):

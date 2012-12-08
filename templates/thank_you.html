@@ -1,15 +1,48 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<h1>Thanks, See You Soon</h1>
+<h1>Thanks, See You Soon!</h1>
 
-<p>Here's your registration info.</p>
+<p class="print-info">
+Here's what you signed up for, you may want to
+<a href="javascript:if(window.print)window.print();">print this page</a>
+for your records.
+</p>
 
-<ul>
-    <li>Course: {{ course.name }}</li>
-    <li>First name: {{ registration.first_name }}</li>
-    <li>Last name: {{ registration.last_name }}</li>
-    <li>Email address: {{ registration.email }}</li>
-    <li>Phone number: {{ registration.phone }}</li>
-</ul>
+<div class="course">
+    {% include "course.html" %}
+</div>
+
+<div class="receipt">
+    <dl class="registration-receipt">
+        <dt>Registration code</dt>
+        <dd>C2AB</dd>
+        <dt>Course</dt>
+        <dd>{{ course.name }}</dd>
+        <dt>First name</dt>
+        <dd>{{ registration.first_name }}</dd>
+        <dt>Last name</dt>
+        <dd>{{ registration.last_name }}</dd>
+        <dt>Email address</dt>
+        <dd>{{ registration.email }}</dd>
+        <dt>Phone number</dt>
+        <dd>{{ registration.phone }}</dd>
+    </dl>
+    <dl class="payment-receipt">
+        <dt>Payment method</dt>
+        <dd>{{ registration.descriptive_payment_type }}</dd>
+        <dt>Registration cost</dt>
+        <dd>$110.00 CAD + tax is $123.20 CAD</dd>
+        {% if registration.payment_type == "in_person" %}
+        <dt>Payment options</dt>
+        <dd>You may pay with cash, cheque or credit card at your first class.</dt>
+        {% elif registration.payment_type == "paypal" %}
+        <dt>PayPal account email</dt>
+        <dd>{{ registration.paypal_email }}</dd>
+        {% elif registration.payment_type == "stripe" %}
+        <dt>Credit card</dt>
+        <dd>Visa ending in 4242</dd>
+        {% endif %}
+    </dl>
+</div>
 {% endblock %}

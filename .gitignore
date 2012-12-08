@@ -1,2 +1,3 @@
 *.pyc
 sweatitout.db
+.DS_Store

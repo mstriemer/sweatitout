@@ -30,11 +30,13 @@ jQuery(function ($) {
                 $email.val($('[name="email"]').val());
         } else if (payment_type == 'stripe') {
             var $card_name = $('#card-name-input');
-            if ($card_name.val() == '')
-                $card_name.val(
-                        $('[name="first_name"]').val() +
-                        ' ' +
-                        $('[name="last_name"]').val());
+            if ($card_name.val() == '') {
+                var name = $('[name="first_name"]').val();
+                if (name.length > 0)
+                    name += ' ';
+                name += $('[name="last_name"]').val();
+                $card_name.val(name);
+            }
         }
     };
 
@@ -93,9 +95,11 @@ jQuery(function ($) {
                     return Stripe.validateExpiry(this.$exp_month.val(), this.$exp_year.val());
                 })
             ];
-            return validations.every(function (value, index, all) {
-                return value;
-            });
+            var valid = true;
+            for (var i = 0; i < validations.length; i++) {
+                valid = valid && validations[i];
+            }
+            return valid;
         };
     };
     StripeForm.prototype = {

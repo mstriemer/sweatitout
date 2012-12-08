@@ -7,7 +7,7 @@ from database import Base
 
 class Course(object):
     def __init__(self, slug, name, description, weekdays, start_date, end_date,
-            start_time, end_time, location):
+            start_time, end_time, location, cost):
         self.slug = slug
         self.name = name
         self.description = description
@@ -17,6 +17,7 @@ class Course(object):
         self.start_time = start_time
         self.end_time = end_time
         self.location = location
+        self.cost = cost
 
 
 class Registration(Base):
@@ -31,6 +32,14 @@ class Registration(Base):
     payment_type = Column(String(10), nullable=False)
     paypal_email = Column(String(255))
     stripe_card_token = Column(String(255))
+
+    @property
+    def descriptive_payment_type(self):
+        return {
+            'stripe': "Credit card",
+            'paypal': "PayPal",
+            'in_person': "In person",
+        }[self.payment_type]
 
 class RegistrationForm(object):
     fields = [

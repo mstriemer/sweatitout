@@ -89,39 +89,36 @@ body {
 
 .courses {
     padding-top: 20px;
+}
+.course-info {
+    .course-name {
+        font-size: 30px;
+        font-weight: bold;
+    }
+}
+.course-info-long {
+    .makeRow();
+    margin-top: 20px;
 
-    .course {
-        .course-info {
-            .course-name {
-                font-size: 30px;
-                font-weight: bold;
-            }
+    .course-schedule {
+        color: @grayLight;
+        padding-bottom: 10px;
+        strong {
+            color: @grayDark;
         }
-        .course-info-long {
-            .makeRow();
-            margin-top: 20px;
-
-            .course-schedule {
-                color: @grayLight;
-                padding-bottom: 10px;
-                strong {
-                    color: @grayDark;
-                }
-            }
-            .course-map {
-                .makeColumn(5);
-                height: 210px;
-            }
-            .course-description {
-                .makeColumn(7);
-            }
-        }
-        .course-signup {
-            .card-expiry-month {
-            }
-            .card-expiry-year {
-            }
-        }
+    }
+    .course-map {
+        .makeColumn(5);
+        height: 210px;
+    }
+    .course-description {
+        .makeColumn(7);
+    }
+}
+.course-signup {
+    .card-expiry-month {
+    }
+    .card-expiry-year {
     }
 }
 
@@ -148,4 +145,15 @@ a:hover {
 }
 .payment-help {
     color: @grayLight;
+}
+.receipt {
+    .makeRow();
+    font-size: 16px;
+
+    .registration-receipt {
+        .makeColumn(6);
+    }
+    .payment-receipt {
+        .makeColumn(6);
+    }
 }
