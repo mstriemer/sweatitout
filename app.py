@@ -85,8 +85,8 @@ def sign_up():
             last_name=request.form['last_name'],
             email=request.form['email'],
             phone=request.form['phone'],
-            payment_type=request.form['payment_type'],
-            paypal_email=request.form['paypal_email'],
+            payment_type=request.form.get('payment_type', ''),
+            paypal_email=request.form.get('paypal_email', ''),
             stripe_card_token=request.form.get('stripe_card_token', ''),
     )
     if form.valid():
