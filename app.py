@@ -100,7 +100,7 @@ def sign_up():
         session['registration_id'] = registration.id
         return redirect("/thank-you")
     else:
-        card = find_card(request.form['stripe_card_token'])
+        card = find_card(request.form.get('stripe_card_token', None))
         return render_template('group_fitness.html', form=form, show_form=True,
                 course=boot_camp, page_title="Group Fitness", card=card)
 
