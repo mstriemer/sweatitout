@@ -116,10 +116,6 @@ def thank_you():
     else:
         return redirect("/group-fitness")
 
-@app.route("/contact-us")
-def contact_us():
-    return render_template("contact_us.html", page_title="Contact")
-
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html', page_title="Not Found"), 404
