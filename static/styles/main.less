@@ -21,6 +21,10 @@ body.home {
     border-bottom: 1px solid @grayLight;
 }
 
+.lightBorderRight {
+    border-right: 1px solid @grayLight;
+}
+
 .welcome {
     .makeRow();
     .lightBorder;
@@ -46,6 +50,24 @@ body.home {
     background: fade(@white, 90%);
     border-radius: 0 0 5px 5px;
     padding: 10px;
+}
+
+.home-extras {
+    .makeRow();
+    margin-top: 20px;
+    .like-us, .newsletter, .consultation {
+        .lightBorderRight;
+        margin-left: 19px;
+    }
+    div {
+        .makeColumn(3);
+        padding-top: 10px;
+        padding-bottom: 10px;
+
+        a {
+            margin-top: 10px;
+        }
+    }
 }
 
 .home h1 {
@@ -163,11 +185,19 @@ body.home {
     }
 }
 
-.btn-green.active {
+.btn-green.active,
+.btn-pink.active,
+.btn-blue.active {
     color: rgba(255,255,255,.75);
 }
 .btn-green {
     .buttonBackground(@green, darken(@green, 10%));
+}
+.btn-pink {
+    .buttonBackground(@pink, darken(@pink, 10%));
+}
+.btn-blue {
+    .buttonBackground(@blue, darken(@blue, 10%));
 }
 
 a {
