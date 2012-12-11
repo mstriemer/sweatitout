@@ -13,7 +13,7 @@
             Stripe.setPublishableKey('pk_test_Mj84H94tNmV6zx7cSCBH2VUQ');
         </script>
     </head>
-    <body>
+    <body{% if request.path == "/" %} class="home"{% endif %}>
         <div class="header">
             <div class="container">
                 <a class="brand" href="/">Sweat It Out Fitness</a>
