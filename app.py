@@ -133,7 +133,12 @@ def explode_all_pretty_like():
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html', page_title="Not Found"), 404
+    return render_template('404.html', page_title="Hmmmmm"), 404
+
+@app.errorhandler(500)
+def page_not_found(e):
+    return render_template('500.html', page_title="Uh oh"), 500
+
 
 @app.teardown_request
 def shutdown_session(exception=None):
