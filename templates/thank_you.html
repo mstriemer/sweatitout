@@ -47,4 +47,34 @@
         {% endif %}
     </dl>
 </div>
+<script type="text/javascript">
+    _gaq.push([
+        '_addTrans',
+        '{{ registration.code|upper }}',
+        'Sweat It Out Fitness',
+        '123.20',
+        '13.20',
+        '0',
+        '',
+        '',
+        ''
+    ]);
+    _gaq.push([
+        '_addItem',
+        '{{ course.slug }}',
+        "{{ course.name }}",
+        '',
+        '123.20',
+        '1'
+    ]);
+    _gaq.push([
+        '_addItem',
+        'PAY-{{ registration.payment_type }}',
+        '{{ registration.descriptive_payment_type }}',
+        '',
+        '0',
+        '1'
+    ]);
+    _gaq.push(['_trackTrans']);
+</script>
 {% endblock %}

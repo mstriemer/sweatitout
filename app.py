@@ -9,11 +9,11 @@ from models import Course, Registration, RegistrationCharge, RegistrationForm
 
 app = Flask(__name__)
 
-if os.environ.get('APP_ENV', None) == 'production':
+production_env = os.environ.get('APP_ENV', None) == 'production'
+if production_env:
     stripe.api_key = os.environ['STRIPE_SECRET_KEY']
     stripe_public_key = os.environ['STRIPE_PUBLIC_KEY']
     app.secret_key = os.environ['FLASK_SECRET_KEY']
-
 else:
     stripe.api_key = 'sk_test_q6yiThbRguk12pWKh0qlRsLn'
     stripe_public_key = 'pk_test_Mj84H94tNmV6zx7cSCBH2VUQ'
@@ -135,3 +135,7 @@ def shutdown_session(exception=None):
 @app.context_processor
 def inject_stripe_public_key():
     return {'stripe_public_key': stripe_public_key}
+
+@app.context_processor
+def inject_google_analytics():
+    return {'use_google_analytics': production_env}
