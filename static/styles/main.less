@@ -7,6 +7,29 @@
 @green: #B3DE3B;
 @white: #ffffff;
 
+.lightBorder {
+    border-bottom: 1px dotted @grayLight;
+}
+
+.lightBorderRight {
+    border-right: 1px dotted @grayLight;
+}
+
+.btn-green.active,
+.btn-pink.active,
+.btn-blue.active {
+    color: rgba(255,255,255,.75);
+}
+.btn-green {
+    .buttonBackground(@green, darken(@green, 10%));
+}
+.btn-pink {
+    .buttonBackground(@pink, darken(@pink, 10%));
+}
+.btn-blue {
+    .buttonBackground(@blue, darken(@blue, 10%));
+}
+
 body {
     background: url("../images/logo.png");
     background-position: -215px 80px;
@@ -15,14 +38,6 @@ body {
 
 body.home {
     background: white;
-}
-
-.lightBorder {
-    border-bottom: 1px solid @grayLight;
-}
-
-.lightBorderRight {
-    border-right: 1px solid @grayLight;
 }
 
 .welcome {
@@ -61,7 +76,7 @@ body.home {
     div {
         .makeColumn(3);
         padding-top: 10px;
-        padding-bottom: 10px;
+        padding-bottom: 15px;
 
         a {
             margin-top: 10px;
@@ -189,21 +204,6 @@ body.home {
     }
     .card-expiry-year {
     }
-}
-
-.btn-green.active,
-.btn-pink.active,
-.btn-blue.active {
-    color: rgba(255,255,255,.75);
-}
-.btn-green {
-    .buttonBackground(@green, darken(@green, 10%));
-}
-.btn-pink {
-    .buttonBackground(@pink, darken(@pink, 10%));
-}
-.btn-blue {
-    .buttonBackground(@blue, darken(@blue, 10%));
 }
 
 a {
