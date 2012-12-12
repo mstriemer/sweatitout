@@ -14,9 +14,7 @@ if os.environ.get('APP_ENV', None) == 'production':
     stripe.api_key = os.environ['STRIPE_SECRET_KEY']
     stripe_public_key = os.environ['STRIPE_PUBLIC_KEY']
     app.secret_key = os.environ['FLASK_SECRET_KEY']
-    newrelic.agent.initialize(
-            os.environ.get('NEWRELIC_INI_PATH', 'newrelic.ini'),
-            'production')
+    newrelic.agent.initialize(os.environ['NEWRELIC_INI_PATH'], 'production')
 
 else:
     stripe.api_key = 'sk_test_q6yiThbRguk12pWKh0qlRsLn'
