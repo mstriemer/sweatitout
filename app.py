@@ -10,14 +10,14 @@ from models import Course, Registration, RegistrationCharge, RegistrationForm
 
 app = Flask(__name__)
 
-newrelic.agent.initialize(
-        os.environ.get('NEWRELIC_INI_PATH', 'newrelic.ini'),
-        os.environ.get('APP_ENV', 'development'))
-
 if os.environ.get('APP_ENV', None) == 'production':
     stripe.api_key = os.environ['STRIPE_SECRET_KEY']
     stripe_public_key = os.environ['STRIPE_PUBLIC_KEY']
     app.secret_key = os.environ['FLASK_SECRET_KEY']
+    newrelic.agent.initialize(
+            os.environ.get('NEWRELIC_INI_PATH', 'newrelic.ini'),
+            'production')
+
 else:
     stripe.api_key = 'sk_test_q6yiThbRguk12pWKh0qlRsLn'
     stripe_public_key = 'pk_test_Mj84H94tNmV6zx7cSCBH2VUQ'
