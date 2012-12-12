@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 
 from flask import Flask, render_template, request, redirect, session
@@ -6,10 +7,16 @@ import stripe
 
 from models import Course, Registration, RegistrationCharge, RegistrationForm
 
-stripe.api_key = 'sk_test_q6yiThbRguk12pWKh0qlRsLn'
-
 app = Flask(__name__)
-app.secret_key = 'a0s9fa09sfj01h389gef981g38fgq32f23f93'
+
+if os.environ.get('APP_ENV', None) == 'production':
+    stripe.api_key = os.environ['STRIPE_SECRET_KEY']
+    stripe_public_key = os.environ['STRIPE_PUBLIC_KEY']
+    app.secret_key = os.environ['FLASK_SECRET_KEY']
+else:
+    stripe.api_key = 'sk_test_q6yiThbRguk12pWKh0qlRsLn'
+    stripe_public_key = 'pk_test_Mj84H94tNmV6zx7cSCBH2VUQ'
+    app.secret_key = 'a0s9fa09sfj01h389gef981g38fgq32f23f93'
 
 boot_camp_cost = 12320
 boot_camp = Course(
@@ -123,3 +130,7 @@ def page_not_found(e):
 @app.teardown_request
 def shutdown_session(exception=None):
         db_session.remove()
+
+@app.context_processor
+def inject_stripe_public_key():
+    return {'stripe_public_key': stripe_public_key}
