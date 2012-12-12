@@ -4,10 +4,15 @@ from datetime import datetime
 from flask import Flask, render_template, request, redirect, session
 from database import db_session
 import stripe
+import newrelic.agent
 
 from models import Course, Registration, RegistrationCharge, RegistrationForm
 
 app = Flask(__name__)
+
+newrelic.agent.initialize(
+        os.environ.get('NEWRELIC_INI_PATH', 'newrelic.ini'),
+        os.environ.get('APP_ENV', 'development'))
 
 if os.environ.get('APP_ENV', None) == 'production':
     stripe.api_key = os.environ['STRIPE_SECRET_KEY']
