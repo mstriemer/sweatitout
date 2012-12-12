@@ -124,6 +124,13 @@ def thank_you():
     else:
         return redirect("/group-fitness")
 
+@app.route("/explode-all-pretty-like")
+def explode_all_pretty_like():
+    class TestError(RuntimeError):
+        pass
+
+    raise TestError("This error was triggered manually")
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html', page_title="Not Found"), 404
