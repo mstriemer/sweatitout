@@ -14,6 +14,19 @@ if production_env:
     stripe.api_key = os.environ['STRIPE_SECRET_KEY']
     stripe_public_key = os.environ['STRIPE_PUBLIC_KEY']
     app.secret_key = os.environ['FLASK_SECRET_KEY']
+    ADMINS = ['mstriemer@gmail.com']
+    import logging
+    from logging.handlers import SMTPHandler
+    mail_handler = SMTPHandler(
+            ('smtp.gmail.com', 587),
+            'admin@sweatitoutfit.com',
+            ADMINS,
+            '[Sweat It Out][Error] An Error Occurred',
+            ('admin@sweatitoutfit.com', os.environ['ERROR_SMTP_PASSWORD']),
+            ()
+        )
+    mail_handler.setLevel(logging.ERROR)
+    app.logger.addHandler(mail_handler)
 else:
     stripe.api_key = 'sk_test_q6yiThbRguk12pWKh0qlRsLn'
     stripe_public_key = 'pk_test_Mj84H94tNmV6zx7cSCBH2VUQ'
