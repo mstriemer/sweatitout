@@ -19,10 +19,10 @@ if production_env:
     from logging.handlers import SMTPHandler
     mail_handler = SMTPHandler(
             ('smtp.gmail.com', 587),
-            'admin@sweatitoutfit.com',
+            os.environ['EMAIL_ADDRESS'],
             ADMINS,
             '[Sweat It Out][Error] An Error Occurred',
-            ('admin@sweatitoutfit.com', os.environ['ERROR_SMTP_PASSWORD']),
+            (os.environ['EMAIL_ADDRESS'], os.environ['EMAIL_PASSWORD']),
             ()
         )
     mail_handler.setLevel(logging.ERROR)

@@ -1,4 +1,5 @@
 import string
+from datetime import datetime, timedelta
 from time import time
 
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean, func
@@ -49,6 +50,15 @@ class Registration(Base):
     stripe_card_token = Column(String(255))
     registration_charge = relationship("RegistrationCharge", uselist=False,
             backref="registration")
+
+    @classmethod
+    def created_yesterday(cls, session):
+        today = datetime.now()
+        today = today.replace(hour=0, minute=0, second=0, microsecond=0)
+        yesterday = today - timedelta(days=1)
+        return session.query(cls).filter(
+                cls.registration_date >= yesterday,
+                cls.registration_date <  today)
 
     @property
     def descriptive_payment_type(self):

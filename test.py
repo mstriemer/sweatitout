@@ -1,9 +1,14 @@
 import unittest
+from datetime import datetime, timedelta
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from models import RegistrationForm, Base
+from models import RegistrationForm, Base, Registration
+
+engine = create_engine("sqlite:///:memory:")
+Base.metadata.create_all(engine)
+Session = sessionmaker(bind=engine)
 
 def make_form(first_name="Bob", last_name="Smith",
         email="bob.smith@gmail.com", phone="204-555-1234",
@@ -98,9 +103,6 @@ class TestRegistrationFormValid(unittest.TestCase):
 
 class TestRegistrationFormSave(unittest.TestCase):
     def setUp(self):
-        engine = create_engine("sqlite:///:memory:")
-        Base.metadata.create_all(engine)
-        Session = sessionmaker(bind=engine)
         self.session = Session()
 
     def tearDown(self):
@@ -135,6 +137,38 @@ class TestRegistrationFormSave(unittest.TestCase):
         form = make_form(first_name='')
         self.assertRaises(ValueError, form.build)
 
+
+class TestYesterdaysRegistrations(unittest.TestCase):
+    def setUp(self):
+        self.session = Session()
+        today = datetime.now()
+        two_ago = today - timedelta(days=2)
+        self.session.add(self.create_registration(two_ago))
+        self.session.add(self.create_registration(two_ago))
+        self.session.add(self.create_registration(today))
+
+    def tearDown(self):
+        self.session.close()
+
+    def create_registration(self, registration_date):
+        registration = make_form().build()
+        registration.registration_date = registration_date
+        return registration
+
+
+    def test_none_yesterday(self):
+        registrations = Registration.created_yesterday(self.session).all()
+        self.assertEqual([], registrations)
+
+    def test_some_yesterday(self):
+        yesterday = datetime.today() - timedelta(days=1)
+        them = [
+            self.create_registration(registration_date=yesterday),
+            self.create_registration(registration_date=yesterday),
+        ]
+        for it in them: self.session.add(it)
+        registrations = Registration.created_yesterday(self.session).all()
+        self.assertEqual(them, registrations)
 
 if __name__ == '__main__':
     unittest.main()
