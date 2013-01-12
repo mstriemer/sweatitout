@@ -38,8 +38,8 @@ boot_camp = Course(
         "8:45",
         "9:45pm",
         "Revive Fitness Sage Creek",
-        "$110 + tax is $123.20 CAD",
-        False
+        110,
+        False,
         )
 
 
@@ -116,3 +116,7 @@ def shutdown_session(exception=None):
 @app.context_processor
 def inject_google_analytics():
     return {'use_google_analytics': production_env}
+
+@app.template_filter('currency')
+def currency_filter(currency):
+    return '${:.2f} CAD'.format(currency)
