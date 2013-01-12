@@ -39,6 +39,7 @@ boot_camp = Course(
         "9:45pm",
         "Revive Fitness Sage Creek",
         "$110 + tax is $123.20 CAD",
+        False
         )
 
 

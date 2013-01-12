@@ -17,51 +17,12 @@
     <div class="course">
         {% include "course.html" %}
         <div class="course-signup">
-            <button class="{% if show_form %}hide {% endif %}signup btn btn-green">Sign Me Up!</button>
-            <form class="{% if not show_form %}hide {% endif %}course-signup-form form-horizontal" action="/{{ course.slug }}/register" method="post">
-                <fieldset>
-                    <legend>Register for {{ course.name }}</legend>
-                    {% for field in form.hidden_fields %}
-                    {% if field.errors %}
-                    <div class="control-group error">
-                        <div class="controls">
-                            <span class="help-inline">{{ field.name }} is {{ field.errors[0] }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endfor %}
-                    {% for field in form.fields %}
-                    <div class="control-group{% if field.errors %} error{% endif %}">
-                        <label class="control-label" for="{{ field.name }}">{{ field.description }}</label>
-                        <div class="controls">
-                            {% if field.options %}
-                                {% for name, description in field.options %}
-                                <label class="radio inline">
-                                    <input value="{{ name }}"{% if field.value == name %} checked="checked"{% endif %} type="radio" name="{{ field.name }}">
-                                    {{ description }}
-                                </label>
-                                {% endfor %}
-                            {% else %}
-                                <input value="{{ field.value }}" type="text" name="{{ field.name }}">
-                            {% endif %}
-                            <span class="help-inline">
-                                {% if field.errors %}
-                                {{ field.errors[0] }}
-                                {% else %}
-                                required
-                                {% endif %}
-                            </span>
-                        </div>
-                    </div>
-                    {% endfor %}
-                    {% include "paypal.html" %}
-                    {% include "in_person.html" %}
-                    <div class="form-actions">
-                        <input type="submit" value="Sign Me Up!" class="btn btn-green submit-button">
-                        <a href="/group-fitness" class="no-signup">Not yet</a>
-                    </div>
-                </fieldset>
-            </form>
+            {% if course.has_space %}
+            {% include "course_signup.html" %}
+            {% else %}
+            The course is full. Be sure to sign up for our other classes before
+            they fill up!
+            {% endif %}
         </div>
     </div>
 </div>
