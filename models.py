@@ -53,7 +53,6 @@ class Registration(Base):
     @property
     def descriptive_payment_type(self):
         return {
-            'stripe': "Credit card",
             'paypal': "PayPal",
             'in_person': "In person",
         }[self.payment_type]
@@ -82,7 +81,6 @@ class RegistrationForm(object):
         ('email', 'Email address'),
         ('phone', 'Phone number'),
         ('payment_type', 'Payment type', {'options': [
-            ['stripe', 'Credit card'],
             ['paypal', 'PayPal'],
             ['in_person', 'In person'],
         ]}),
@@ -90,7 +88,6 @@ class RegistrationForm(object):
     hidden_fields = [
         ('course_slug', 'Course slug'),
         ('paypal_email', 'PayPal email address'),
-        ('stripe_card_token', 'Stripe card token'),
     ]
 
     def __init__(self, **kwargs):
@@ -126,8 +123,6 @@ class RegistrationForm(object):
         if payment_type.value == 'paypal':
             self._validate_presence('paypal_email')
             self._validate_email('paypal_email')
-        elif payment_type.value == 'stripe':
-            self._validate_presence('stripe_card_token')
 
         return self._valid
 

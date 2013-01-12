@@ -87,14 +87,6 @@ class TestRegistrationFormValid(unittest.TestCase):
         form = make_form(payment_type='paypal', paypal_email='me@example.org')
         self.assertTrue(form.valid())
 
-    def test_stripe_card_token_for_stripe_required(self):
-        form = make_form(payment_type='stripe', stripe_card_token='')
-        self.assertFalse(form.valid())
-
-    def test_stripe_card_token_for_stripe_is_valid(self):
-        form = make_form(payment_type='stripe', stripe_card_token='foobar')
-        self.assertTrue(form.valid())
-
 
 class TestRegistrationFormSave(unittest.TestCase):
     def setUp(self):
@@ -118,12 +110,6 @@ class TestRegistrationFormSave(unittest.TestCase):
     def test_build_returns_a_saveable_registration_in_person(self):
         reg = self.assertValidRegistration(payment_type='in_person')
         self.assertEqual(reg.payment_type, 'in_person')
-
-    def test_build_returns_a_saveable_registration_stripe(self):
-        reg = self.assertValidRegistration(payment_type='stripe',
-                stripe_card_token='foobar')
-        self.assertEqual(reg.payment_type, 'stripe')
-        self.assertEqual(reg.stripe_card_token, 'foobar')
 
     def test_build_returns_a_saveable_registration_paypal(self):
         reg = self.assertValidRegistration(payment_type='paypal',

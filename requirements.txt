@@ -10,5 +10,4 @@ psycopg2==2.4.5
 python-termstyle==0.1.10
 rednose==0.3.3
 requests==0.14.2
-stripe==1.7.6
 wsgiref==0.1.2
