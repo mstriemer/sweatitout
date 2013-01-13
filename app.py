@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
 
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, abort
 from database import db_session
 
 from models import Course, Registration, RegistrationCharge, RegistrationForm
@@ -41,7 +41,21 @@ boot_camp = Course(
         110,
         True,
         )
+winter = Course(
+        "winter-bootcamp-2013",
+        "Winter Bootcamp 2013",
+        "Come join us for a winter bootcamp at the St. James Revive Fitness centre near Polo Park.",
+        ["Tuesdays", "Thursdays"],
+        "February 5th",
+        "March 14th, 2013",
+        "7:00",
+        "8:00pm",
+        "Revive Fitness Polo Park",
+        110,
+        True,
+        )
 
+courses = [winter, boot_camp]
 
 @app.route("/")
 def index():
@@ -53,18 +67,23 @@ def instructors():
 
 @app.route("/group-fitness")
 def group_fitness():
-    form = RegistrationForm(course_slug=boot_camp.slug)
-    return render_template("group_fitness.html", form=form, course=boot_camp,
+    course = winter
+    form = RegistrationForm(course_slug=course.slug)
+    return render_template("group_fitness.html", form=form, course=course,
             page_title="Group Fitness")
 
-@app.route("/new-year-2013/register")
-def redirect_to_group_fitness():
+@app.route("/group-fitness/<slug>/register")
+def redirect_to_group_fitness(slug):
     return redirect("/group-fitness")
 
-@app.route("/new-year-2013/register", methods=["POST"])
-def sign_up():
+@app.route("/group-fitness/<slug>/register", methods=["POST"])
+def sign_up(slug):
+    try:
+        course = find_course(slug)
+    except ValueError:
+        return abort(404)
     form = RegistrationForm(
-            course_slug=boot_camp.slug,
+            course_slug=course.slug,
             first_name=request.form['first_name'],
             last_name=request.form['last_name'],
             email=request.form['email'],
@@ -80,24 +99,22 @@ def sign_up():
         return redirect("/thank-you")
     else:
         return render_template('group_fitness.html', form=form, show_form=True,
-                course=boot_camp, page_title="Group Fitness")
+                course=course, page_title="Group Fitness")
 
 @app.route("/thank-you")
 def thank_you():
     if 'registration_id' in session:
         registration = db_session.query(Registration).filter_by(
                 id=session['registration_id']).one()
+        course = find_course(registration.course_slug)
         del session['registration_id']
         return render_template("thank_you.html", registration=registration,
-                course=boot_camp, page_title="Thank You")
+                course=course, page_title="Thank You")
     else:
         return redirect("/group-fitness")
 
 @app.route("/explode-all-pretty-like")
 def explode_all_pretty_like():
-    class TestError(RuntimeError):
-        pass
-
     raise TestError("This error was triggered manually")
 
 @app.errorhandler(404)
@@ -120,3 +137,13 @@ def inject_google_analytics():
 @app.template_filter('currency')
 def currency_filter(currency):
     return '${:.2f} CAD'.format(currency)
+
+def find_course(slug):
+    for c in courses:
+        if c.slug == slug:
+            return c
+    raise ValueError('could not find course {}'.format(slug))
+
+
+class TestError(RuntimeError):
+    pass

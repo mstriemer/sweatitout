@@ -1,5 +1,5 @@
 <button class="{% if show_form %}hide {% endif %}signup btn btn-green">Sign Me Up!</button>
-<form class="{% if not show_form %}hide {% endif %}course-signup-form form-horizontal" action="/{{ course.slug }}/register" method="post">
+<form class="{% if not show_form %}hide {% endif %}course-signup-form form-horizontal" action="/group-fitness/{{ course.slug }}/register" method="post">
     <fieldset>
         <legend>Register for {{ course.name }}</legend>
         {% for field in form.hidden_fields %}
