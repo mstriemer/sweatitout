@@ -22,10 +22,6 @@ class Course(object):
         self.cost = cost
         self.has_space = has_space
 
-    @property
-    def cost_with_tax(self):
-        return self.cost * 1.12
-
 def _make_registration_code(context):
     row_seed = ''
     row_seed += context.current_parameters['first_name']

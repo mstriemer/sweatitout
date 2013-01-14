@@ -32,7 +32,7 @@
         <dt>Payment method</dt>
         <dd>{{ registration.descriptive_payment_type }}</dd>
         <dt>Registration cost</dt>
-        <dd>{{ course.cost|currency }} + tax is {{ course.cost_with_tax|currency }}</dd>
+        <dd>{{ course.cost|currency }}</dd>
         {% if registration.payment_type == "in_person" %}
         <dt>Payment options</dt>
         <dd>You may pay with cash, cheque or credit card at your first class.</dt>
