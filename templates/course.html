@@ -1,6 +1,6 @@
 <div class="course">
     <div class="course-info">
-        <h2 class="course-name">{{ course.name }} <small>{{ course.cost|currency }}</small></h2>
+        <h2 class="course-name">{{ course.name }} <small>{{ course.cost|currency }}{% if course.half_cost %} / {{ course.half_cost|currency }}{% endif %}</small></h2>
     </div>
     <div class="course-info-long">
         <div class="course-description">
@@ -16,6 +16,7 @@
             </a>
         </div>
     </div>
+    {% if not hide_signup %}
     <div class="course-signup">
         {% if course.has_space %}
         {% include "course_signup.html" %}
@@ -24,4 +25,5 @@
         they fill up!
         {% endif %}
     </div>
+    {% endif %}
 </div>

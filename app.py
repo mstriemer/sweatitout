@@ -38,6 +38,7 @@ boot_camp = Course(
         "9:45pm",
         "Revive Fitness Sage Creek",
         110,
+        None,
         False,
         "/static/images/revive-fitness-sage-creek.png",
         "https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=10&iwloc=A",
@@ -53,6 +54,7 @@ winter = Course(
         "8:00pm",
         "Revive Fitness Polo Park",
         110,
+        60,
         True,
         "/static/images/revive-fitness-polo-park.png",
         "https://maps.google.ca/maps?q=1740+Ellice+Avenue+(Revive+Fitness+Polo+Park)&hl=en&sll=49.864325,-97.124977&sspn=0.155357,0.363579&hnear=1740+Ellice+Ave,+Winnipeg,+Manitoba+R3H+0B6&t=m&z=16&iwloc=A",
@@ -94,6 +96,7 @@ def sign_up(slug):
             phone=request.form['phone'],
             payment_type=request.form.get('payment_type', ''),
             paypal_email=request.form.get('paypal_email', ''),
+            attendance=request.form['attendance'],
     )
     if form.valid():
         registration = form.build()

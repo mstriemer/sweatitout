@@ -5,7 +5,8 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 dev_db = "sqlite:///sweatitout.db"
-engine = create_engine(os.environ.get('DATABASE_URL', dev_db))
+database_url = os.environ.get('DATABASE_URL', dev_db)
+engine = create_engine(database_url)
 
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,

@@ -9,8 +9,8 @@ from database import Base
 
 class Course(object):
     def __init__(self, slug, name, description, weekdays, start_date, end_date,
-            start_time, end_time, location, cost, has_space, map_image,
-            map_url):
+            start_time, end_time, location, cost, half_cost, has_space,
+            map_image, map_url):
         self.slug = slug
         self.name = name
         self.description = description
@@ -21,6 +21,7 @@ class Course(object):
         self.end_time = end_time
         self.location = location
         self.cost = cost
+        self.half_cost = half_cost
         self.has_space = has_space
         self.map_image = map_image
         self.map_url = map_url
@@ -52,6 +53,7 @@ class Registration(Base):
     stripe_card_token = Column(String(255))
     registration_charge = relationship("RegistrationCharge", uselist=False,
             backref="registration")
+    attendance = Column(String(25), nullable=False, default='both')
 
     @property
     def descriptive_payment_type(self):
@@ -83,10 +85,19 @@ class RegistrationForm(object):
         ('last_name', 'Last name'),
         ('email', 'Email address'),
         ('phone', 'Phone number'),
-        ('payment_type', 'Payment type', {'options': [
-            ['paypal', 'PayPal'],
-            ['in_person', 'In person'],
-        ]}),
+        ('attendance', 'Days', {
+            'options': [
+                ['both', 'Both $110'],
+                ['tuesdays', 'Tuesdays $60'],
+                ['thursdays', 'Thursdays $60'],
+            ]
+        }),
+        ('payment_type', 'Payment type', {
+            'options': [
+                ['paypal', 'PayPal'],
+                ['in_person', 'In person'],
+            ]
+        }),
     ]
     hidden_fields = [
         ('course_slug', 'Course slug'),
