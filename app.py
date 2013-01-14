@@ -27,7 +27,6 @@ if production_env:
 else:
     app.secret_key = 'a0s9fa09sfj01h389gef981g38fgq32f23f93'
 
-boot_camp_cost = 12320
 boot_camp = Course(
         "new-year-2013",
         "New Year's Resolution Bootcamp",
@@ -39,7 +38,9 @@ boot_camp = Course(
         "9:45pm",
         "Revive Fitness Sage Creek",
         110,
-        True,
+        False,
+        "/static/images/revive-fitness-sage-creek.png",
+        "https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=10&iwloc=A",
         )
 winter = Course(
         "winter-bootcamp-2013",
@@ -53,6 +54,8 @@ winter = Course(
         "Revive Fitness Polo Park",
         110,
         True,
+        "/static/images/revive-fitness-polo-park.png",
+        "https://maps.google.ca/maps?q=1740+Ellice+Avenue+(Revive+Fitness+Polo+Park)&hl=en&sll=49.864325,-97.124977&sspn=0.155357,0.363579&hnear=1740+Ellice+Ave,+Winnipeg,+Manitoba+R3H+0B6&t=m&z=16&iwloc=A",
         )
 
 courses = [winter, boot_camp]
@@ -69,8 +72,9 @@ def instructors():
 def group_fitness():
     course = winter
     form = RegistrationForm(course_slug=course.slug)
+    old_courses = [c for c in courses if c != course]
     return render_template("group_fitness.html", form=form, course=course,
-            page_title="Group Fitness")
+            old_courses=old_courses, page_title="Group Fitness")
 
 @app.route("/group-fitness/<slug>/register")
 def redirect_to_group_fitness(slug):

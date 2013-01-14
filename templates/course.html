@@ -1,14 +1,27 @@
-<div class="course-info">
-    <h2 class="course-name">{{ course.name }} <small>{{ course.cost|currency }}</small></h2>
-</div>
-<div class="course-info-long">
-    <div class="course-description">
-        <div class="course-schedule">
-            <strong>{{ course.weekdays[0] }}</strong> and <strong>{{ course.weekdays[1] }}</strong> from <strong>{{ course.start_time }} to {{ course.end_time }}</strong> starting <strong>{{ course.start_date }}</strong> and ending <strong>{{ course.end_date }}</strong> at <strong>{{ course.location }}</strong>.
-        </div>
-        {{ course.description }}
+<div class="course">
+    <div class="course-info">
+        <h2 class="course-name">{{ course.name }} <small>{{ course.cost|currency }}</small></h2>
     </div>
-    <div class="course-map">
-        <img src="/static/images/revive-fitness-map.png" alt="Revive Fitness Map">
+    <div class="course-info-long">
+        <div class="course-description">
+            <div class="course-schedule">
+                <strong>{{ course.weekdays[0] }}</strong> and <strong>{{ course.weekdays[1] }}</strong> from <strong>{{ course.start_time }} to {{ course.end_time }}</strong> starting <strong>{{ course.start_date }}</strong> and ending <strong>{{ course.end_date }}</strong> at <strong>{{ course.location }}</strong>.
+            </div>
+            {{ course.description }}
+        </div>
+        <div class="course-map">
+            <a href="{{ course.map_url }}">
+                <img src="{{ course.map_image }}" alt="{{ course.location }}">
+                View larger map
+            </a>
+        </div>
+    </div>
+    <div class="course-signup">
+        {% if course.has_space %}
+        {% include "course_signup.html" %}
+        {% else %}
+        The course is full. Be sure to sign up for our other classes before
+        they fill up!
+        {% endif %}
     </div>
 </div>

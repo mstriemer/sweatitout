@@ -14,16 +14,13 @@
 </div>
 
 <div class="courses">
-    <div class="course">
-        {% include "course.html" %}
-        <div class="course-signup">
-            {% if course.has_space %}
-            {% include "course_signup.html" %}
-            {% else %}
-            The course is full. Be sure to sign up for our other classes before
-            they fill up!
-            {% endif %}
-        </div>
-    </div>
+    {% include "course.html" %}
+    {% if old_courses %}
+    <hr>
+    <h3>Previous Courses</h3>
+    {% for course in old_courses %}
+    {% include "course.html" %}
+    {% endfor %}
+    {% endif %}
 </div>
 {% endblock %}

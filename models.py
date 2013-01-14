@@ -9,7 +9,8 @@ from database import Base
 
 class Course(object):
     def __init__(self, slug, name, description, weekdays, start_date, end_date,
-            start_time, end_time, location, cost, has_space):
+            start_time, end_time, location, cost, has_space, map_image,
+            map_url):
         self.slug = slug
         self.name = name
         self.description = description
@@ -21,6 +22,8 @@ class Course(object):
         self.location = location
         self.cost = cost
         self.has_space = has_space
+        self.map_image = map_image
+        self.map_url = map_url
 
 def _make_registration_code(context):
     row_seed = ''
