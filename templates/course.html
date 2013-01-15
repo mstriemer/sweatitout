@@ -8,6 +8,9 @@
                 <strong>{{ course.weekdays[0] }}</strong> and <strong>{{ course.weekdays[1] }}</strong> from <strong>{{ course.start_time }} to {{ course.end_time }}</strong> starting <strong>{{ course.start_date }}</strong> and ending <strong>{{ course.end_date }}</strong> at <strong>{{ course.location }}</strong>.
             </div>
             {{ course.description }}
+            {% if not hide_signup and course.has_space %}
+            <button class="{% if show_form %}hide {% endif %}signup btn btn-green">Sign Me Up!</button>
+            {% endif %}
         </div>
         <div class="course-map">
             <a href="{{ course.map_url }}">
