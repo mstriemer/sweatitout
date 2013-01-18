@@ -44,7 +44,7 @@ boot_camp = Course(
         "https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&ll=49.833886,-97.049017&spn=0.019432,0.045447&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=15&iwloc=A",
         )
 winter = Course(
-        "second-chance-bootcamp-2013",
+        "second-chance-2013",
         "Second Chance New Year's Resolution Bootcamp",
         "Didn't start on Janurary 1st? Don't worry about it, start February 5th instead! Perfect for all fitness levels this dynamic class offers cardio, resistence training, circuits and plyometrics and is different each and every time. Our small class sizes ensure lots of individual attention from Certified Personal Trainer Jenna Hobson. Make 2013 your best year!",
         ["Tuesdays", "Thursdays"],
