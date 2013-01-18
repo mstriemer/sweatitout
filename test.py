@@ -7,7 +7,8 @@ from models import RegistrationForm, Base
 
 def make_form(first_name="Bob", last_name="Smith",
         email="bob.smith@gmail.com", phone="204-555-1234",
-        payment_type='in_person', course_slug="the-course", **kwargs):
+        payment_type='in_person', course_slug="the-course",
+        attendance='both', **kwargs):
     return RegistrationForm(
             first_name=first_name,
             last_name=last_name,
@@ -15,6 +16,7 @@ def make_form(first_name="Bob", last_name="Smith",
             phone=phone,
             payment_type=payment_type,
             course_slug="the-course",
+            attendance='both',
             **kwargs)
 
 
