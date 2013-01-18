@@ -15,13 +15,13 @@
             <label class="control-label" for="{{ field.name }}">{{ field.description }}</label>
             <div class="controls">
                 {% if field.options %}
-                    <input type="hidden" name="{{ field.name }}" value="">
                     {% for name, description in field.options %}
                     <label class="radio inline">
                         <input value="{{ name }}"{% if field.value == name %} checked="checked"{% endif %} type="radio" name="{{ field.name }}">
                         {{ description }}
                     </label>
                     {% endfor %}
+                    <input type="hidden" name="{{ field.name }}" value="">
                 {% else %}
                     <input value="{{ field.value }}" type="text" name="{{ field.name }}">
                 {% endif %}
