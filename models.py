@@ -129,6 +129,7 @@ class RegistrationForm(object):
         presence = ['first_name', 'last_name', 'email', 'phone']
         for field in presence:
             self._validate_presence(field)
+        self._validate_options('attendance')
         self._validate_options('payment_type')
         self._validate_email('email')
         self._validate_phone('phone')
