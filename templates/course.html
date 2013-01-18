@@ -13,7 +13,7 @@
             {% endif %}
         </div>
         <div class="course-map">
-            <a href="{{ course.map_url }}">
+            <a href="{{ course.map_url }}" target="_blank">
                 <img src="{{ course.map_image }}" alt="{{ course.location }}">
                 View larger map
             </a>
@@ -24,7 +24,7 @@
         {% if course.has_space %}
         {% include "course_signup.html" %}
         {% else %}
-        The course is full. Be sure to sign up for our other classes before
+        This course is full. Be sure to sign up for our other classes before
         they fill up!
         {% endif %}
     </div>
