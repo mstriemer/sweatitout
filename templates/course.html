@@ -5,7 +5,13 @@
     <div class="course-info-long">
         <div class="course-description">
             <div class="course-schedule">
-                <strong>{{ course.weekdays[0] }}</strong> and <strong>{{ course.weekdays[1] }}</strong> from <strong>{{ course.start_time }} to {{ course.end_time }}</strong> starting <strong>{{ course.start_date }}</strong> and ending <strong>{{ course.end_date }}</strong> at <strong>{{ course.location }}</strong>.
+                {% if course.days[0].same_time_as(course.days[1]) %}
+                <strong>{{ course.days[0].name }}</strong> and
+                {% else %}
+                <strong>{{ course.days[0].name }}</strong> from <strong>{{ course.days[0].start_time }}</strong> to <strong>{{ course.days[0].end_time }}</strong> and
+                {% endif %}
+                <strong>{{ course.days[1].name }}</strong> from <strong>{{ course.days[1].start_time }}</strong> to <strong>{{ course.days[1].end_time }}</strong>
+                starting <strong>{{ course.start_date }}</strong> and ending <strong>{{ course.end_date }}</strong> at <strong>{{ course.location }}</strong>.
             </div>
             {{ course.description }}
             {% if not hide_signup and course.has_space %}

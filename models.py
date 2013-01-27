@@ -8,23 +8,31 @@ from database import Base
 
 
 class Course(object):
-    def __init__(self, slug, name, description, weekdays, start_date, end_date,
-            start_time, end_time, location, cost, half_cost, has_space,
-            map_image, map_url):
+    def __init__(self, slug, name, description, days, start_date, end_date,
+            location, cost, half_cost, has_space, map_image, map_url):
         self.slug = slug
         self.name = name
         self.description = description
-        self.weekdays = weekdays
+        self.days = [Day(*day) for day in days]
         self.start_date = start_date
         self.end_date = end_date
-        self.start_time = start_time
-        self.end_time = end_time
         self.location = location
         self.cost = cost
         self.half_cost = half_cost
         self.has_space = has_space
         self.map_image = map_image
         self.map_url = map_url
+
+
+class Day(object):
+    def __init__(self, name, start_time, end_time):
+        self.name = name
+        self.start_time = start_time
+        self.end_time = end_time
+
+    def same_time_as(self, other):
+        return (self.start_time == other.start_time and
+                self.end_time == other.end_time)
 
 def _make_registration_code(context):
     row_seed = ''
