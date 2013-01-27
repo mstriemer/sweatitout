@@ -45,7 +45,7 @@ winter = Course(
         "second-chance-2013",
         "Second Chance New Year's Resolution Bootcamp",
         "Didn't start on Janurary 1st? Don't worry about it, start February 5th instead! Perfect for all fitness levels this dynamic class offers cardio, resistence training, circuits and plyometrics and is different each and every time. Our small class sizes ensure lots of individual attention from Certified Personal Trainer Jenna Hobson. Make 2013 your best year!",
-        [["Tuesdays", "7:00", "8:00pm"], ["Thursdays", "8:00", "9:00pm"]],
+        [["Tuesdays", "8:00", "9:00pm"], ["Thursdays", "7:00", "8:00pm"]],
         "February 5th",
         "March 14th, 2013",
         "Revive Fitness Polo Park",
