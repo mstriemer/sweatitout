@@ -14,7 +14,9 @@
 </div>
 
 <div class="courses">
+    {% for course, form in courses %}
     {% include "course.html" %}
+    {% endfor %}
     {% if old_courses %}
     <hr>
     <h3>Previous Courses</h3>

@@ -55,8 +55,24 @@ winter = Course(
         "/static/images/revive-fitness-polo-park.png",
         "https://maps.google.ca/maps?q=1740+Ellice+Avenue+(Revive+Fitness+Polo+Park)&hl=en&sll=49.864325,-97.124977&sspn=0.155357,0.363579&hnear=1740+Ellice+Ave,+Winnipeg,+Manitoba+R3H+0B6&t=m&z=16&iwloc=A",
         )
+winter_boot = Course(
+        "winter-bootcamp-2013",
+        "Bootcamp",
+        "Perfect for all fitness levels this dynamic class offers cardio, resistence training, circuits and plyometrics and is different each and every time. Our small class sizes ensure lots of individual attention from Certified Personal Trainer Jenna Hobson and Personal Trainer Specialist Emily Striemer. Challenge yourself, get in shape and start 2013 off sweaty!",
+        [["Mondays", "8:45", "9:45pm"], ["Thursdays", "8:45", "9:45pm"]],
+        "February 18th",
+        "March 28th, 2013",
+        "Revive Fitness Sage Creek",
+        110,
+        None,
+        True,
+        "/static/images/revive-fitness-sage-creek.png",
+        "https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&ll=49.833886,-97.049017&spn=0.019432,0.045447&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=15&iwloc=A",
+        )
 
-courses = [winter, boot_camp]
+current_courses = [winter_boot, winter]
+old_courses = [boot_camp]
+courses = current_courses + old_courses
 
 @app.route("/")
 def index():
@@ -66,13 +82,20 @@ def index():
 def instructors():
     return render_template("instructors.html", page_title="Instructors")
 
+def render_group_fitness(course=None, form=None):
+    make_form = lambda c: RegistrationForm(course_slug=c.slug, instance=c)
+    courses = []
+    for c in current_courses:
+        if c == course:
+            courses.append((course, form))
+        else:
+            courses.append((c, make_form(c)))
+    return render_template("group_fitness.html", courses=courses,
+            old_courses=old_courses, page_title="Group Fitness")
+
 @app.route("/group-fitness")
 def group_fitness():
-    course = winter
-    form = RegistrationForm(course_slug=course.slug)
-    old_courses = [c for c in courses if c != course]
-    return render_template("group_fitness.html", form=form, course=course,
-            old_courses=old_courses, page_title="Group Fitness")
+    return render_group_fitness()
 
 @app.route("/group-fitness/<slug>/register")
 def redirect_to_group_fitness(slug):
@@ -92,7 +115,8 @@ def sign_up(slug):
             phone=request.form['phone'],
             payment_type=request.form.get('payment_type', ''),
             paypal_email=request.form.get('paypal_email', ''),
-            attendance=request.form['attendance'],
+            attendance=request.form.get('attendance', ''),
+            instance=course,
     )
     if form.valid():
         registration = form.build()
@@ -101,8 +125,8 @@ def sign_up(slug):
         session['registration_id'] = registration.id
         return redirect("/thank-you")
     else:
-        return render_template('group_fitness.html', form=form, show_form=True,
-                course=course, page_title="Group Fitness")
+        form.active = True
+        return render_group_fitness(course, form)
 
 @app.route("/thank-you")
 def thank_you():

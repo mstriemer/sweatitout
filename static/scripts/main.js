@@ -1,36 +1,42 @@
 jQuery(function ($) {
     $('.signup').on('click', function (e) {
-        var $form = $('.course-signup-form');
+        var $course = $(e.currentTarget).parents('.course');
+        var $form = $course.find('.course-signup-form');
         $form.show();
-        $('input', $form)[0].focus();
+        $form.find('input')[0].focus();
         $(this).hide();
         show_element($form);
         e.preventDefault();
     });
 
     $('.no-signup').on('click', function (e) {
-        $('.course-signup-form').hide();
-        $('.signup').show();
+        var $course = $(e.currentTarget).parents('.course');
+        $course.find('.course-signup-form').hide();
+        $course.find('.signup').show();
         e.preventDefault();
     });
 
     $('input[name="payment_type"][checked]').each(show_payment_form);
     $('input[name="payment_type"]').on('click', show_payment_form);
 
+    // `show_payment_form` is not a very descriptive name.
     function show_payment_form() {
-        var payment_type = $(this).val();
+        var $payment_el = $(this); // Using `this` is gross.
+        var $form = $payment_el.parents('form');
+        var payment_type = $payment_el.val();
         var class_name = 'payment-info-' + payment_type;
-        var $payment_type = $('.' + class_name);
-        $payment_type.show();
-        $('.payment-info').each(function () {
-            if (!$(this).hasClass(class_name))
-                $(this).hide();
+        $form.find('.payment-info').each(function () {
+            var $el = $(this);
+            if ($el.hasClass(class_name))
+                $el.show();
+            else
+                $el.hide();
         });
-        show_element($payment_type.parents('form'));
+        show_element($form);
         if (payment_type == 'paypal') {
-            var $email = $('[name="paypal_email"]');
+            var $email = $form.find('[name="paypal_email"]');
             if ($email.val() == '')
-                $email.val($('[name="email"]').val());
+                $email.val($form.find('[name="email"]').val());
         }
     };
 

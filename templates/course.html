@@ -15,7 +15,7 @@
             </div>
             {{ course.description }}
             {% if not hide_signup and course.has_space %}
-            <button class="{% if show_form %}hide {% endif %}signup btn btn-green">Sign Me Up!</button>
+            <button class="{% if form.active %}hide {% endif %}signup btn btn-green">Sign Me Up!</button>
             {% endif %}
         </div>
         <div class="course-map">

@@ -8,8 +8,9 @@ from database import Base
 
 
 class Course(object):
-    def __init__(self, slug, name, description, days, start_date, end_date,
-            location, cost, half_cost, has_space, map_image, map_url):
+    def __init__(self, slug=None, name=None, description=None, days=[],
+            start_date=None, end_date=None, location=None, cost=None,
+            half_cost=None, has_space=None, map_image=None, map_url=None):
         self.slug = slug
         self.name = name
         self.description = description
@@ -87,6 +88,7 @@ class RegistrationCharge(Base):
     charge_time = Column(DateTime)
     error_code = Column(String(30))
 
+
 class RegistrationForm(object):
     fields = [
         ('first_name', 'First name'),
@@ -98,7 +100,8 @@ class RegistrationForm(object):
                 ['both', 'Both $110'],
                 ['tuesdays', 'Tuesdays $60'],
                 ['thursdays', 'Thursdays $60'],
-            ]
+            ],
+            'show_if': lambda field: field.form.instance.half_cost is not None,
         }),
         ('payment_type', 'Payment type', {
             'options': [
@@ -115,19 +118,23 @@ class RegistrationForm(object):
     def __init__(self, **kwargs):
         self._valid = True
 
+        self.instance = kwargs.get('instance')
+
         _fields = self.fields
         self.fields = []
         self.fields_by_name = {}
         for field in _fields:
             extra = field[2] if len(field) > 2 else {}
-            form_field = FormField(field[0], field[1], kwargs.get(field[0], ''),
-                    **extra)
-            self.fields.append(form_field)
+            form_field = FormField(self, field[0], field[1],
+                    kwargs.get(field[0], ''), **extra)
+            if form_field.show():
+                self.fields.append(form_field)
             self.fields_by_name[field[0]] = form_field
         _hidden_fields = self.hidden_fields
         self.hidden_fields = []
         for field in _hidden_fields:
-            form_field = FormField(field[0], field[1], kwargs.get(field[0], ''))
+            form_field = FormField(self, field[0], field[1],
+                    kwargs.get(field[0], ''))
             self.hidden_fields.append(form_field)
             self.fields_by_name[field[0]] = form_field
         self.all_fields = self.hidden_fields + self.fields
@@ -194,17 +201,27 @@ class RegistrationForm(object):
 
     def _validate_options(self, field):
         form_field = self.fields_by_name[field]
-        field_valid = form_field.value in form_field.valid_options
-        if not field_valid:
-            form_field.errors.append('not a valid option')
-        self._valid = self._valid and field_valid
+        if form_field.show():
+            field_valid = form_field.value in form_field.valid_options
+            if not field_valid:
+                form_field.errors.append('not a valid option')
+            self._valid = self._valid and field_valid
 
 
 class FormField(object):
-    def __init__(self, name, description, value='', options=None):
+    def __init__(self, form, name, description, value='', options=None,
+            show_if=None):
+        self.form = form
         self.name = name
         self.description = description
         self.value = value
         self.valid_options = [o[0] for o in options or []]
         self.options = options or []
+        self.show_if = show_if
         self.errors = []
+
+    def show(self):
+        if callable(self.show_if):
+            return self.show_if(self)
+        else:
+            return True

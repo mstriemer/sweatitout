@@ -3,20 +3,26 @@ import unittest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from models import RegistrationForm, Base
+from models import RegistrationForm, Base, Course
+
+def make_course(**kwargs):
+    return Course(**kwargs)
 
 def make_form(first_name="Bob", last_name="Smith",
         email="bob.smith@gmail.com", phone="204-555-1234",
         payment_type='in_person', course_slug="the-course",
-        attendance='both', **kwargs):
+        attendance='both', course=None, **kwargs):
+    if course is None:
+        course = make_course(half_cost=60)
     return RegistrationForm(
             first_name=first_name,
             last_name=last_name,
             email=email,
             phone=phone,
             payment_type=payment_type,
-            course_slug="the-course",
-            attendance='both',
+            course_slug=course_slug,
+            attendance=attendance,
+            instance=course,
             **kwargs)
 
 
@@ -72,6 +78,15 @@ class TestRegistrationFormValid(unittest.TestCase):
     def test_invalid_phone_number_other_characters(self):
         form = make_form(phone='--\\//..  .204----11..  ')
         self.assertFalse(form.valid())
+
+    def test_invalid_no_attendance(self):
+        form = make_form(attendance=None)
+        self.assertFalse(form.valid())
+
+    def test_valid_no_attendance_when_not_required(self):
+        course = make_course(half_cost=None)
+        form = make_form(attendance=None, course=course)
+        self.assertTrue(form.valid())
 
     def test_invalid_options_are_not_allowed(self):
         form = make_form(payment_type='none')
