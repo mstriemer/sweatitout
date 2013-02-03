@@ -71,6 +71,14 @@ class Registration(Base):
             'in_person': "In person",
         }[self.payment_type]
 
+    def __str__(self):
+        return "{slug}: {first_name} {last_name} - {payment_type}".format(
+                slug=self.course_slug, first_name=self.first_name,
+                last_name=self.last_name, payment_type=self.payment_type)
+
+    def __repr__(self):
+        return "<Registration: " + str(self) + ">"
+
 
 class RegistrationCharge(Base):
     __tablename__ = 'registration_charges'
