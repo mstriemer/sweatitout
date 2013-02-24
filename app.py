@@ -46,7 +46,7 @@ def render_group_fitness(course=None, form=None):
         else:
             courses.append((c, make_form(c)))
     return render_template("group_fitness.html", courses=courses,
-            old_courses=old_courses, page_title="Group Fitness")
+            page_title="Group Fitness")
 
 @app.route("/group-fitness")
 def group_fitness():
