@@ -231,3 +231,22 @@ a:hover {
         .makeColumn(6);
     }
 }
+
+.footer {
+    color: @white;
+    text-shadow: darken(@green, 15%) 2px 2px 4px;
+    background: @green;
+    border-top: 1px solid darken(@green, 10%);
+    padding: 20px 0;
+    margin-top: 20px;
+    .footer-content {
+        .makeRow();
+        .info {
+            .makeColumn(6);
+        }
+        .copyright {
+            .makeColumn(6);
+            text-align: right;
+        }
+    }
+}
