@@ -31,14 +31,25 @@
 }
 
 body {
-    background: url("../images/logo.png");
-    background-position: -215px 80px;
-    background-repeat: no-repeat;
+    background-color: @green;
 }
 
 body.home {
-    background: white;
+    background: @green;
 }
+
+
+.background {
+    background: @white url("../images/logo.png");
+    background-position: -215px 10px;
+    background-repeat: no-repeat;
+    padding-bottom: 20px;
+}
+
+.home .background {
+    background: @white;
+}
+
 
 .welcome {
     .makeRow();
@@ -90,7 +101,6 @@ body.home {
 }
 
 .header {
-    background: @green;
     border-bottom: 1px solid darken(@green, 10%);
 }
 
@@ -235,10 +245,8 @@ a:hover {
 .footer {
     color: @white;
     text-shadow: darken(@green, 15%) 2px 2px 4px;
-    background: @green;
     border-top: 1px solid darken(@green, 10%);
     padding: 20px 0;
-    margin-top: 20px;
     .footer-content {
         .makeRow();
         .info {
