@@ -3,7 +3,7 @@ from models import Course
 fit_fix = Course(
         "spring-fitness-fix-2013",
         "Weekend Fitness Fix",
-        "Does your hectic work week keep you from getting the workouts you want? Weekend Fitness Fix is our sweaty solution to your busy schedule. Join us Saturday and Sunday mornings for a fantastic group fitness workout that is fun and challenging for all fitness levels. Piano lessons and Tae-Kwan-Do carpool duties won't keep you from your fitness goals any longer! Start your monings off sweaty and feel great all week.",
+        "Does your hectic work week keep you from getting the workouts you want? Weekend Fitness Fix is our sweaty solution to your busy schedule. Join us Saturday and Sunday mornings for a fantastic group fitness workout that is fun and challenging for all fitness levels. Piano lessons and Taekwondo carpool duties won't keep you from your fitness goals any longer! Start your mornings off sweaty and feel great all week.",
         [["Saturdays", "8:15", "9:15am"], ["Sundays", "7:45", "8:45am"]],
         "March 9th",
         "April 14th, 2013",
