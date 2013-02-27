@@ -199,14 +199,17 @@ body.home {
     }
     .course-map {
         .makeColumn(5);
-        height: 230px;
     }
     .course-description {
         .makeColumn(7);
         position: relative;
         height: 230px;
 
-        .signup {
+        .course-full {
+            color: @pink;
+        }
+
+        .signup, .course-full {
             position: absolute;
             bottom: 0;
             left: 0;
@@ -215,7 +218,7 @@ body.home {
 }
 
 a {
-    color: @pink;
+    color: @blue;
 }
 
 a:hover {

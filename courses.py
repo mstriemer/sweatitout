@@ -1,5 +1,20 @@
 from models import Course
 
+yoga = Course(
+        "yoga-spring-2013",
+        "Spring Yoga Session",
+        "Looking for a great workout that incorporates both body and mind? Sweat It Out Fitness is now offering Hatha/Fit Flow yoga. This class is suitable for beginner and intermediate Yoga participants of all fitness levels. Come stretch it out while you sweat it out with Hatha Yoga and Sweat It Out Fitness.",
+        [["Wednesdays", "7:00", "8:00pm"]],
+        "March 13th",
+        "May 1st, 2013",
+        "Southdale Community Centre",
+        75,
+        None,
+        True,
+        "/static/images/southdale-community-centre.png",
+        "https://maps.google.ca/maps?hl=en&ie=UTF8&q=Southdale+Community+Centre&fb=1&gl=ca&hq=Southdale+Community+Centre&cid=17007604877746385002&ll=49.846963,-97.076976&spn=0.009104,0.022724&t=m&z=16&vpsrc=0&iwloc=A",
+        )
+
 fit_fix = Course(
         "spring-fitness-fix-2013",
         "Weekend Fitness Fix",
@@ -25,7 +40,7 @@ winter_boot = Course(
         "Revive Fitness Sage Creek",
         110,
         None,
-        True,
+        False,
         "/static/images/revive-fitness-sage-creek.png",
         "https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&ll=49.833886,-97.049017&spn=0.019432,0.045447&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=15&iwloc=A",
         )
@@ -60,6 +75,6 @@ boot_camp = Course(
         "https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&ll=49.833886,-97.049017&spn=0.019432,0.045447&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=15&iwloc=A",
         )
 
-current_courses = [fit_fix, winter_boot, winter]
+current_courses = [yoga, fit_fix, winter_boot, winter]
 old_courses = [boot_camp]
 courses = current_courses + old_courses

@@ -24,6 +24,14 @@ class Course(object):
         self.map_image = map_image
         self.map_url = map_url
 
+    def same_time_each_day(self):
+        prev_day = self.days[0]
+        for day in self.days[1:]:
+            if not prev_day.same_time_as(day):
+                return False
+            prev_day = day
+        return True
+
 
 class Day(object):
     def __init__(self, name, start_time, end_time):
