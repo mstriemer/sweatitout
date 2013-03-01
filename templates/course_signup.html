@@ -1,4 +1,4 @@
-<form class="{% if not form.active %}hide {% endif %}course-signup-form form-horizontal stripe-form" action="/group-fitness/{{ course.slug }}/register" method="post">
+<form class="course-signup-form form-horizontal stripe-form" action="/group-fitness/{{ course.slug }}/register" method="post">
     <fieldset>
         <legend>Register for {{ course.name }}</legend>
         {% for field in form.hidden_fields %}
@@ -40,7 +40,6 @@
         {% include "in_person.html" %}
         <div class="form-actions">
             <input type="submit" value="Sign Me Up!" class="btn btn-green submit-button">
-            <a href="/group-fitness" class="no-signup">Not yet</a>
         </div>
     </fieldset>
 </form>

@@ -74,7 +74,8 @@ def index():
 def instructors():
     return render_template("instructors.html", page_title="Instructors")
 
-def render_group_fitness(course=None, form=None, card=None):
+def render_group_fitness(course=None, form=None, card=None,
+        current_courses=current_courses):
     make_form = lambda c: RegistrationForm(course_slug=c.slug, instance=c)
     courses = []
     for c in current_courses:
@@ -90,8 +91,14 @@ def group_fitness():
     return render_group_fitness()
 
 @app.route("/group-fitness/<slug>/register")
-def redirect_to_group_fitness(slug):
-    return redirect("/group-fitness")
+def group_fitness_registration(slug):
+    try:
+        course = find_course(slug)
+    except ValueError:
+        return abort(404)
+    form = RegistrationForm(course_slug=course.slug, instance=course)
+    form.active = True
+    return render_group_fitness(course, form, current_courses=[course])
 
 @app.route("/group-fitness/<slug>/register", methods=["POST"])
 def sign_up(slug):
@@ -124,7 +131,7 @@ def sign_up(slug):
     else:
         form.active = True
         card = find_card(request.form.get('stripe_card_token', None))
-        return render_group_fitness(course, form, card)
+        return render_group_fitness(course, form, card, [course])
 
 @app.route("/thank-you")
 def thank_you():
@@ -163,6 +170,13 @@ def inject_stripe_public_key():
 @app.context_processor
 def inject_google_analytics():
     return {'use_google_analytics': production_env}
+
+@app.context_processor
+def inject_secure_host():
+    if os.environ.get('DISABLE_SSL'):
+        return {}
+    else:
+        return {'secure_host': 'https://localhost:5000'}
 
 @app.template_filter('currency')
 def currency_filter(currency):

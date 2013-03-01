@@ -15,8 +15,8 @@
                 {{ course.description|safe }}
             </div>
             <div class="course-signup">
-                {% if not hide_signup and course.has_space %}
-                <button class="{% if form.active %}hide {% endif %}signup btn btn-green">Sign Me Up!</button>
+                {% if not hide_signup and course.has_space and not form.active %}
+                <a href="{{ secure_host }}/group-fitness/{{ course.slug }}/register" class="signup btn btn-green">Sign Me Up!</a>
                 {% elif not course.has_space %}
                 <div class="course-full">
                 This course is full. Sorry&mdash;no drop-ins. Be sure to sign up
@@ -33,11 +33,9 @@
             </a>
         </div>
     </div>
-    {% if not hide_signup %}
+    {% if not hide_signup and course.has_space and form.active %}
     <div class="course-signup">
-        {% if course.has_space %}
         {% include "course_signup.html" %}
-        {% endif %}
     </div>
     {% endif %}
 </div>
