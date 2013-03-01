@@ -71,13 +71,19 @@ class Registration(Base):
     registration_charge = relationship("RegistrationCharge", uselist=False,
             backref="registration")
     attendance = Column(String(25), nullable=False, default='both')
+    cost = Column(Integer)
 
     @property
     def descriptive_payment_type(self):
         return {
+            'stripe': "Credit card",
             'paypal': "PayPal",
             'in_person': "In person",
         }[self.payment_type]
+
+    @property
+    def cost_in_cents(self):
+        return self.cost * 100
 
     def __str__(self):
         return "{slug}: {first_name} {last_name} - {payment_type}".format(
@@ -121,6 +127,7 @@ class RegistrationForm(object):
         }),
         ('payment_type', 'Payment type', {
             'options': [
+                ['stripe', 'Credit card'],
                 ['paypal', 'PayPal'],
                 ['in_person', 'In person'],
             ]
@@ -129,6 +136,7 @@ class RegistrationForm(object):
     hidden_fields = [
         ('course_slug', 'Course slug'),
         ('paypal_email', 'PayPal email address'),
+        ('stripe_card_token', 'Stripe card token'),
     ]
 
     def __init__(self, **kwargs):
@@ -169,13 +177,22 @@ class RegistrationForm(object):
         if payment_type.value == 'paypal':
             self._validate_presence('paypal_email')
             self._validate_email('paypal_email')
+        elif payment_type.value == 'stripe':
+            self._validate_presence('stripe_card_token')
 
         return self._valid
 
     def build(self):
         if not self.valid():
             raise ValueError('form is invalid')
-        return Registration(**{f.name: f.value for f in self.all_fields})
+        registration = Registration(
+                **{f.name: f.value for f in self.all_fields})
+        attendance = registration.attendance
+        if attendance == 'both' or attendance is None:
+            registration.cost = self.instance.cost
+        else:
+            registration.cost = self.instance.half_cost
+        return registration
 
     def _validate_presence(self, field):
         form_field = self.fields_by_name[field]

@@ -49,6 +49,9 @@
         <dd>{{ registration.paypal_email }}</dd>
         <dt>PayPal billing info</dt>
         <dd>You will be invoiced through PayPal using the email address above.</dd>
+        {% elif registration.payment_type == "stripe" %}
+        <dt>Credit card</dt>
+        <dd>{{ card.type }} ending in {{ card.last4 }}</dd>
         {% endif %}
     </dl>
 </div>

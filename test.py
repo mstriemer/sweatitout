@@ -104,6 +104,14 @@ class TestRegistrationFormValid(unittest.TestCase):
         form = make_form(payment_type='paypal', paypal_email='me@example.org')
         self.assertTrue(form.valid())
 
+    def test_stripe_card_token_for_stripe_required(self):
+        form = make_form(payment_type='stripe', stripe_card_token='')
+        self.assertFalse(form.valid())
+
+    def test_stripe_card_token_for_stripe_is_valid(self):
+        form = make_form(payment_type='stripe', stripe_card_token='foobar')
+        self.assertTrue(form.valid())
+
 
 class TestRegistrationFormSave(unittest.TestCase):
     def setUp(self):
@@ -128,11 +136,32 @@ class TestRegistrationFormSave(unittest.TestCase):
         reg = self.assertValidRegistration(payment_type='in_person')
         self.assertEqual(reg.payment_type, 'in_person')
 
+    def test_build_returns_a_saveable_registration_stripe(self):
+        reg = self.assertValidRegistration(payment_type='stripe',
+                stripe_card_token='foobar')
+        self.assertEqual(reg.payment_type, 'stripe')
+        self.assertEqual(reg.stripe_card_token, 'foobar')
+
     def test_build_returns_a_saveable_registration_paypal(self):
         reg = self.assertValidRegistration(payment_type='paypal',
                 paypal_email='foo@bar.com')
         self.assertEqual(reg.payment_type, 'paypal')
         self.assertEqual(reg.paypal_email, 'foo@bar.com')
+
+    def test_cost_is_pulled_from_course_no_attendance(self):
+        course = make_course(cost=200)
+        reg = self.assertValidRegistration(course=course)
+        self.assertEqual(reg.cost, 200)
+
+    def test_cost_is_pulled_from_course(self):
+        course = make_course(cost=110, half_cost=50)
+        reg = self.assertValidRegistration(attendance='both', course=course)
+        self.assertEqual(reg.cost, 110)
+
+    def test_half_cost_is_pulled_from_course(self):
+        course = make_course(cost=110, half_cost=50)
+        reg = self.assertValidRegistration(attendance='tuesdays', course=course)
+        self.assertEqual(reg.cost, 50)
 
     def test_build_raises_an_exception_when_invalid(self):
         form = make_form(first_name='')

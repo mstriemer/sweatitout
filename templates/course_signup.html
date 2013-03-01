@@ -1,4 +1,4 @@
-<form class="{% if not form.active %}hide {% endif %}course-signup-form form-horizontal" action="/group-fitness/{{ course.slug }}/register" method="post">
+<form class="{% if not form.active %}hide {% endif %}course-signup-form form-horizontal stripe-form" action="/group-fitness/{{ course.slug }}/register" method="post">
     <fieldset>
         <legend>Register for {{ course.name }}</legend>
         {% for field in form.hidden_fields %}
@@ -35,6 +35,7 @@
             </div>
         </div>
         {% endfor %}
+        {% include "stripe.html" %}
         {% include "paypal.html" %}
         {% include "in_person.html" %}
         <div class="form-actions">

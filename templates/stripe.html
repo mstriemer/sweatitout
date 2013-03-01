@@ -1,0 +1,68 @@
+<div class="payment-info payment-info-stripe">
+    {% if card %}
+    <div class="control-group">
+        <label class="control-label">Credit card</label>
+        <div class="controls">
+            <input type="hidden" name="stripe_card_token" value="{{ request.form['stripe_card_token'] }}">
+            <input type="text" disabled="disabled" readonly value="{{ card.type }} ending in {{ card.last4 }}">
+        </div>
+    </div>
+    {% else %}
+    <div class="control-group">
+        <span class="payment-help">
+            Your payment will be processed securely.
+            <a href="https://stripe.com" target="blank">
+                <img src="/static/images/stripe.png">
+            </a>
+        </span>
+    </div>
+    <div class="control-group error">
+        <div class="controls">
+            <span class="help-inline payment-errors"></span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="card-name-input">
+            Name on card
+        </label>
+        <div class="controls">
+            <input type="text" size="20" id="card-name-input" class="card-name">
+            <span class="help-inline">required</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="card-number-input">
+            Card number
+        </label>
+        <div class="controls">
+            <input type="text" size="20" id="card-number-input" class="card-number">
+            <span class="help-inline">required</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="cvc-input">
+            CVC
+        </label>
+        <div class="controls">
+            <input type="text" size="4" id="cvc-input" class="card-cvc">
+            <span class="help-inline">required</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="expiration-month-input">
+            Expiration (mm/yyyy)
+        </label>
+        <div class="controls">
+            <input type="text" size="2" id="expiration-month-input" class="card-expiry-month span1">
+            /
+            <input type="text" size="4" id="expiration-year-input" class="card-expiry-year span2">
+            <span class="help-inline">required</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <span class="help-inline">You will be charged <strong>$123.20 CAD</strong> ($110.00 CAD + $13.20 CAD tax)</span>
+        </div>
+    </div>
+    {% endif %}
+</div>
