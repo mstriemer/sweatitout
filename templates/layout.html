@@ -19,7 +19,7 @@
             <div class="container">
                 <a class="brand" href="/">Sweat It Out Fitness</a>
                 <ul class="header-links">
-                    {% for href, name in [["/", "Home"], ["/group-fitness", "Group Fitness"], ["/instructors", "Instructors"]]: %}
+                    {% for href, name in sections: %}
                     <li {% if href == request.path %}class="active"{% endif %}><a href="{{ href }}">{{ name }}</a></li>
                     {% endfor %}
                 </ul>
