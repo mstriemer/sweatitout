@@ -1,5 +1,20 @@
 from models import Course
 
+polo_v2 = Course(
+        "polo-park-spring-2013",
+        "Spring Polo Park Bootcamp",
+        "Perfect for all fitness levels this dynamic class offers cardio, resistence training, circuits and plyometrics and is different each and every time. Our small class sizes ensure lots of individual attention from Certified Personal Trainer Jenna Hobson.",
+        [["Tuesdays", "7:00", "8:00pm"], ["Thursdays", "7:00", "8:00pm"], ["Saturdays", "10:00", "11:00am"]],
+        "March 26th",
+        "April 18th, 2013",
+        "Revive Fitness Polo Park",
+        100,
+        None,
+        True,
+        "/static/images/revive-fitness-polo-park.png",
+        "https://maps.google.ca/maps?q=1740+Ellice+Avenue+(Revive+Fitness+Polo+Park)&hl=en&sll=49.864325,-97.124977&sspn=0.155357,0.363579&hnear=1740+Ellice+Ave,+Winnipeg,+Manitoba+R3H+0B6&t=m&z=16&iwloc=A",
+        )
+
 yoga = Course(
         "yoga-spring-2013",
         "Spring Yoga Session",
@@ -75,6 +90,6 @@ boot_camp = Course(
         "https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&ll=49.833886,-97.049017&spn=0.019432,0.045447&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=15&iwloc=A",
         )
 
-current_courses = [yoga, winter_boot, winter]
+current_courses = [polo_v2, yoga, winter_boot, winter]
 old_courses = [boot_camp]
 courses = current_courses + old_courses
