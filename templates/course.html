@@ -4,27 +4,32 @@
     </div>
     <div class="course-info-long">
         <div class="course-description">
-            <div class="course-schedule">
+            <p class="course-schedule">
                 {% for day in course.days %}
                 <strong>{{ day.name }}</strong>{% if not course.same_time_each_day() or loop.last %}
                 from <strong>{{ day.start_time }}</strong> to <strong>{{ day.end_time }}</strong>{% endif %}{% if loop.revindex0 == 1 %} and{% elif not loop.last %},{% endif %}
                 {% endfor %}
                 starting <strong>{{ course.start_date }}</strong> and ending <strong>{{ course.end_date }}</strong> at <strong>{{ course.location }}</strong>.
-            </div>
-            <div class="course-text">
+            </p>
+            {% if course.drop_in_open %}
+            <p class="course-drop-in">
+            This class is open for drop-ins at {{ course.drop_in_fee|currency }} per class.
+            </p>
+            {% endif %}
+            <p class="course-text">
                 {{ course.description|safe }}
-            </div>
-            <div class="course-signup">
+            </p>
+            <p class="course-signup">
                 {% if not hide_signup and course.has_space %}
                 <button class="{% if form.active %}hide {% endif %}signup btn btn-green">Sign Me Up!</button>
                 {% elif not course.has_space %}
-                <div class="course-full">
+                <p class="course-full">
                 This course is full. Sorry&mdash;no drop-ins. Be sure to sign up
                 for our other classes before
                 they fill up!
-                </div>
+                </p>
                 {% endif %}
-            </div>
+            </p>
         </div>
         <div class="course-map">
             <a href="{{ course.map_url }}" target="_blank">

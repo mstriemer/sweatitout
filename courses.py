@@ -43,6 +43,8 @@ yoga = Course(
         True,
         "/static/images/southdale-community-centre.png",
         "https://maps.google.ca/maps?hl=en&ie=UTF8&q=Southdale+Community+Centre&fb=1&gl=ca&hq=Southdale+Community+Centre&cid=17007604877746385002&ll=49.846963,-97.076976&spn=0.009104,0.022724&t=m&z=16&vpsrc=0&iwloc=A",
+        drop_in_open=True,
+        drop_in_fee=13,
         )
 
 fit_fix = Course(
