@@ -1,7 +1,7 @@
 from models import Course
 
 spring_boot = Course(
-        "spring-bootcamp-revive-2013",
+        "revive-spring-2013",
         "Spring Bootcamp at Revive Fitness",
         "Perfect for all fitness levels this dynamic class offers cardio, resistence training, circuits and plyometrics and is different each and every time. Our small class sizes ensure lots of individual attention from Certified Personal Trainer Jenna Hobson and Personal Trainer Specialist Emily Striemer. Challenge yourself, get in shape and start 2013 off sweaty!",
         [["Mondays", "8:45", "9:45pm"], ["Thursdays", "8:45", "9:45pm"]],
