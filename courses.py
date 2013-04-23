@@ -1,5 +1,22 @@
 from models import Course
 
+yoga_v2 = Course(
+        "yoga-late-spring-2013",
+        "Late Spring Yoga Session",
+        "Looking for a great workout that incorporates both body and mind? Sweat It Out Fitness is now offering Hatha/Fit Flow yoga. This class is suitable for beginner and intermediate Yoga participants of all fitness levels. Come stretch it out while you sweat it out with Hatha Yoga and Sweat It Out Fitness.",
+        [["Wednesdays", "7:00", "8:00pm"]],
+        "May 8th",
+        "June 26th, 2013",
+        "Southdale Community Centre",
+        75,
+        None,
+        True,
+        "/static/images/southdale-community-centre.png",
+        "https://maps.google.ca/maps?hl=en&ie=UTF8&q=Southdale+Community+Centre&fb=1&gl=ca&hq=Southdale+Community+Centre&cid=17007604877746385002&ll=49.846963,-97.076976&spn=0.009104,0.022724&t=m&z=16&vpsrc=0&iwloc=A",
+        drop_in_open=True,
+        drop_in_fee=13,
+        )
+
 spring_boot = Course(
         "revive-spring-2013",
         "Spring Bootcamp at Revive Fitness",
@@ -107,6 +124,6 @@ boot_camp = Course(
         "https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&ll=49.833886,-97.049017&spn=0.019432,0.045447&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=15&iwloc=A",
         )
 
-current_courses = [spring_boot, yoga]
+current_courses = [yoga_v2, spring_boot, yoga]
 old_courses = [boot_camp]
 courses = current_courses + old_courses
