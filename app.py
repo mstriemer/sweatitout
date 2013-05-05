@@ -95,11 +95,6 @@ def thank_you():
     else:
         return redirect("/group-fitness")
 
-@app.route("/nutrition-services")
-def nutrition_services():
-    return render_template("nutrition_services.html",
-            page_title="Nutrition Services")
-
 @app.route("/explode-all-pretty-like")
 def explode_all_pretty_like():
     raise TestError("This error was triggered manually")
@@ -124,7 +119,6 @@ def inject_globals():
             ["/", "Home"],
             ["/group-fitness", "Group Fitness"],
             ["/instructors", "Instructors"],
-            ["/nutrition-services", "Nutrition Services"],
         ],
         'use_google_analytics': production_env,
     }
