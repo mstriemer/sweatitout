@@ -1,5 +1,20 @@
 from models import Course
 
+spring_boot_v2 = Course(
+        "revive-late-spring-2013",
+        "Bootcamp at Revive Fitness",
+        "Perfect for all fitness levels this dynamic class offers cardio, resistence training, circuits and plyometrics and is different each and every time. Our small class sizes ensure lots of individual attention from Certified Personal Trainer Jenna Hobson and Personal Trainer Specialist Emily Striemer. Challenge yourself, get in shape and start 2013 off sweaty!",
+        [["Tuesdays", "8:45", "9:45pm"], ["Thursdays", "8:45", "9:45pm"]],
+        "May 14th",
+        "June 20th, 2013",
+        "Revive Fitness Sage Creek",
+        110,
+        None,
+        True,
+        "/static/images/revive-fitness-sage-creek.png",
+        "https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&ll=49.833886,-97.049017&spn=0.019432,0.045447&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=15&iwloc=A",
+        )
+
 yoga_v2 = Course(
         "yoga-late-spring-2013",
         "Late Spring Yoga Session",
@@ -124,6 +139,6 @@ boot_camp = Course(
         "https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&ll=49.833886,-97.049017&spn=0.019432,0.045447&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=15&iwloc=A",
         )
 
-current_courses = [yoga_v2, spring_boot, yoga]
+current_courses = [spring_boot_v2, yoga_v2, spring_boot]
 old_courses = [boot_camp]
 courses = current_courses + old_courses
