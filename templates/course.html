@@ -11,6 +11,9 @@
                 {% endfor %}
                 starting <strong>{{ course.start_date }}</strong> and ending <strong>{{ course.end_date }}</strong> at <strong>{{ course.location }}</strong>.
             </p>
+            {% if course.note %}
+            <p class="course-note">{{ course.note }}</p>
+            {% endif %}
             {% if course.drop_in_open %}
             <p class="course-drop-in">
             This class is open for drop-ins at {{ course.drop_in_fee|currency }} per class.

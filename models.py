@@ -11,7 +11,7 @@ class Course(object):
     def __init__(self, slug=None, name=None, description=None, days=[],
             start_date=None, end_date=None, location=None, cost=None,
             half_cost=None, has_space=None, map_image=None, map_url=None,
-            drop_in_open=False, drop_in_fee=None):
+            drop_in_open=False, drop_in_fee=None, note=None):
         self.slug = slug
         self.name = name
         self.description = description
@@ -26,6 +26,7 @@ class Course(object):
         self.map_url = map_url
         self.drop_in_open = drop_in_open
         self.drop_in_fee = drop_in_fee
+        self.note = note
 
     def same_time_each_day(self):
         prev_day = self.days[0]

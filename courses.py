@@ -21,7 +21,7 @@ yoga_v2 = Course(
         "Looking for a great workout that incorporates both body and mind? Sweat It Out Fitness is now offering Hatha/Fit Flow yoga. This class is suitable for beginner and intermediate Yoga participants of all fitness levels. Come stretch it out while you sweat it out with Hatha Yoga and Sweat It Out Fitness.",
         [["Wednesdays", "7:00", "8:00pm"]],
         "May 8th",
-        "June 26th, 2013",
+        "July 3rd, 2013",
         "Southdale Community Centre",
         75,
         None,
@@ -30,6 +30,7 @@ yoga_v2 = Course(
         "https://maps.google.ca/maps?hl=en&ie=UTF8&q=Southdale+Community+Centre&fb=1&gl=ca&hq=Southdale+Community+Centre&cid=17007604877746385002&ll=49.846963,-97.076976&spn=0.009104,0.022724&t=m&z=16&vpsrc=0&iwloc=A",
         drop_in_open=True,
         drop_in_fee=13,
+        note="Please note - no class Wednesday, May 15th.",
         )
 
 spring_boot = Course(
