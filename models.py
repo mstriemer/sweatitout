@@ -81,6 +81,7 @@ class Registration(Base):
         return {
             'paypal': "PayPal",
             'in_person': "In person",
+            'stripe': "Stripe",
         }[self.payment_type]
 
     def __str__(self):

@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1>Registrations</h1>
+
+<table class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Course</th>
+            <th>Contact</th>
+            <th>Other</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for registration in registrations %}
+        <tr>
+            <td>{{ registration.code|upper }}</td>
+            <td>{{ registration.course_slug }}</td>
+            <td>
+                {{ registration.first_name }} {{ registration.last_name }}
+                <br>
+                <a href="mailto:{{ registration.email }}">{{ registration.email }}</a>
+                <br>
+                {{ registration.phone }}
+            </td>
+            <td>
+                Pay:
+                {{ registration.descriptive_payment_type }}
+                {% if registration.payment_type == 'paypal' %}
+                ({{ registration.paypal_email }})
+                {% endif %}
+                <br>
+                Attend: {{ registration.attendance }}
+                <br>
+                Registered: {{ registration.registration_date }}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

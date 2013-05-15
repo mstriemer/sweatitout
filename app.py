@@ -1,13 +1,35 @@
 import os
 from datetime import datetime
+from functools import wraps
 
 from flask import Flask, render_template, request, redirect, session, abort
+
 from database import db_session
 
 from models import Course, Registration, RegistrationCharge, RegistrationForm
 from courses import courses, current_courses, old_courses
 
+from auth import login_required
+
 app = Flask(__name__)
+
+# From https://github.com/kennethreitz/flask-sslify/blob/master/flask_sslify.py
+def https_required(f):
+    """Redirect incoming requests to HTTPS."""
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        criteria = [
+            request.is_secure,
+            app.debug,
+            request.headers.get('X-Forwarded-Proto', 'http') == 'https'
+        ]
+
+        if not any(criteria):
+            if request.url.startswith('http://'):
+                url = request.url.replace('http://', 'https://', 1)
+                return redirect(url, code=302)
+        return f(*args, **kwargs)
+    return decorated
 
 production_env = os.environ.get('APP_ENV', None) == 'production'
 if production_env:
@@ -94,6 +116,14 @@ def thank_you():
                 course=course, page_title="Thank You")
     else:
         return redirect("/group-fitness")
+
+@app.route("/registrations")
+@https_required
+@login_required
+def registrations():
+    registrations = db_session.query(Registration)
+    registrations = registrations.order_by('registration_date DESC').all()
+    return render_template("registrations.html", registrations=registrations)
 
 @app.route("/explode-all-pretty-like")
 def explode_all_pretty_like():
