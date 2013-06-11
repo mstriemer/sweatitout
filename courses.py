@@ -1,5 +1,20 @@
 from models import Course
 
+outdoor_june = Course(
+        "outdoor-june-2013",
+        "Outdoor Bootcamp",
+        "It's summertime and that can only mean one thing: it's time to get sweaty outside!! Join Megan on Mondays for 60 minutes and Emily on Saturdays for 90 minutes of  sweaty cardio, resistance and core! Rain or shine, bring a water bottle, a yoga mat or towel and some good outdoor shoes to Blue Lake Park and prepare to Sweat It Out in the great outdoors!",
+        [["Mondays", "7:00", "8:00pm"], ["Saturdays", "8:00", "9:30am"]],
+        "June 17th",
+        "July 27th, 2013",
+        "Blue Lake Park",
+        110,
+        None,
+        True,
+        "/static/images/blue-lake-park.jpg",
+        "http://maps.google.ca/maps?ie=UTF8&q=blue+lake+park+winnipeg&fb=1&gl=ca&hq=blue+lake+park+winnipeg&hnear=blue+lake+park+winnipeg&cid=8741893315126836065&ll=49.813398,-97.159352&spn=0.00972,0.022702&t=m&z=16&vpsrc=0&iwloc=A",
+        )
+
 spring_boot_v2 = Course(
         "revive-late-spring-2013",
         "Bootcamp at Revive Fitness",
@@ -140,6 +155,6 @@ boot_camp = Course(
         "https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&ll=49.833886,-97.049017&spn=0.019432,0.045447&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=15&iwloc=A",
         )
 
-current_courses = [spring_boot_v2, yoga_v2, spring_boot]
+current_courses = [outdoor_june, spring_boot_v2, yoga_v2]
 old_courses = [boot_camp]
 courses = current_courses + old_courses
