@@ -151,6 +151,7 @@ def inject_globals():
             ["/instructors", "Instructors"],
         ],
         'use_google_analytics': production_env,
+        'debug': app.debug,
     }
 
 @app.template_filter('currency')

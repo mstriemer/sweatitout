@@ -2,10 +2,14 @@
 <html>
     <head>
         <title>{% if page_title %}{{ page_title }} | {% endif %}Sweat It Out Fitness</title>
-        <link rel="stylesheet/less" type="text/css" href="/static/styles/bootstrap/bootstrap.less">
+        {% if debug %}
         <link rel="stylesheet/less" type="text/css" href="/static/styles/main.less" media="all">
         <link rel="stylesheet/less" type="text/css" href="/static/styles/print.less" media="print">
         <script type="text/javascript" src="/static/scripts/less.js"></script>
+        {% else %}
+        <link rel="stylesheet" type="text/css" href="/static/styles/main.css" media="all">
+        <link rel="stylesheet" type="text/css" href="/static/styles/print.css" media="print">
+        {% endif %}
         <script type="text/javascript" src="/static/scripts/vendor/jquery.min.js"></script>
         <script type="text/javascript" src="/static/scripts/main.js"></script>
         <script type="text/javascript">
