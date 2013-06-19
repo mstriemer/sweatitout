@@ -1,5 +1,19 @@
 from models import Course
 
+edgewood_bootcamp = Course(
+    slug="edgewood-june-2013",
+    name="Edgewood Bootcamp",
+    description="Perfect for all fitness levels this dynamic class offers cardio, resistence training, circuits and plyometrics and is different each and every time. Our small class sizes ensure lots of individual attention from our fully certified trainers. Challenge yourself, get in shape and enjoy the beautiful Manitoba summer!",
+    days=[("Tuesdays", "8:00", "9:00pm"), ("Thursdays", "8:00", "9:00pm")],
+    start_date="June 25th",
+    end_date="August 1st, 2013",
+    location="Edgewood Park",
+    cost=110,
+    has_space=True,
+    map_image="/static/images/edgewood-park.jpg",
+    map_url="http://maps.google.ca/maps?f=q&source=s_q&hl=en&geocode=&q=49.844691,+-97.068383&aq=&sll=49.853822,-97.152225&sspn=0.621562,1.452942&vpsrc=0&ie=UTF8&t=m&z=16&iwloc=A",
+)
+
 outdoor_june = Course(
         "outdoor-june-2013",
         "Outdoor Bootcamp",
@@ -146,6 +160,6 @@ boot_camp = Course(
         "https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&ll=49.833886,-97.049017&spn=0.019432,0.045447&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=15&iwloc=A",
         )
 
-current_courses = [outdoor_june, spring_boot_v2, yoga_v2]
+current_courses = [edgewood_bootcamp, outdoor_june, yoga_v2]
 old_courses = [boot_camp]
 courses = current_courses + old_courses
