@@ -34,6 +34,10 @@
                 Attend: {{ registration.attendance }}
                 <br>
                 Registered: {{ registration.registration_date }}
+                {% if registration.referrer_name %}
+                <br>
+                Referrer's name: {{ registration.referrer_name }}
+                {% endif %}
             </td>
         </tr>
         {% endfor %}

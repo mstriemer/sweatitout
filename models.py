@@ -75,6 +75,7 @@ class Registration(Base):
     registration_charge = relationship("RegistrationCharge", uselist=False,
             backref="registration")
     attendance = Column(String(25), nullable=False, default='both')
+    referrer_name = Column(String(255))
 
     @property
     def descriptive_payment_type(self):
@@ -122,6 +123,7 @@ class RegistrationForm(object):
         ('last_name', 'Last name'),
         ('email', 'Email address'),
         ('phone', 'Phone number'),
+        ('referrer_name', 'Referrer\'s full name', {'required': False}),
         ('attendance', 'Days', {
             'options': [
                 ['both', 'Both $110'],
@@ -237,7 +239,7 @@ class RegistrationForm(object):
 
 class FormField(object):
     def __init__(self, form, name, description, value='', options=None,
-            show_if=None):
+            show_if=None, required=True):
         self.form = form
         self.name = name
         self.description = description
@@ -246,6 +248,7 @@ class FormField(object):
         self.options = options or []
         self.show_if = show_if
         self.errors = []
+        self.required = required
 
     def show(self):
         if callable(self.show_if):

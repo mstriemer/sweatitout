@@ -29,6 +29,10 @@
         <dd>{{ registration.email }}</dd>
         <dt>Phone number</dt>
         <dd>{{ registration.phone }}</dd>
+        {% if registration.referrer_name %}
+        <dt>Referrer's full name</dt>
+        <dd>{{ registration.referrer_name }}</dd>
+        {% endif %}
     </dl>
     <dl class="payment-receipt">
         <dt>Payment method</dt>

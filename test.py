@@ -92,6 +92,11 @@ class TestRegistrationFormValid(unittest.TestCase):
         form = make_form(payment_type='none')
         self.assertFalse(form.valid())
 
+    def test_referrer_name_is_set(self):
+        form = make_form(referrer_name='Bob Barker')
+        registration = form.build()
+        self.assertEqual(registration.referrer_name, 'Bob Barker')
+
     def test_paypal_email_for_paypal_required(self):
         form = make_form(payment_type='paypal', paypal_email='')
         self.assertFalse(form.valid())

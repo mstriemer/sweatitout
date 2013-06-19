@@ -28,7 +28,7 @@
                 <span class="help-inline">
                     {% if field.errors %}
                     {{ field.errors[0] }}
-                    {% else %}
+                    {% elif field.required %}
                     required
                     {% endif %}
                 </span>
