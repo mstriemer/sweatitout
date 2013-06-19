@@ -1,6 +1,6 @@
 <div class="course">
     <div class="course-info">
-        <h2 class="course-name">{{ course.name }} <small>{{ course.cost|currency }}{% if course.single_day_cost %} / {{ course.single_day_cost|currency }}{% endif %}</small></h2>
+        <h2 class="course-name">{{ course.name }} <small>{% for cost in course.costs %}{{ cost|currency }}{% if not loop.last %} / {% endif %}{% endfor %}</small></h2>
     </div>
     <div class="course-info-long">
         <div class="course-description">

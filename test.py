@@ -13,7 +13,7 @@ def make_form(first_name="Bob", last_name="Smith",
         payment_type='in_person', course_slug="the-course",
         attendance='both', course=None, **kwargs):
     if course is None:
-        course = make_course(single_day_cost=60)
+        course = make_course(partial_attendance=True)
     return RegistrationForm(
             first_name=first_name,
             last_name=last_name,
@@ -83,23 +83,18 @@ class TestRegistrationFormValid(unittest.TestCase):
         form = make_form(attendance=None)
         self.assertFalse(form.valid())
 
-    def test_valid_no_attendance_when_not_required(self):
-        course = make_course(single_day_cost=None)
-        form = make_form(attendance=None, course=course)
-        self.assertTrue(form.valid())
-
-    def test_invalid_no_attendance_partial_attendance(self):
-        course = make_course(single_day_cost=None, partial_attendance=True,
-                days=[('Tuesdays', '7:00', '8:00pm'),
-                      ('Thursdays', '7:00', '8:00pm')])
-        form = make_form(attendance=None, course=course)
-        self.assertFalse(form.valid())
+    def test_attendance_labels_are_helpful(self):
+        course = make_course(partial_attendance=True,
+                cost=125,
+                days=[('Tuesdays', '7:00', '8:00pm', 75),
+                      ('Thursdays', '7:00', '8:00pm', 28)])
+        form = make_form(course=course)
         self.assertEqual(
             form.fields_by_name['attendance'].options,
             [
-                ('both', 'Both'),
-                ('tuesdays', 'Tuesdays'),
-                ('thursdays', 'Thursdays'),
+                ('both', 'Both $125'),
+                ('tuesdays', 'Tuesdays $75'),
+                ('thursdays', 'Thursdays $28'),
             ]
         )
 
@@ -157,6 +152,18 @@ class TestRegistrationFormSave(unittest.TestCase):
     def test_build_raises_an_exception_when_invalid(self):
         form = make_form(first_name='')
         self.assertRaises(ValueError, form.build)
+
+
+class CourseTest(unittest.TestCase):
+    def test_day(self):
+        course = Course(
+            days=[
+                ('Mondays', '7:00', '8:00pm'), ('Tuesdays', '3:00', '4:00pm')
+            ]
+        )
+        self.assertEqual(course.day('mondays'), course.days[0])
+        self.assertEqual(course.day('Tuesdays'), course.days[1])
+        self.assertRaises(KeyError, lambda: course.day('Saturdays'))
 
 
 if __name__ == '__main__':

@@ -10,7 +10,7 @@ from database import Base
 class Course(object):
     def __init__(self, slug=None, name=None, description=None, days=[],
             start_date=None, end_date=None, location=None, cost=None,
-            single_day_cost=None, has_space=None, map_image=None, map_url=None,
+            has_space=None, map_image=None, map_url=None,
             drop_in_open=False, drop_in_fee=None, note=None,
             partial_attendance=False):
         self.slug = slug
@@ -21,7 +21,6 @@ class Course(object):
         self.end_date = end_date
         self.location = location
         self.cost = cost
-        self.single_day_cost = single_day_cost
         self.has_space = has_space
         self.map_image = map_image
         self.map_url = map_url
@@ -29,6 +28,12 @@ class Course(object):
         self.drop_in_fee = drop_in_fee
         self.note = note
         self.partial_attendance = partial_attendance
+
+    @property
+    def costs(self):
+        costs = [self.cost]
+        costs.extend([day.cost for day in self.days if day.cost is not None])
+        return sorted(set(costs), reverse=True)
 
     def same_time_each_day(self):
         prev_day = self.days[0]
@@ -38,12 +43,20 @@ class Course(object):
             prev_day = day
         return True
 
+    def day(self, name):
+        for day in self.days:
+            if day.name.lower() == name.lower():
+                return day
+        else:
+            raise KeyError('{name} is not a valid day'.format(name=name))
+
 
 class Day(object):
-    def __init__(self, name, start_time, end_time):
+    def __init__(self, name, start_time, end_time, cost=None):
         self.name = name
         self.start_time = start_time
         self.end_time = end_time
+        self.cost = cost
 
     def same_time_as(self, other):
         return (self.start_time == other.start_time and
@@ -127,8 +140,8 @@ class RegistrationForm(object):
         ('phone', 'Phone number'),
         ('referrer_name', 'Referrer\'s full name', {'required': False}),
         ('attendance', 'Days', {
-            'options': lambda field: [('both', 'Both')] + [(day.name.lower(), day.name) for day in field.form.instance.days],
-            'show_if': lambda field: field.form.instance.single_day_cost is not None or field.form.instance.partial_attendance,
+            'options': lambda field: [('both', 'Both ${cost}'.format(cost=field.form.instance.cost))] + [(day.name.lower(), '{day} ${cost}'.format(day=day.name, cost=day.cost)) for day in field.form.instance.days],
+            'show_if': lambda field: field.form.instance.partial_attendance,
         }),
         ('payment_type', 'Payment type', {
             'options': [
