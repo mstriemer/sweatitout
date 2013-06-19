@@ -13,6 +13,7 @@ outdoor_june = Course(
         True,
         "/static/images/blue-lake-park.jpg",
         "http://maps.google.ca/maps?ie=UTF8&q=blue+lake+park+winnipeg&fb=1&gl=ca&hq=blue+lake+park+winnipeg&hnear=blue+lake+park+winnipeg&cid=8741893315126836065&ll=49.813398,-97.159352&spn=0.00972,0.022702&t=m&z=16&vpsrc=0&iwloc=A",
+        partial_attendance=True,
         )
 
 spring_boot_v2 = Course(

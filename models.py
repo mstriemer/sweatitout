@@ -10,8 +10,9 @@ from database import Base
 class Course(object):
     def __init__(self, slug=None, name=None, description=None, days=[],
             start_date=None, end_date=None, location=None, cost=None,
-            half_cost=None, has_space=None, map_image=None, map_url=None,
-            drop_in_open=False, drop_in_fee=None, note=None):
+            single_day_cost=None, has_space=None, map_image=None, map_url=None,
+            drop_in_open=False, drop_in_fee=None, note=None,
+            partial_attendance=False):
         self.slug = slug
         self.name = name
         self.description = description
@@ -20,13 +21,14 @@ class Course(object):
         self.end_date = end_date
         self.location = location
         self.cost = cost
-        self.half_cost = half_cost
+        self.single_day_cost = single_day_cost
         self.has_space = has_space
         self.map_image = map_image
         self.map_url = map_url
         self.drop_in_open = drop_in_open
         self.drop_in_fee = drop_in_fee
         self.note = note
+        self.partial_attendance = partial_attendance
 
     def same_time_each_day(self):
         prev_day = self.days[0]
@@ -125,12 +127,8 @@ class RegistrationForm(object):
         ('phone', 'Phone number'),
         ('referrer_name', 'Referrer\'s full name', {'required': False}),
         ('attendance', 'Days', {
-            'options': [
-                ['both', 'Both $110'],
-                ['tuesdays', 'Tuesdays $60'],
-                ['thursdays', 'Thursdays $60'],
-            ],
-            'show_if': lambda field: field.form.instance.half_cost is not None,
+            'options': lambda field: [('both', 'Both')] + [(day.name.lower(), day.name) for day in field.form.instance.days],
+            'show_if': lambda field: field.form.instance.single_day_cost is not None or field.form.instance.partial_attendance,
         }),
         ('payment_type', 'Payment type', {
             'options': [
@@ -244,8 +242,8 @@ class FormField(object):
         self.name = name
         self.description = description
         self.value = value
-        self.valid_options = [o[0] for o in options or []]
-        self.options = options or []
+        self.options = options(self) if callable(options) else options or []
+        self.valid_options = [o[0] for o in self.options or []]
         self.show_if = show_if
         self.errors = []
         self.required = required

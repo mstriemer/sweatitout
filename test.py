@@ -13,7 +13,7 @@ def make_form(first_name="Bob", last_name="Smith",
         payment_type='in_person', course_slug="the-course",
         attendance='both', course=None, **kwargs):
     if course is None:
-        course = make_course(half_cost=60)
+        course = make_course(single_day_cost=60)
     return RegistrationForm(
             first_name=first_name,
             last_name=last_name,
@@ -84,9 +84,24 @@ class TestRegistrationFormValid(unittest.TestCase):
         self.assertFalse(form.valid())
 
     def test_valid_no_attendance_when_not_required(self):
-        course = make_course(half_cost=None)
+        course = make_course(single_day_cost=None)
         form = make_form(attendance=None, course=course)
         self.assertTrue(form.valid())
+
+    def test_invalid_no_attendance_partial_attendance(self):
+        course = make_course(single_day_cost=None, partial_attendance=True,
+                days=[('Tuesdays', '7:00', '8:00pm'),
+                      ('Thursdays', '7:00', '8:00pm')])
+        form = make_form(attendance=None, course=course)
+        self.assertFalse(form.valid())
+        self.assertEqual(
+            form.fields_by_name['attendance'].options,
+            [
+                ('both', 'Both'),
+                ('tuesdays', 'Tuesdays'),
+                ('thursdays', 'Thursdays'),
+            ]
+        )
 
     def test_invalid_options_are_not_allowed(self):
         form = make_form(payment_type='none')

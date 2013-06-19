@@ -39,10 +39,10 @@
         <dd>{{ registration.descriptive_payment_type }}</dd>
         <dt>Registration cost</dt>
         <dd>
-            {% if registration.attendance == 'both' %}
+            {% if registration.attendance == "both" or not registration.single_day_cost %}
             {{ course.cost|currency }}
             {% else %}
-            {{ course.half_cost|currency }}
+            {{ course.single_day_cost|currency }}
             {% endif %}
         </dd>
         {% if registration.payment_type == "in_person" %}
