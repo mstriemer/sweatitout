@@ -176,6 +176,6 @@ boot_camp = Course(
         "https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&ll=49.833886,-97.049017&spn=0.019432,0.045447&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=15&iwloc=A",
         )
 
-current_courses = [yoga_summer, edgewood_bootcamp, outdoor_june]
+current_courses = [edgewood_bootcamp, outdoor_june]
 old_courses = [boot_camp]
 courses = current_courses + old_courses
