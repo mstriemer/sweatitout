@@ -4,7 +4,10 @@ august_bootcamp = Course(
     slug="august-bootcamp-2013",
     name="August Edgewood Bootcamp",
     description="Perfect for all fitness levels this dynamic class offers cardio, resistence training, circuits and plyometrics and is different each and every time. Our small class sizes ensure lots of individual attention from our fully certified trainers. Challenge yourself, get in shape and enjoy the beautiful Manitoba summer!",
-    days=[("Tuesdays", "8:00", "9:00pm"), ("Thursdays", "8:00", "9:00pm")],
+    days=[
+        ("Tuesdays", "8:00", "9:00pm", 45),
+        ("Thursdays", "8:00", "9:00pm", 45)
+    ],
     start_date="August 6th",
     end_date="August 29th, 2013",
     location="Edgewood Park",
@@ -12,6 +15,7 @@ august_bootcamp = Course(
     has_space=True,
     map_image="/static/images/edgewood-park.jpg",
     map_url="http://maps.google.ca/maps?f=q&source=s_q&hl=en&geocode=&q=49.844691,+-97.068383&aq=&sll=49.853822,-97.152225&sspn=0.621562,1.452942&vpsrc=0&ie=UTF8&t=m&z=16&iwloc=A",
+    partial_attendance=True,
 )
 
 yoga_summer = Course(
