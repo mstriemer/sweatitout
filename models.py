@@ -12,7 +12,7 @@ class Course(object):
             start_date=None, end_date=None, location=None, cost=None,
             has_space=None, map_image=None, map_url=None,
             drop_in_open=False, drop_in_fee=None, note=None,
-            partial_attendance=False):
+            partial_attendance=False, allow_assessments=False):
         self.slug = slug
         self.name = name
         self.description = description
@@ -28,6 +28,7 @@ class Course(object):
         self.drop_in_fee = drop_in_fee
         self.note = note
         self.partial_attendance = partial_attendance
+        self.allow_assessments = allow_assessments
 
     @property
     def costs(self):
@@ -91,6 +92,7 @@ class Registration(Base):
             backref="registration")
     attendance = Column(String(25), nullable=False, default='both')
     referrer_name = Column(String(255))
+    assessments = Column(Boolean, nullable=False, default=False)
 
     @property
     def descriptive_payment_type(self):
@@ -142,6 +144,10 @@ class RegistrationForm(object):
         ('attendance', 'Days', {
             'options': lambda field: [('both', 'Both ${cost}'.format(cost=field.form.instance.cost))] + [(day.name.lower(), '{day} ${cost}'.format(day=day.name, cost=day.cost)) for day in field.form.instance.days],
             'show_if': lambda field: field.form.instance.partial_attendance,
+        }),
+        ('assessments', 'Track your results with accountability assessments ($20)', {
+            'checkbox': True,
+            'show_if': lambda field: field.form.instance.allow_assessments,
         }),
         ('payment_type', 'Payment type', {
             'options': [
@@ -250,16 +256,20 @@ class RegistrationForm(object):
 
 class FormField(object):
     def __init__(self, form, name, description, value='', options=None,
-            show_if=None, required=True):
+            show_if=None, required=True, checkbox=False):
         self.form = form
         self.name = name
         self.description = description
-        self.value = value
+        self.checkbox = checkbox
         self.options = options(self) if callable(options) else options or []
         self.valid_options = [o[0] for o in self.options or []]
         self.show_if = show_if
         self.errors = []
         self.required = required
+        if self.checkbox:
+            self.value = value == '1'
+        else:
+            self.value = value
 
     def show(self):
         if callable(self.show_if):

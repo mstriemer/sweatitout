@@ -37,6 +37,8 @@
                 {% if registration.referrer_name %}
                 <br>
                 Referrer's name: {{ registration.referrer_name }}
+                <br>
+                Assessments: {{ 'Yes' if registration.assessments else 'No' }}
                 {% endif %}
             </td>
         </tr>

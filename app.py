@@ -94,6 +94,7 @@ def sign_up(slug):
             paypal_email=request.form.get('paypal_email', ''),
             attendance=request.form.get('attendance', ''),
             referrer_name=request.form.get('referrer_name', ''),
+            assessments=request.form.get('assessments', ''),
             instance=course,
     )
     if form.valid():

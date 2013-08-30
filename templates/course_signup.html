@@ -11,28 +11,38 @@
         {% endif %}
         {% endfor %}
         {% for field in form.fields %}
-        <div class="control-group{% if field.errors %} error{% endif %}">
-            <label class="control-label" for="{{ field.name }}">{{ field.description }}</label>
-            <div class="controls">
-                {% if field.options %}
-                    {% for name, description in field.options %}
-                    <label class="radio inline">
-                        <input value="{{ name }}"{% if field.value == name %} checked="checked"{% endif %} type="radio" name="{{ field.name }}">
-                        {{ description }}
+        <div class="control-group {{ field.name }}_field{% if field.errors %} error{% endif %}">
+            {% if field.checkbox %}
+                <div class="controls">
+                    <label class="checkbox">
+                        <input value="1"{% if field.value %} checked="checked"{% endif %} type="checkbox" name="{{ field.name }}">
+                        {{ field.description }}
                     </label>
-                    {% endfor %}
-                    <input type="hidden" name="{{ field.name }}" value="">
-                {% else %}
-                    <input value="{{ field.value }}" type="text" name="{{ field.name }}">
-                {% endif %}
-                <span class="help-inline">
-                    {% if field.errors %}
-                    {{ field.errors[0] }}
-                    {% elif field.required %}
-                    required
+                    <input type="hidden" name="{{ field.name }}" value="0">
+                </div>
+            {% else %}
+                <label class="control-label" for="{{ field.name }}">{{ field.description }}</label>
+                <div class="controls">
+                    {% if field.options %}
+                        {% for name, description in field.options %}
+                        <label class="radio inline">
+                            <input value="{{ name }}"{% if field.value == name %} checked="checked"{% endif %} type="radio" name="{{ field.name }}">
+                            {{ description }}
+                        </label>
+                        {% endfor %}
+                        <input type="hidden" name="{{ field.name }}" value="">
+                    {% else %}
+                        <input value="{{ field.value }}" type="text" name="{{ field.name }}">
                     {% endif %}
-                </span>
-            </div>
+                    <span class="help-inline">
+                        {% if field.errors %}
+                        {{ field.errors[0] }}
+                        {% elif field.required %}
+                        required
+                        {% endif %}
+                    </span>
+                </div>
+            {% endif %}
         </div>
         {% endfor %}
         {% include "paypal.html" %}

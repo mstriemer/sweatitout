@@ -11,9 +11,9 @@ def make_course(**kwargs):
 def make_form(first_name="Bob", last_name="Smith",
         email="bob.smith@gmail.com", phone="204-555-1234",
         payment_type='in_person', course_slug="the-course",
-        attendance='both', course=None, **kwargs):
+        attendance='both', course=None, assessments='0', **kwargs):
     if course is None:
-        course = make_course(partial_attendance=True)
+        course = make_course(partial_attendance=True, allow_assessments=True)
     return RegistrationForm(
             first_name=first_name,
             last_name=last_name,
@@ -23,6 +23,7 @@ def make_form(first_name="Bob", last_name="Smith",
             course_slug=course_slug,
             attendance=attendance,
             instance=course,
+            assessments=assessments,
             **kwargs)
 
 
@@ -152,6 +153,11 @@ class TestRegistrationFormSave(unittest.TestCase):
     def test_build_raises_an_exception_when_invalid(self):
         form = make_form(first_name='')
         self.assertRaises(ValueError, form.build)
+
+    def test_assessments_can_be_requested(self):
+        form = make_form(assessments='1')
+        reg = self.assertValidRegistration(assessments='1')
+        self.assertEqual(reg.assessments, True)
 
 
 class CourseTest(unittest.TestCase):

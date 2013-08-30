@@ -1,4 +1,8 @@
 jQuery(function ($) {
+    $('.assessments_field').each(function () {
+        assessmentsInfo($(this));
+    });
+
     $('.signup').on('click', function (e) {
         var $course = $(e.currentTarget).parents('.course');
         var $form = $course.find('.course-signup-form');
@@ -18,6 +22,18 @@ jQuery(function ($) {
 
     $('input[name="payment_type"][checked]').each(show_payment_form);
     $('input[name="payment_type"]').on('click', show_payment_form);
+
+    function assessmentsInfo($el) {
+        var link = $('<a href="#tell-me-more">Tell me more</a>');
+        var explainationText = "Want a little extra help attaining your fitness goals? Add our new accountability package onto any group fitness class. This package gives you 3 assessments at the beginning, mid point and end of the session which include weight, measurements and photos to track your progress. Simply select the accountability add on when you complete your registration, and get ready to see results! $20.00 with any group fitness registration.";
+        var explainationInner = $('<div class="controls tell-me-more"></div>')
+        var explaination = $('<div style="display: none;" class="control-group"></div>');
+        explainationInner.text(explainationText);
+        explaination.html(explainationInner);
+        link.on('click', function () { explaination.toggle(); });
+        $el.find('label').append(link);
+        $el.after(explaination);
+    }
 
     // `show_payment_form` is not a very descriptive name.
     function show_payment_form() {
