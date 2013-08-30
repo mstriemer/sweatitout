@@ -1,5 +1,23 @@
 from models import Course
 
+fall_bootcamp = Course(
+    slug="fall-bootcamp-2013",
+    name="Fall Bootcamp Revive Fitness",
+    description="Perfect for all fitness levels this dynamic class offers cardio, resistence training, circuits and plyometrics and is different each and every time. Our small class sizes ensure lots of individual attention from our fully certified trainers. Challenge yourself, get in shape and start your fall routine off right with Sweat It Out Fitness!",
+    days=[
+        ("Mondays", "8:45", "9:45pm"),
+        ("Thursdays", "8:45", "9:45pm")
+    ],
+    start_date="September 23rd",
+    end_date="October 31st, 2013",
+    location="Edgewood Park",
+    cost=110,
+    has_space=True,
+    map_image="/static/images/revive-fitness-sage-creek.png",
+    map_url="https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&ll=49.833886,-97.049017&spn=0.019432,0.045447&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=15&iwloc=A",
+    partial_attendance=False,
+)
+
 august_bootcamp = Course(
     slug="august-bootcamp-2013",
     name="August Edgewood Bootcamp",
@@ -194,6 +212,6 @@ boot_camp = Course(
         "https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&ll=49.833886,-97.049017&spn=0.019432,0.045447&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=15&iwloc=A",
         )
 
-current_courses = [august_bootcamp]
+current_courses = [fall_bootcamp]
 old_courses = [boot_camp]
 courses = current_courses + old_courses
