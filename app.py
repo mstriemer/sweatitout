@@ -12,6 +12,7 @@ from courses import courses, current_courses, old_courses
 from auth import login_required
 
 app = Flask(__name__)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 # From https://github.com/kennethreitz/flask-sslify/blob/master/flask_sslify.py
 def https_required(f):
