@@ -10,7 +10,7 @@ fall_bootcamp = Course(
     ],
     start_date="September 23rd",
     end_date="October 31st, 2013",
-    location="Edgewood Park",
+    location="Revive Fitness Sage Creek",
     cost=110,
     has_space=True,
     map_image="/static/images/revive-fitness-sage-creek.png",
