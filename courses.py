@@ -1,5 +1,40 @@
 from models import Course
 
+year_end_yoga_2013 = Course(
+    slug="year-end-yoga-2013",
+    name="Year-End Yoga Session",
+    description="Looking for a great workout that incorporates both body and mind? Sweat It Out Fitness is now offering Hatha/Fit Flow yoga. This class is suitable for beginner and intermediate Yoga participants of all fitness levels. Come stretch it out while you sweat it out with Hatha Yoga and Sweat It Out Fitness.",
+    days=[["Thursdays", "7:30", "8:30pm"]],
+    start_date="November 7th",
+    end_date="December 19th, 2013",
+    location="Revive Fitness Sage Creek",
+    cost=84,
+    has_space=True,
+    map_image="/static/images/revive-fitness-sage-creek.png",
+    map_url="https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&ll=49.833886,-97.049017&spn=0.019432,0.045447&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=15&iwloc=A",
+    drop_in_open=True,
+    drop_in_fee=14,
+    )
+
+year_end_bootcamp_2013 = Course(
+    slug="year-end-bootcamp-2013",
+    name="Year-End Bootcamp Revive Fitness",
+    description="Perfect for all fitness levels this dynamic class offers cardio, resistence training, circuits and plyometrics and is different each and every time. Our small class sizes ensure lots of individual attention from our fully certified trainers. Challenge yourself, get in shape and start your fall routine off right with Sweat It Out Fitness!",
+    days=[
+        ("Mondays", "8:45", "9:45pm"),
+        ("Thursdays", "8:45", "9:45pm")
+    ],
+    start_date="November 11th",
+    end_date="December 19th, 2013",
+    location="Revive Fitness Sage Creek",
+    cost=90,
+    has_space=True,
+    map_image="/static/images/revive-fitness-sage-creek.png",
+    map_url="https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&ll=49.833886,-97.049017&spn=0.019432,0.045447&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=15&iwloc=A",
+    partial_attendance=False,
+    allow_assessments=True,
+)
+
 yoga_fall = Course(
     slug="yoga-fall-2013",
     name="Fall Yoga Session",
@@ -229,6 +264,7 @@ boot_camp = Course(
         "https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&ll=49.833886,-97.049017&spn=0.019432,0.045447&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=15&iwloc=A",
         )
 
-current_courses = [yoga_fall, fall_bootcamp]
+current_courses = [year_end_bootcamp_2013, year_end_yoga_2013,  yoga_fall,
+        fall_bootcamp]
 old_courses = [boot_camp]
 courses = current_courses + old_courses
