@@ -2,7 +2,8 @@ import string
 from datetime import datetime
 from time import time
 
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean, func
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, \
+                       Boolean, Text, func
 from sqlalchemy.orm import relationship
 
 from database import Base
@@ -78,6 +79,57 @@ def _make_registration_code(context):
     return "{:x}".format(seed % (16 ** 4)).rjust(4, '0')
 
 
+class Location(Base):
+    __tablename__ = 'locations'
+
+    id = Column(Integer, primary_key=True)
+    map_image = Column(String(255), nullable=False)
+    map_url = Column(String(255), nullable=False)
+
+
+class DBDay(Base):
+    __tablename__ = 'days'
+
+    id = Column(Integer, primary_key=True)
+    course_id = Column(Integer, ForeignKey('courses.id'), nullable=False)
+    name = Column(String(25), nullable=False)
+    start_time = Column(Integer, nullable=False)
+    end_time = Column(Integer, nullable=False)
+    cost = Column(Integer)
+
+    def same_time_as(self, other):
+        # What about name?
+        return (self.start_time == other.start_time and
+                self.end_time == other.end_time)
+
+
+class DBCourse(Base):
+    __tablename__ = 'courses'
+
+    id = Column(Integer, primary_key=True)
+    slug = Column(String(25), nullable=False)
+    name = Column(String(50), nullable=False)
+    description = Column(Text, nullable=False)
+    start_date = Column(DateTime, nullable=False)
+    end_date = Column(DateTime, nullable=False)
+    location = Column(Integer,ForeignKey('locations.id'), nullable=False)
+    cost = Column(Integer, nullable=False)
+    drop_in_open = Column(Boolean, nullable=False, default=False)
+    drop_in_fee = Column(Integer)
+    note = Column(String(255))
+    partial_attendance = Column(Boolean, nullable=False, default=False)
+    allow_assessments = Column(Boolean, nullable=False, default=False)
+
+    def has_space(self):
+        return True
+
+    @property
+    def days(self):
+        from database import db_session
+        return db_session.query(DBDay).filter(DBDay.course_id == self.id)
+
+
+
 class Registration(Base):
     __tablename__ = 'registrations'
 
@@ -139,6 +191,13 @@ class RegistrationCharge(Base):
 
 
 class RegistrationForm(object):
+    def attendance_options(field):
+        course = field.form.instance
+        options = [('both', 'Both ${cost}'.format(cost=course.cost))]
+        for day in course.days:
+            day_label = '{day} ${cost}'.format(day=day.name, cost=day.cost)
+            options.append((day.name.lower(), day_label))
+        return options
     fields = [
         ('first_name', 'First name'),
         ('last_name', 'Last name'),
@@ -146,7 +205,7 @@ class RegistrationForm(object):
         ('phone', 'Phone number'),
         ('referrer_name', 'Referrer\'s full name', {'required': False}),
         ('attendance', 'Days', {
-            'options': lambda field: [('both', 'Both ${cost}'.format(cost=field.form.instance.cost))] + [(day.name.lower(), '{day} ${cost}'.format(day=day.name, cost=day.cost)) for day in field.form.instance.days],
+            'options': attendance_options,
             'show_if': lambda field: field.form.instance.partial_attendance,
         }),
         ('assessments', 'Track your results with accountability assessments ($20)', {
