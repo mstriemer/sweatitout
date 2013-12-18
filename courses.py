@@ -1,5 +1,24 @@
 from models import Course
 
+new_year_2014 = Course(
+    slug="new-year-2014",
+    name="New Year's Resolution Bootcamp",
+    description="Kickstart your new year's resolution with Sweat It Out Fitness's bootcamp. Perfect for all fitness levels this dynamic class offers cardio, resistence training, circuits and plyometrics and is different each and every time. Our small class sizes ensure lots of individual attention from Personal Trainer Specialist Emily Striemer and CanFit Pro Personal Trainer Megan Friedheim. Challenge yourself, get in shape and start 2014 off sweaty!",
+    days=[
+        ("Mondays", "8:45", "9:45pm"),
+        ("Thursdays", "8:45", "9:45pm")
+    ],
+    start_date="January 6th",
+    end_date="February 13th, 2013",
+    location="Revive Fitness Sage Creek",
+    cost=110,
+    has_space=True,
+    map_image="/static/images/revive-fitness-sage-creek.png",
+    map_url="https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&ll=49.833886,-97.049017&spn=0.019432,0.045447&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=15&iwloc=A",
+    partial_attendance=False,
+    allow_assessments=True,
+)
+
 year_end_yoga_2013 = Course(
     slug="year-end-yoga-2013",
     name="Year-End Yoga Session",
@@ -264,7 +283,6 @@ boot_camp = Course(
         "https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&ll=49.833886,-97.049017&spn=0.019432,0.045447&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=15&iwloc=A",
         )
 
-current_courses = [year_end_bootcamp_2013, year_end_yoga_2013,  yoga_fall,
-        fall_bootcamp]
+current_courses = [new_year_2014, year_end_bootcamp_2013, year_end_yoga_2013]
 old_courses = [boot_camp]
 courses = current_courses + old_courses
