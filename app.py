@@ -7,7 +7,7 @@ from flask import Flask, render_template, request, redirect, session, abort
 from database import db_session
 
 from models import Course, Registration, RegistrationCharge, RegistrationForm
-from courses import courses, current_courses, old_courses
+from courses import all_courses, current_courses
 
 from auth import login_required
 
@@ -162,7 +162,7 @@ def currency_filter(currency):
     return '${:.2f} CAD'.format(currency)
 
 def find_course(slug):
-    for c in courses:
+    for c in all_courses:
         if c.slug == slug:
             return c
     raise ValueError('could not find course {}'.format(slug))

@@ -1,4 +1,5 @@
 import string
+from datetime import datetime
 from time import time
 
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean, func
@@ -50,6 +51,9 @@ class Course(object):
                 return day
         else:
             raise KeyError('{name} is not a valid day'.format(name=name))
+
+    def completed(self):
+        return parse_human_date(self.end_date) < datetime.today()
 
 
 class Day(object):
@@ -276,3 +280,17 @@ class FormField(object):
             return self.show_if(self)
         else:
             return True
+
+def parse_human_date(date_string):
+    suffices = ['st', 'nd', 'rd', 'th']
+    parsed = None
+    for suffix in suffices:
+        try:
+            parsed = datetime.strptime(date_string,
+                    '%B %d{suffix}, %Y'.format(suffix=suffix))
+            break
+        except ValueError:
+            pass
+    if parsed is None:
+        raise ValueError("could not parse {} to datetime".format(date_string))
+    return parsed
