@@ -1,8 +1,12 @@
-from __future__ import with_statement
 import os
+import sys
+
 from alembic import context
 from sqlalchemy import create_engine
 from logging.config import fileConfig
+
+# add the root path to the path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

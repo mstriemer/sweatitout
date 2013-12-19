@@ -1,13 +1,13 @@
-"""courses
+"""courses_and associations
 
-Revision ID: 15032f301b90
+Revision ID: 524ebc64d5b8
 Revises: f1ed1fb58bf
-Create Date: 2013-12-14 10:04:46.945226
+Create Date: 2013-12-18 22:34:41.178197
 
 """
 
 # revision identifiers, used by Alembic.
-revision = '15032f301b90'
+revision = '524ebc64d5b8'
 down_revision = 'f1ed1fb58bf'
 
 from alembic import op
@@ -20,6 +20,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('map_image', sa.String(length=255), nullable=False),
     sa.Column('map_url', sa.String(length=255), nullable=False),
+    sa.Column('name', sa.String(length=255), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('courses',
@@ -27,16 +28,16 @@ def upgrade():
     sa.Column('slug', sa.String(length=25), nullable=False),
     sa.Column('name', sa.String(length=50), nullable=False),
     sa.Column('description', sa.Text(), nullable=False),
-    sa.Column('start_date', sa.DateTime(), nullable=False),
-    sa.Column('end_date', sa.DateTime(), nullable=False),
-    sa.Column('location', sa.Integer(), nullable=False),
+    sa.Column('start_date', sa.Date(), nullable=False),
+    sa.Column('end_date', sa.Date(), nullable=False),
+    sa.Column('location_id', sa.Integer(), nullable=False),
     sa.Column('cost', sa.Integer(), nullable=False),
     sa.Column('drop_in_open', sa.Boolean(), nullable=False),
     sa.Column('drop_in_fee', sa.Integer(), nullable=True),
     sa.Column('note', sa.String(length=255), nullable=True),
     sa.Column('partial_attendance', sa.Boolean(), nullable=False),
     sa.Column('allow_assessments', sa.Boolean(), nullable=False),
-    sa.ForeignKeyConstraint(['location'], ['locations.id'], ),
+    sa.ForeignKeyConstraint(['location_id'], ['locations.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('days',
