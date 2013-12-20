@@ -285,4 +285,14 @@ all_courses.append(Course(
     "https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&ll=49.833886,-97.049017&spn=0.019432,0.045447&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=15&iwloc=A",
 ))
 
-current_courses = (course for course in all_courses if not course.completed())
+
+class CurrentCourseIterator(object):
+
+    def all_courses(self):
+        return all_courses
+
+    def __iter__(self):
+        return (course for course in self.all_courses()
+                       if not course.completed())
+
+current_courses = CurrentCourseIterator()
