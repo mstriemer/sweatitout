@@ -1,8 +1,8 @@
 import string
-from datetime import datetime
+from datetime import date
 from time import time
 
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, \
+from sqlalchemy import Column, Integer, String, DateTime, Date, ForeignKey, \
                        Boolean, Text, func
 from sqlalchemy.orm import relationship
 
@@ -54,7 +54,7 @@ class Course(object):
             raise KeyError('{name} is not a valid day'.format(name=name))
 
     def completed(self):
-        return parse_human_date(self.end_date) < datetime.today()
+        return self.end_date < date.today()
 
 
 class Day(object):
@@ -85,9 +85,10 @@ class Location(Base):
     id = Column(Integer, primary_key=True)
     map_image = Column(String(255), nullable=False)
     map_url = Column(String(255), nullable=False)
+    name = Column(String(255), nullable=False)
 
 
-class DBDay(Base):
+class CourseDay(Base):
     __tablename__ = 'days'
 
     id = Column(Integer, primary_key=True)
@@ -110,9 +111,11 @@ class DBCourse(Base):
     slug = Column(String(25), nullable=False)
     name = Column(String(50), nullable=False)
     description = Column(Text, nullable=False)
-    start_date = Column(DateTime, nullable=False)
-    end_date = Column(DateTime, nullable=False)
-    location = Column(Integer,ForeignKey('locations.id'), nullable=False)
+    start_date = Column(Date, nullable=False)
+    end_date = Column(Date, nullable=False)
+    location_id = Column(Integer, ForeignKey('locations.id'), nullable=False)
+    location = relationship('Location')
+    days = relationship('CourseDay', backref='course')
     cost = Column(Integer, nullable=False)
     drop_in_open = Column(Boolean, nullable=False, default=False)
     drop_in_fee = Column(Integer)
@@ -122,12 +125,6 @@ class DBCourse(Base):
 
     def has_space(self):
         return True
-
-    @property
-    def days(self):
-        from database import db_session
-        return db_session.query(DBDay).filter(DBDay.course_id == self.id)
-
 
 
 class Registration(Base):
@@ -339,17 +336,3 @@ class FormField(object):
             return self.show_if(self)
         else:
             return True
-
-def parse_human_date(date_string):
-    suffices = ['st', 'nd', 'rd', 'th']
-    parsed = None
-    for suffix in suffices:
-        try:
-            parsed = datetime.strptime(date_string,
-                    '%B %d{suffix}, %Y'.format(suffix=suffix))
-            break
-        except ValueError:
-            pass
-    if parsed is None:
-        raise ValueError("could not parse {} to datetime".format(date_string))
-    return parsed
