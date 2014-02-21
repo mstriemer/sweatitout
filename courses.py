@@ -5,7 +5,7 @@ all_courses = []
 all_courses.append(Course(
     slug="almost-spring-2014",
     name="Almost Spring Bootcamp",
-    description="Perfect for all fitness levels this dynamic class offers cardio, resistence training, circuits and plyometrics and is different each and every time. Our small class sizes ensure lots of individual attention from Personal Trainer Specialist Emily Striemer and CanFit Pro Personal Trainer Megan Friedheim. Challenge yourself, get in shape and start 2014 off sweaty!",
+    description="Perfect for all fitness levels this dynamic class offers cardio, resistence training, circuits and plyometrics and is different each and every time. Our small class sizes ensure lots of individual attention from Personal Trainer Specialist Emily Striemer. Challenge yourself, get in shape and start 2014 off sweaty!",
     days=[
         ("Mondays", "8:45", "9:45pm"),
         ("Thursdays", "8:45", "9:45pm")
