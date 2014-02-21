@@ -16,6 +16,11 @@
 <div class="courses">
     {% for course, form in courses %}
     {% include "course.html" %}
+    {% else %}
+    <p>
+        We aren't offering any classes right now, check back later to come get
+        sweaty with us!
+    </p>
     {% endfor %}
     {% if old_courses %}
     <hr>
