@@ -14,7 +14,7 @@ all_courses.append(Course(
     end_date="April 10th, 2014",
     location="Revive Fitness Sage Creek",
     cost=110,
-    has_space=True,
+    has_space=False,
     map_image="/static/images/revive-fitness-sage-creek.png",
     map_url="https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&ll=49.833886,-97.049017&spn=0.019432,0.045447&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=15&iwloc=A",
     partial_attendance=False,
