@@ -7,6 +7,8 @@ from sqlalchemy.orm import relationship
 
 from database import Base
 
+COURSE_SLUG_MAX_LENGTH = 25
+
 
 class Course(object):
     def __init__(self, slug=None, name=None, description=None, days=[],
@@ -14,6 +16,9 @@ class Course(object):
             has_space=None, map_image=None, map_url=None,
             drop_in_open=False, drop_in_fee=None, note=None,
             partial_attendance=False, allow_assessments=False):
+        if len(slug) > COURSE_SLUG_MAX_LENGTH:
+            raise ValueError('slug must be {length} characters or less'.format(
+                length=COURSE_SLUG_MAX_LENGTH))
         self.slug = slug
         self.name = name
         self.description = description
@@ -84,7 +89,7 @@ class Registration(Base):
     id = Column(Integer, primary_key=True)
     code = Column(String(10), nullable=False, default=_make_registration_code)
     registration_date = Column(DateTime, nullable=False, default=func.now())
-    course_slug = Column(String(25), nullable=False)
+    course_slug = Column(String(COURSE_SLUG_MAX_LENGTH), nullable=False)
     first_name = Column(String(50), nullable=False)
     last_name = Column(String(75), nullable=False)
     email = Column(String(255), nullable=False)
