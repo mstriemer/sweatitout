@@ -5292,8 +5292,6 @@ body.home {
   float: left;
   margin-left: 20px;
   width: 540px;
-  position: relative;
-  height: 230px;
 }
 .course-info-long .course-description .course-full {
   color: #ff60ad;
@@ -5301,12 +5299,6 @@ body.home {
 .course-info-long .course-description .course-drop-in,
 .course-info-long .course-description .course-note {
   color: #ff60ad;
-}
-.course-info-long .course-description .signup,
-.course-info-long .course-description .course-full {
-  position: absolute;
-  bottom: 0;
-  left: 0;
 }
 a {
   color: #01baef;
