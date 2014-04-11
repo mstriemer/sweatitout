@@ -13,7 +13,9 @@ def make_form(first_name="Bob", last_name="Smith",
         payment_type='in_person', course_slug="the-course",
         attendance='both', course=None, assessments='0', **kwargs):
     if course is None:
-        course = make_course(partial_attendance=True, allow_assessments=True)
+        course = make_course(slug='test-course',
+                             partial_attendance=True,
+                             allow_assessments=True)
     return RegistrationForm(
             first_name=first_name,
             last_name=last_name,
@@ -85,10 +87,12 @@ class TestRegistrationFormValid(unittest.TestCase):
         self.assertFalse(form.valid())
 
     def test_attendance_labels_are_helpful(self):
-        course = make_course(partial_attendance=True,
-                cost=125,
-                days=[('Tuesdays', '7:00', '8:00pm', 75),
-                      ('Thursdays', '7:00', '8:00pm', 28)])
+        course = make_course(
+            slug='attendance-course',
+            partial_attendance=True,
+            cost=125,
+            days=[('Tuesdays', '7:00', '8:00pm', 75),
+                    ('Thursdays', '7:00', '8:00pm', 28)])
         form = make_form(course=course)
         self.assertEqual(
             form.fields_by_name['attendance'].options,
@@ -163,6 +167,7 @@ class TestRegistrationFormSave(unittest.TestCase):
 class CourseTest(unittest.TestCase):
     def test_day(self):
         course = Course(
+            slug='day-course',
             days=[
                 ('Mondays', '7:00', '8:00pm'), ('Tuesdays', '3:00', '4:00pm')
             ]
