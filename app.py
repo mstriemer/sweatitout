@@ -7,7 +7,8 @@ from flask import Flask, render_template, request, redirect, session, abort
 from database import db_session
 
 from models import Course, Registration, RegistrationCharge, RegistrationForm
-from courses import all_courses, current_courses
+from courses import (active_courses, all_courses, current_courses,
+                     upcoming_courses)
 
 from auth import login_required
 
@@ -60,16 +61,21 @@ def index():
 def instructors():
     return render_template("instructors.html", page_title="Instructors")
 
-def render_group_fitness(course=None, form=None):
-    make_form = lambda c: RegistrationForm(course_slug=c.slug, instance=c)
-    courses = []
-    for c in current_courses:
-        if c == course:
-            courses.append((course, form))
+def render_group_fitness(active_course=None, active_form=None):
+    def make_form(course):
+        if course == active_course:
+            form = active_form
         else:
-            courses.append((c, make_form(c)))
-    return render_template("group_fitness.html", courses=courses,
-            page_title="Group Fitness")
+            form = RegistrationForm(course_slug=course.slug, instance=course)
+        return (course, form)
+
+    def make_forms(all_courses):
+        return [make_form(course) for course in all_courses]
+
+    return render_template("group_fitness.html",
+                           upcoming_courses=make_forms(upcoming_courses),
+                           active_courses=make_forms(active_courses),
+                           page_title="Group Fitness")
 
 @app.route("/group-fitness")
 def group_fitness():

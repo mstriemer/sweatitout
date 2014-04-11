@@ -58,7 +58,18 @@ class Course(object):
             raise KeyError('{name} is not a valid day'.format(name=name))
 
     def completed(self):
-        return parse_human_date(self.end_date) < datetime.today()
+        return self.end_datetime < datetime.today()
+
+    def upcoming(self):
+        return self.start_datetime > datetime.today()
+
+    @property
+    def end_datetime(self):
+        return parse_human_date(self.end_date)
+
+    @property
+    def start_datetime(self):
+        return parse_human_date(self.start_date, year_fallback=self.end_date)
 
 
 class Day(object):
@@ -286,9 +297,12 @@ class FormField(object):
         else:
             return True
 
-def parse_human_date(date_string):
+def parse_human_date(date_string, year_fallback=None):
     suffices = ['st', 'nd', 'rd', 'th']
     parsed = None
+    # If date_string doesn't have a year, use the year from year_fallback.
+    if ',' not in date_string and ',' in year_fallback:
+        date_string += ',' + year_fallback.split(',', 1)[1]
     for suffix in suffices:
         try:
             parsed = datetime.strptime(date_string,

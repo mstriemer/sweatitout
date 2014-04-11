@@ -13,21 +13,26 @@
     out!
 </div>
 
-<div class="courses">
-    {% for course, form in courses %}
-    {% include "course.html" %}
-    {% else %}
-    <p>
-        We aren't offering any classes right now, check back later to come get
-        sweaty with us!
-    </p>
-    {% endfor %}
-    {% if old_courses %}
-    <hr>
-    <h3>Previous Courses</h3>
-    {% for course in old_courses %}
-    {% include "course.html" %}
-    {% endfor %}
-    {% endif %}
-</div>
+{% if upcoming_courses %}
+    <div class="courses">
+        <h3>Upcoming Courses</h3>
+        {% for course, form in upcoming_courses %}
+        {% include "course.html" %}
+        {% endfor %}
+    </div>
+{% endif %}
+{% if active_courses %}
+    <div class="courses">
+        <h3>Current Courses</h3>
+        {% for course, form in active_courses %}
+        {% include "course.html" %}
+        {% endfor %}
+    </div>
+{% endif %}
+{% if not upcoming_courses and not active_courses %}
+<p>
+    We aren't offering any classes right now, check back later to come get
+    sweaty with us!
+</p>
+{% endif %}
 {% endblock %}

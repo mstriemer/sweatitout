@@ -366,11 +366,16 @@ all_courses.append(Course(
 
 class CurrentCourseIterator(object):
 
-    def all_courses(self):
-        return all_courses
+    def __init__(self, courses, predicate):
+        self.courses = courses
+        self.predicate = predicate
 
     def __iter__(self):
-        return (course for course in self.all_courses()
-                       if not course.completed())
+        return (course for course in self.courses if self.predicate(course))
 
-current_courses = CurrentCourseIterator()
+current_courses = CurrentCourseIterator(all_courses,
+                                        lambda c: not c.completed())
+upcoming_courses = CurrentCourseIterator(list(reversed(all_courses)),
+                                         lambda c: c.upcoming())
+active_courses = CurrentCourseIterator(
+    all_courses, lambda c: not c.completed() and not c.upcoming())
