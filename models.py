@@ -162,8 +162,14 @@ class RegistrationForm(object):
         ('phone', 'Phone number'),
         ('referrer_name', 'Referrer\'s full name', {'required': False}),
         ('attendance', 'Days', {
-            'options': lambda field: [('both', 'Both ${cost}'.format(cost=field.form.instance.cost))] + [(day.name.lower(), '{day} ${cost}'.format(day=day.name, cost=day.cost)) for day in field.form.instance.days],
+            'options': lambda field: [(day.name.lower(),
+                                       '{day}{cost}'.format(
+                                           day=day.name,
+                                           cost='$' + str(day.cost) if day.cost else ''))
+                                      for day in field.form.instance.days],
             'show_if': lambda field: field.form.instance.partial_attendance,
+            'multiple': True,
+            'help': 'Please select at least two days.',
         }),
         ('assessments', 'Track your results with accountability assessments ($20)', {
             'checkbox': True,
@@ -276,7 +282,8 @@ class RegistrationForm(object):
 
 class FormField(object):
     def __init__(self, form, name, description, value='', options=None,
-            show_if=None, required=True, checkbox=False):
+            show_if=None, required=True, checkbox=False, multiple=False,
+            help=None):
         self.form = form
         self.name = name
         self.description = description
@@ -286,6 +293,8 @@ class FormField(object):
         self.show_if = show_if
         self.errors = []
         self.required = required
+        self.multiple = multiple
+        self.help = help
         if self.checkbox:
             self.value = value == '1'
         else:

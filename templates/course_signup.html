@@ -11,6 +11,13 @@
         {% endif %}
         {% endfor %}
         {% for field in form.fields %}
+        {% if field.help %}
+            <div class="control-group">
+                <div class="controls">
+                    <span class="payment-help">{{ field.help }}</span>
+                </div>
+            </div>
+        {% endif %}
         <div class="control-group {{ field.name }}_field{% if field.errors %} error{% endif %}">
             {% if field.checkbox %}
                 <div class="controls">
@@ -25,8 +32,8 @@
                 <div class="controls">
                     {% if field.options %}
                         {% for name, description in field.options %}
-                        <label class="radio inline">
-                            <input value="{{ name }}"{% if field.value == name %} checked="checked"{% endif %} type="radio" name="{{ field.name }}">
+                        <label class="radio inline options">
+                            <input value="{{ name }}"{% if field.value == name %} checked="checked"{% endif %} type="{% if field.multiple %}checkbox{% else %}radio{% endif %}" name="{{ field.name }}">
                             {{ description }}
                         </label>
                         {% endfor %}
