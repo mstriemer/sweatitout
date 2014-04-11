@@ -3,6 +3,45 @@ from models import Course
 all_courses = []
 
 all_courses.append(Course(
+    slug="spring-bootcamp-2014-2",
+    name="Spring Bootcamp #2",
+    description="Perfect for all fitness levels this dynamic class offers cardio, resistence training, circuits and plyometrics and is different each and every time. Our small class sizes ensure lots of individual attention from Personal Trainer Specialist Emily Striemer and Certified Personal Trainer Jenna Hobson. Challenge yourself, get in shape and get sweaty!",
+    days=[
+        ("Tuesdays", "8:45", "9:45pm"),
+        ("Wednesdays", "8:45", "9:45pm")
+    ],
+    start_date="May 13th",
+    end_date="June 18th, 2014",
+    location="Revive Fitness Sage Creek",
+    cost=110,
+    has_space=True,
+    map_image="/static/images/revive-fitness-sage-creek.png",
+    map_url="https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&ll=49.833886,-97.049017&spn=0.019432,0.045447&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=15&iwloc=A",
+    partial_attendance=False,
+    allow_assessments=True,
+))
+
+all_courses.append(Course(
+    slug="spring-bootcamp-2014-1",
+    name="Spring Bootcamp #1",
+    description="Perfect for all fitness levels this dynamic class offers cardio, resistence training, circuits and plyometrics and is different each and every time. Our small class sizes ensure lots of individual attention from Personal Trainer Specialist Emily Striemer and Certified Personal Trainer Jenna Hobson. Challenge yourself, get in shape and get sweaty!",
+    days=[
+        ("Mondays", "8:45", "9:45pm"),
+        ("Thursdays", "8:45", "9:45pm")
+    ],
+    start_date="April 21st",
+    end_date="May 29th, 2014",
+    location="Revive Fitness Sage Creek",
+    cost=110,
+    has_space=True,
+    map_image="/static/images/revive-fitness-sage-creek.png",
+    map_url="https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&ll=49.833886,-97.049017&spn=0.019432,0.045447&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=15&iwloc=A",
+    partial_attendance=False,
+    allow_assessments=True,
+    note="Please note: classes on April 24th, 28th and May 1st will be taught by guest instructor, Certified Personal Trainer and Kinesiology Masters student Travis Hrubeniuk.",
+))
+
+all_courses.append(Course(
     slug="rise-and-shine-2014",
     name="Rise and Shine Yoga",
     description="Greet the morning and wake your body and mind with Rise and Shine Yoga. <abbr title='Manitoba Fitness Council'>MFC</abbr> Certified yoga instructor Emily will take you through 60 minutes of Hatha yoga, incorporating breathing, stretching, muscle work and relaxation. Perfect for first timers and long timers alike, Rise and Shine Yoga will leave you with strength and zen to take on your weekend.",
