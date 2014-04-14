@@ -3,7 +3,7 @@ import unittest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from models import RegistrationForm, Base, Course
+from models import RegistrationForm, Base, Course, CombinedDay
 
 def make_course(**kwargs):
     return Course(**kwargs)
@@ -11,9 +11,10 @@ def make_course(**kwargs):
 def make_form(first_name="Bob", last_name="Smith",
         email="bob.smith@gmail.com", phone="204-555-1234",
         payment_type='in_person', course_slug="the-course",
-        attendance='both', course=None, assessments='0', **kwargs):
+        attendance=['tuesdays'], course=None, assessments='0', **kwargs):
     if course is None:
         course = make_course(slug='test-course',
+                             days=[('Tuesdays', '8:45', '9:45pm')],
                              partial_attendance=True,
                              allow_assessments=True)
     return RegistrationForm(
@@ -92,16 +93,26 @@ class TestRegistrationFormValid(unittest.TestCase):
             partial_attendance=True,
             cost=125,
             days=[('Tuesdays', '7:00', '8:00pm', 75),
-                    ('Thursdays', '7:00', '8:00pm', 28)])
+                  ('Thursdays', '7:00', '8:00pm', 28)])
         form = make_form(course=course)
         self.assertEqual(
             form.fields_by_name['attendance'].options,
             [
-                ('both', 'Both $125'),
                 ('tuesdays', 'Tuesdays $75'),
                 ('thursdays', 'Thursdays $28'),
             ]
         )
+
+    def test_attendance_builds_a_string(self):
+        course = make_course(
+            slug='attendance-course',
+            partial_attendance=True,
+            cost=125,
+            days=[('Tuesdays', '7:00', '8:00pm', 75),
+                  ('Thursdays', '7:00', '8:00pm', 28)])
+        form = make_form(course=course, attendance=['tuesdays', 'thursdays'])
+        registration = form.build()
+        self.assertEqual(registration.attendance, 'tues,thur')
 
     def test_invalid_options_are_not_allowed(self):
         form = make_form(payment_type='none')
@@ -164,7 +175,7 @@ class TestRegistrationFormSave(unittest.TestCase):
         self.assertEqual(reg.assessments, True)
 
 
-class CourseTest(unittest.TestCase):
+class TestCourse(unittest.TestCase):
     def test_day(self):
         course = Course(
             slug='day-course',
@@ -175,6 +186,15 @@ class CourseTest(unittest.TestCase):
         self.assertEqual(course.day('mondays'), course.days[0])
         self.assertEqual(course.day('Tuesdays'), course.days[1])
         self.assertRaises(KeyError, lambda: course.day('Saturdays'))
+
+    def test_day_multiple(self):
+        course = Course(slug='days-course',
+                        days=[
+                            ('Mondays', '7:00', '8:00pm'),
+                            ('Tuesdays', '3:00', '4:00pm'),
+                        ])
+        combined_day = CombinedDay(course.days)
+        self.assertEqual(course.day('mond,tues'), combined_day)
 
 
 if __name__ == '__main__':

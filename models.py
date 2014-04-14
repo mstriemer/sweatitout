@@ -51,11 +51,15 @@ class Course(object):
         return True
 
     def day(self, name):
-        for day in self.days:
-            if day.name.lower() == name.lower():
-                return day
+        if ',' in name:
+            day_parts = name.split(',')
+            return CombinedDay(self.day(day) for day in day_parts)
         else:
-            raise KeyError('{name} is not a valid day'.format(name=name))
+            for day in self.days:
+                if day.name.lower().startswith(name.lower()):
+                    return day
+            else:
+                raise KeyError('{name} is not a valid day'.format(name=name))
 
     def completed(self):
         return self.end_datetime < datetime.today()
@@ -82,6 +86,18 @@ class Day(object):
     def same_time_as(self, other):
         return (self.start_time == other.start_time and
                 self.end_time == other.end_time)
+
+    def __eq__(self, other):
+        return (isinstance(other, Day) and other.name == self.name and
+                self.same_time_as(other) and other.cost == self.cost)
+
+
+class CombinedDay(object):
+    def __init__(self, days):
+        self.days = days
+
+    def __eq__(self, other):
+        return isinstance(other, CombinedDay) and other.days == self.days
 
 def _make_registration_code(context):
     row_seed = ''
@@ -162,14 +178,16 @@ class RegistrationForm(object):
         ('phone', 'Phone number'),
         ('referrer_name', 'Referrer\'s full name', {'required': False}),
         ('attendance', 'Days', {
-            'options': lambda field: [(day.name.lower(),
-                                       '{day}{cost}'.format(
-                                           day=day.name,
-                                           cost='$' + str(day.cost) if day.cost else ''))
-                                      for day in field.form.instance.days],
+            'options': lambda field: [
+                (day.name.lower(),
+                 '{day}{cost}'.format(
+                     day=day.name,
+                     cost=' $' + str(day.cost) if day.cost else ''))
+                 for day in field.form.instance.days],
             'show_if': lambda field: field.form.instance.partial_attendance,
             'multiple': True,
             'help': 'Please select at least two days.',
+            'db_serializer': lambda days: ','.join(day[:4] for day in days),
         }),
         ('assessments', 'Track your results with accountability assessments ($20)', {
             'checkbox': True,
@@ -231,7 +249,7 @@ class RegistrationForm(object):
     def build(self):
         if not self.valid():
             raise ValueError('form is invalid')
-        return Registration(**{f.name: f.value for f in self.all_fields})
+        return Registration(**{f.name: f.db_value() for f in self.all_fields})
 
     def _validate_presence(self, field):
         form_field = self.fields_by_name[field]
@@ -274,8 +292,15 @@ class RegistrationForm(object):
     def _validate_options(self, field):
         form_field = self.fields_by_name[field]
         if form_field.show():
-            field_valid = form_field.value in form_field.valid_options
-            if not field_valid:
+            if form_field.multiple:
+                if form_field.value:
+                    field_valid = all(value in form_field.valid_options
+                                    for value in form_field.value)
+                else:
+                    field_valid = False
+            else:
+                field_valid = form_field.value in form_field.valid_options
+            if not field_valid or not form_field.value:
                 form_field.errors.append('not a valid option')
             self._valid = self._valid and field_valid
 
@@ -283,7 +308,7 @@ class RegistrationForm(object):
 class FormField(object):
     def __init__(self, form, name, description, value='', options=None,
             show_if=None, required=True, checkbox=False, multiple=False,
-            help=None):
+            help=None, db_serializer=None):
         self.form = form
         self.name = name
         self.description = description
@@ -295,6 +320,7 @@ class FormField(object):
         self.required = required
         self.multiple = multiple
         self.help = help
+        self.db_serializer = db_serializer
         if self.checkbox:
             self.value = value == '1'
         else:
@@ -305,6 +331,21 @@ class FormField(object):
             return self.show_if(self)
         else:
             return True
+
+    def selected(self, value):
+        if self.multiple:
+            if self.value:
+                return value in self.value
+            else:
+                return False
+        else:
+            return value == self.value
+
+    def db_value(self):
+        if self.db_serializer:
+            return self.db_serializer(self.value)
+        else:
+            return self.value
 
 def parse_human_date(date_string, year_fallback=None):
     suffices = ['st', 'nd', 'rd', 'th']

@@ -32,12 +32,14 @@
                 <div class="controls">
                     {% if field.options %}
                         {% for name, description in field.options %}
-                        <label class="radio inline options">
-                            <input value="{{ name }}"{% if field.value == name %} checked="checked"{% endif %} type="{% if field.multiple %}checkbox{% else %}radio{% endif %}" name="{{ field.name }}">
+                        <label class="radio inline{% if field.multiple %} checkbox{% endif %}">
+                            <input value="{{ name }}"{% if field.selected(name) %} checked="checked"{% endif %} type="{% if field.multiple %}checkbox{% else %}radio{% endif %}" name="{{ field.name }}">
                             {{ description }}
                         </label>
                         {% endfor %}
-                        <input type="hidden" name="{{ field.name }}" value="">
+                        {% if not field.multiple %}
+                            <input type="hidden" name="{{ field.name }}" value="">
+                        {% endif %}
                     {% else %}
                         <input value="{{ field.value }}" type="text" name="{{ field.name }}">
                     {% endif %}

@@ -91,9 +91,6 @@ def sign_up(slug):
         course = find_course(slug)
     except ValueError:
         return abort(404)
-    import pdb;pdb.set_trace()
-    attendance = ','.join(d[:3]
-                          for d in request.values.getlist('attendance') if d)
     form = RegistrationForm(
             course_slug=course.slug,
             first_name=request.form['first_name'],
@@ -102,7 +99,7 @@ def sign_up(slug):
             phone=request.form['phone'],
             payment_type=request.form.get('payment_type', ''),
             paypal_email=request.form.get('paypal_email', ''),
-            attendance=attendance,
+            attendance=request.values.getlist('attendance'),
             referrer_name=request.form.get('referrer_name', ''),
             assessments=request.form.get('assessments', ''),
             instance=course,
