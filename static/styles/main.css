@@ -5258,6 +5258,9 @@ body.home {
 .courses {
   padding-top: 20px;
 }
+.courses h3 {
+  border-bottom: 1px solid #eeeeee;
+}
 .course-info .course-name {
   font-size: 30px;
   font-weight: bold;
@@ -5287,6 +5290,10 @@ body.home {
   float: left;
   margin-left: 20px;
   width: 380px;
+  text-align: right;
+}
+.course-info-long .course-map a {
+  text-align: left;
 }
 .course-info-long .course-description {
   float: left;
