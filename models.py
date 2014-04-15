@@ -87,14 +87,18 @@ class Day(object):
         return (self.start_time == other.start_time and
                 self.end_time == other.end_time)
 
-    def __eq__(self, other):
-        return (isinstance(other, Day) and other.name == self.name and
-                self.same_time_as(other) and other.cost == self.cost)
-
 
 class CombinedDay(object):
     def __init__(self, days):
-        self.days = days
+        self.days = list(days)
+
+    @property
+    def cost(self):
+        return sum(day.cost for day in self.days)
+
+    @property
+    def name(self):
+        return ', '.join(day.name for day in self.days)
 
     def __eq__(self, other):
         return isinstance(other, CombinedDay) and other.days == self.days
@@ -137,6 +141,10 @@ class Registration(Base):
             'in_person': "In person",
             'stripe': "Stripe",
         }[self.payment_type]
+
+    @property
+    def day(self):
+        return self.course.day(self.attendance)
 
     def __str__(self):
         template = (

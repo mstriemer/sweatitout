@@ -120,6 +120,7 @@ def thank_you():
         registration = db_session.query(Registration).filter_by(
                 id=session['registration_id']).one()
         course = find_course(registration.course_slug)
+        registration.course = course
         del session['registration_id']
         return render_template("thank_you.html", registration=registration,
                 course=course, page_title="Thank You")
