@@ -3,6 +3,40 @@ from models import Course
 all_courses = []
 
 all_courses.append(Course(
+    slug="saturday-bootcamp-2014-1",
+    name="Saturday Outdoor Bootcamp",
+    description="Perfect for all fitness levels this dynamic class offers cardio, resistence training, circuits and plyometrics and is different each and every time. Our small class sizes ensure lots of individual attention from Personal Trainer Specialist Emily Striemer and Certified Personal Trainer Jenna Hobson. Challenge yourself, get in shape and get sweaty!",
+    days=[
+        ("Saturdays", "9:00", "10:00am"),
+    ],
+    start_date="June 7th",
+    end_date="July 5th, 2014",
+    cost=50,
+    has_space=True,
+    location="Blue Lake Park",
+    map_image="/static/images/blue-lake-park.jpg",
+    map_url="http://maps.google.ca/maps?ie=UTF8&q=blue+lake+park+winnipeg&fb=1&gl=ca&hq=blue+lake+park+winnipeg&hnear=blue+lake+park+winnipeg&cid=8741893315126836065&ll=49.813398,-97.159352&spn=0.00972,0.022702&t=m&z=16&vpsrc=0&iwloc=A",
+    note="Save $10 if you also sign up for Tuesdays and Thursdays!",
+))
+
+all_courses.append(Course(
+    slug="outdoor-bootcamp-2014",
+    name="Outdoor Spring Bootcamp",
+    description="Perfect for all fitness levels this dynamic class offers cardio, resistence training, circuits and plyometrics and is different each and every time. Our small class sizes ensure lots of individual attention from Personal Trainer Specialist Emily Striemer and Certified Personal Trainer Jenna Hobson. Challenge yourself, get in shape and get sweaty!",
+    days=[
+        ("Tuesdays", "7:30", "8:30pm"),
+        ("Thursdays", "7:30", "8:30pm"),
+    ],
+    start_date="June 3rd",
+    end_date="July 10th, 2014",
+    cost=110,
+    has_space=True,
+    location="Edgewood Park",
+    map_image="/static/images/edgewood-park.jpg",
+    map_url="http://maps.google.ca/maps?f=q&source=s_q&hl=en&geocode=&q=49.844691,+-97.068383&aq=&sll=49.853822,-97.152225&sspn=0.621562,1.452942&vpsrc=0&ie=UTF8&t=m&z=16&iwloc=A",
+))
+
+all_courses.append(Course(
     slug="spring-bootcamp-2014-2",
     name="Spring Bootcamp #2",
     description="Perfect for all fitness levels this dynamic class offers cardio, resistence training, circuits and plyometrics and is different each and every time. Our small class sizes ensure lots of individual attention from Personal Trainer Specialist Emily Striemer and Certified Personal Trainer Jenna Hobson. Challenge yourself, get in shape and get sweaty!",
