@@ -151,10 +151,17 @@ body.home {
 
 .instructors {
     .makeRow();
+    h1 {
+        text-align: center;
+        padding: 20px 0 0 10px;
+    }
+}
+.instructors:first-of-type h1 {
+    padding-top: 0;
 }
 
 .instructor {
-    .makeColumn(4);
+    .makeColumn(6);
     h2 {
         text-align: center;
     }
@@ -168,6 +175,10 @@ body.home {
             float: right;
         }
     }
+}
+
+.instructor-single {
+    .makeColumn(6, 3);
 }
 
 .instructor-photo {

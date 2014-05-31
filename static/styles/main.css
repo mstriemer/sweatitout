@@ -5235,10 +5235,17 @@ body.home {
 .instructors:after {
   clear: both;
 }
+.instructors h1 {
+  text-align: center;
+  padding: 20px 0 0 10px;
+}
+.instructors:first-of-type h1 {
+  padding-top: 0;
+}
 .instructor {
   float: left;
   margin-left: 20px;
-  width: 300px;
+  width: 460px;
 }
 .instructor h2 {
   text-align: center;
@@ -5249,6 +5256,11 @@ body.home {
 }
 .instructor .book-consultation .btn {
   float: right;
+}
+.instructor-single {
+  float: left;
+  margin-left: 260px;
+  width: 460px;
 }
 .instructor-photo {
   width: 100%;
