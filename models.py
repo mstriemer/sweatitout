@@ -2,7 +2,8 @@ import string
 from datetime import datetime
 from time import time
 
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean, func
+from sqlalchemy import (Column, Integer, String, DateTime, ForeignKey, Boolean,
+                        func)
 from sqlalchemy.orm import relationship
 
 from database import Base
@@ -12,10 +13,10 @@ COURSE_SLUG_MAX_LENGTH = 25
 
 class Course(object):
     def __init__(self, slug=None, name=None, description=None, days=[],
-            start_date=None, end_date=None, location=None, cost=None,
-            has_space=None, map_image=None, map_url=None,
-            drop_in_open=False, drop_in_fee=None, note=None,
-            partial_attendance=False, allow_assessments=False):
+                 start_date=None, end_date=None, location=None, cost=None,
+                 has_space=None, map_image=None, map_url=None,
+                 drop_in_open=False, drop_in_fee=None, note=None,
+                 partial_attendance=False, allow_assessments=False):
         if len(slug) > COURSE_SLUG_MAX_LENGTH:
             raise ValueError('slug must be {length} characters or less'.format(
                 length=COURSE_SLUG_MAX_LENGTH))
@@ -83,6 +84,7 @@ class Day(object):
         return (self.start_time == other.start_time and
                 self.end_time == other.end_time)
 
+
 def _make_registration_code(context):
     row_seed = ''
     row_seed += context.current_parameters['first_name']
@@ -109,7 +111,7 @@ class Registration(Base):
     paypal_email = Column(String(255))
     stripe_card_token = Column(String(255))
     registration_charge = relationship("RegistrationCharge", uselist=False,
-            backref="registration")
+                                       backref="registration")
     attendance = Column(String(25), nullable=False, default='both')
     referrer_name = Column(String(255))
     assessments = Column(Boolean, nullable=False, default=False)
@@ -124,14 +126,13 @@ class Registration(Base):
 
     def __str__(self):
         template = (
-                "{course_slug}: "
-                "{first_name} {last_name} ({email}) - "
-                "{payment_type}"
-                )
+            "{course_slug}: "
+            "{first_name} {last_name} ({email}) - "
+            "{payment_type}")
         return template.format(
-                course_slug=self.course_slug, first_name=self.first_name,
-                last_name=self.last_name, payment_type=self.payment_type,
-                email=self.email)
+            course_slug=self.course_slug, first_name=self.first_name,
+            last_name=self.last_name, payment_type=self.payment_type,
+            email=self.email)
 
     def __repr__(self):
         return "<Registration: " + str(self) + ">"
@@ -142,7 +143,7 @@ class RegistrationCharge(Base):
 
     id = Column(Integer, primary_key=True)
     registration_id = Column(Integer, ForeignKey('registrations.id'),
-            nullable=False)
+                             nullable=False)
     stripe_charge_token = Column(String(255))
     paid = Column(Boolean, nullable=False)
     last4 = Column(String(4))
@@ -154,6 +155,13 @@ class RegistrationCharge(Base):
     error_code = Column(String(30))
 
 
+def attendance_options(field):
+    return ([('both', 'Both ${cost}'.format(cost=field.form.instance.cost))] +
+            [(day.name.lower(), '{day} ${cost}'.format(day=day.name,
+                                                       cost=day.cost))
+             for day in field.form.instance.days])
+
+
 class RegistrationForm(object):
     fields = [
         ('first_name', 'First name'),
@@ -162,13 +170,15 @@ class RegistrationForm(object):
         ('phone', 'Phone number'),
         ('referrer_name', 'Referrer\'s full name', {'required': False}),
         ('attendance', 'Days', {
-            'options': lambda field: [('both', 'Both ${cost}'.format(cost=field.form.instance.cost))] + [(day.name.lower(), '{day} ${cost}'.format(day=day.name, cost=day.cost)) for day in field.form.instance.days],
+            'options': attendance_options,
             'show_if': lambda field: field.form.instance.partial_attendance,
         }),
-        ('assessments', 'Track your results with accountability assessments ($20)', {
-            'checkbox': True,
-            'show_if': lambda field: field.form.instance.allow_assessments,
-        }),
+        ('assessments',
+         'Track your results with accountability assessments ($20)',
+         {
+             'checkbox': True,
+             'show_if': lambda field: field.form.instance.allow_assessments,
+         }),
         ('payment_type', 'Payment type', {
             'options': [
                 ['paypal', 'PayPal'],
@@ -192,7 +202,7 @@ class RegistrationForm(object):
         for field in _fields:
             extra = field[2] if len(field) > 2 else {}
             form_field = FormField(self, field[0], field[1],
-                    kwargs.get(field[0], ''), **extra)
+                                   kwargs.get(field[0], ''), **extra)
             if form_field.show():
                 self.fields.append(form_field)
             self.fields_by_name[field[0]] = form_field
@@ -200,11 +210,10 @@ class RegistrationForm(object):
         self.hidden_fields = []
         for field in _hidden_fields:
             form_field = FormField(self, field[0], field[1],
-                    kwargs.get(field[0], ''))
+                                   kwargs.get(field[0], ''))
             self.hidden_fields.append(form_field)
             self.fields_by_name[field[0]] = form_field
         self.all_fields = self.hidden_fields + self.fields
-
 
     def valid(self):
         presence = ['first_name', 'last_name', 'email', 'phone']
@@ -238,16 +247,16 @@ class RegistrationForm(object):
         form_field = self.fields_by_name[field]
         email = form_field.value
         field_valid = (
-                # there can only be one '@'
-                len(email.split('@')) == 2 and
-                # there needs to be a username before the '@'
-                bool(email.split('@')[0]) and
-                # there needs to be a '.' to split the domain and the TLD
-                '.' in email.split('@')[-1] and
-                # there needs to be a domain
-                bool(email.split('@')[-1].split('.')[0]) and
-                # there needs to be a TLD
-                bool(email.split('.')[-1]))
+            # there can only be one '@'
+            len(email.split('@')) == 2 and
+            # there needs to be a username before the '@'
+            bool(email.split('@')[0]) and
+            # there needs to be a '.' to split the domain and the TLD
+            '.' in email.split('@')[-1] and
+            # there needs to be a domain
+            bool(email.split('@')[-1].split('.')[0]) and
+            # there needs to be a TLD
+            bool(email.split('.')[-1]))
         if not field_valid:
             form_field.errors.append('not a valid email')
         self._valid = self._valid and field_valid
@@ -276,7 +285,7 @@ class RegistrationForm(object):
 
 class FormField(object):
     def __init__(self, form, name, description, value='', options=None,
-            show_if=None, required=True, checkbox=False):
+                 show_if=None, required=True, checkbox=False):
         self.form = form
         self.name = name
         self.description = description
@@ -297,6 +306,7 @@ class FormField(object):
         else:
             return True
 
+
 def parse_human_date(date_string, year_fallback=None):
     suffices = ['st', 'nd', 'rd', 'th']
     parsed = None
@@ -305,8 +315,8 @@ def parse_human_date(date_string, year_fallback=None):
         date_string += ',' + year_fallback.split(',', 1)[1]
     for suffix in suffices:
         try:
-            parsed = datetime.strptime(date_string,
-                    '%B %d{suffix}, %Y'.format(suffix=suffix))
+            parsed = datetime.strptime(
+                date_string, '%B %d{suffix}, %Y'.format(suffix=suffix))
             break
         except ValueError:
             pass

@@ -1,19 +1,18 @@
 import os
-from datetime import datetime
 from functools import wraps
 
 from flask import Flask, render_template, request, redirect, session, abort
 
 from database import db_session
 
-from models import Course, Registration, RegistrationCharge, RegistrationForm
-from courses import (active_courses, all_courses, current_courses,
-                     upcoming_courses)
+from models import Registration, RegistrationForm
+from courses import (active_courses, all_courses, upcoming_courses)
 
 from auth import login_required
 
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+
 
 # From https://github.com/kennethreitz/flask-sslify/blob/master/flask_sslify.py
 def https_required(f):
@@ -40,13 +39,13 @@ if production_env:
     import logging
     from logging.handlers import SMTPHandler
     mail_handler = SMTPHandler(
-            ('smtp.gmail.com', 587),
-            'admin@sweatitoutfit.com',
-            ADMINS,
-            '[Sweat It Out][Error] An Error Occurred',
-            ('admin@sweatitoutfit.com', os.environ['ERROR_SMTP_PASSWORD']),
-            ()
-        )
+        ('smtp.gmail.com', 587),
+        'admin@sweatitoutfit.com',
+        ADMINS,
+        '[Sweat It Out][Error] An Error Occurred',
+        ('admin@sweatitoutfit.com', os.environ['ERROR_SMTP_PASSWORD']),
+        ()
+    )
     mail_handler.setLevel(logging.ERROR)
     app.logger.addHandler(mail_handler)
 else:
@@ -57,9 +56,11 @@ else:
 def index():
     return render_template("index.html")
 
+
 @app.route("/instructors")
 def instructors():
     return render_template("instructors.html", page_title="Instructors")
+
 
 def render_group_fitness(active_course=None, active_form=None):
     def make_form(course):
@@ -77,13 +78,16 @@ def render_group_fitness(active_course=None, active_form=None):
                            active_courses=make_forms(active_courses),
                            page_title="Group Fitness")
 
+
 @app.route("/group-fitness")
 def group_fitness():
     return render_group_fitness()
 
+
 @app.route("/group-fitness/<slug>/register")
 def redirect_to_group_fitness(slug):
     return redirect("/group-fitness")
+
 
 @app.route("/group-fitness/<slug>/register", methods=["POST"])
 def sign_up(slug):
@@ -92,17 +96,17 @@ def sign_up(slug):
     except ValueError:
         return abort(404)
     form = RegistrationForm(
-            course_slug=course.slug,
-            first_name=request.form['first_name'],
-            last_name=request.form['last_name'],
-            email=request.form['email'],
-            phone=request.form['phone'],
-            payment_type=request.form.get('payment_type', ''),
-            paypal_email=request.form.get('paypal_email', ''),
-            attendance=request.form.get('attendance', ''),
-            referrer_name=request.form.get('referrer_name', ''),
-            assessments=request.form.get('assessments', ''),
-            instance=course,
+        course_slug=course.slug,
+        first_name=request.form['first_name'],
+        last_name=request.form['last_name'],
+        email=request.form['email'],
+        phone=request.form['phone'],
+        payment_type=request.form.get('payment_type', ''),
+        paypal_email=request.form.get('paypal_email', ''),
+        attendance=request.form.get('attendance', ''),
+        referrer_name=request.form.get('referrer_name', ''),
+        assessments=request.form.get('assessments', ''),
+        instance=course,
     )
     if form.valid():
         registration = form.build()
@@ -114,17 +118,19 @@ def sign_up(slug):
         form.active = True
         return render_group_fitness(course, form)
 
+
 @app.route("/thank-you")
 def thank_you():
     if 'registration_id' in session:
         registration = db_session.query(Registration).filter_by(
-                id=session['registration_id']).one()
+            id=session['registration_id']).one()
         course = find_course(registration.course_slug)
         del session['registration_id']
         return render_template("thank_you.html", registration=registration,
-                course=course, page_title="Thank You")
+                               course=course, page_title="Thank You")
     else:
         return redirect("/group-fitness")
+
 
 @app.route("/registrations")
 @https_required
@@ -134,22 +140,27 @@ def registrations():
     registrations = registrations.order_by('registration_date DESC').all()
     return render_template("registrations.html", registrations=registrations)
 
+
 @app.route("/explode-all-pretty-like")
 def explode_all_pretty_like():
     raise TestError("This error was triggered manually")
 
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html', page_title="Hmmmmm"), 404
+
 
 @app.errorhandler(500)
 def page_not_found(e):
     return render_template('500.html', page_title="Uh oh"), 500
 
 
+
 @app.teardown_request
 def shutdown_session(exception=None):
         db_session.remove()
+
 
 @app.context_processor
 def inject_globals():
@@ -163,9 +174,11 @@ def inject_globals():
         'debug': app.debug,
     }
 
+
 @app.template_filter('currency')
 def currency_filter(currency):
     return '${:.2f} CAD'.format(currency)
+
 
 def find_course(slug):
     for c in all_courses:
