@@ -3,6 +3,57 @@ from models import Course
 all_courses = []
 
 all_courses.append(Course(
+    slug="rise-and-shine-fall-2014",
+    name="Rise and Shine Yoga",
+    description="""
+        Greet the morning and wake your body and mind with Rise and Shine Yoga.
+        Jenna will take you through 60 minutes of Hatha yoga, incorporating
+        breathing, stretching, muscle work and relaxation. Perfect for first
+        timers and long timers alike, Rise and Shine Yoga will leave you with
+        strength and zen to take on your weekend.<br>
+        <br>
+        <strong>Add 30 minutes of guided meditation on to the end of every
+        class for only $20!</strong>
+    """,
+    days=[
+        ("Saturdays", "8:15", "9:15am"),
+    ],
+    start_date="September 27th",
+    end_date="November 1st, 2014",
+    cost=80,
+    has_space=True,
+    location="Revive Fitness Sage Creek",
+    map_image="/static/images/revive-fitness-sage-creek.png",
+    map_url="https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&ll=49.833886,-97.049017&spn=0.019432,0.045447&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=15&iwloc=A",
+    note="Classes will move to the new Revive Fitness St. Anne's at 468 St. Anne's Road in mid-October.",
+))
+
+all_courses.append(Course(
+    slug="fall-back-bootcamp",
+    name="Fall Back to Fitness Bootcamp",
+    description="""
+        Perfect for all fitness levels this dynamic class offers cardio,
+        resistence training, circuits and plyometrics and is different each and
+        every time. Our small class sizes ensure lots of individual attention
+        from our newest instructor Nadine. Challenge yourself, get in shape and
+        get sweaty!
+    """,
+    days=[
+        ("Mondays", "8:45", "9:45pm"),
+        ("Thursdays", "8:45", "9:45pm"),
+    ],
+    start_date="September 22nd",
+    end_date="October 30th, 2014",
+    cost=110,
+    has_space=True,
+    location="Revive Fitness Sage Creek",
+    map_image="/static/images/revive-fitness-sage-creek.png",
+    map_url="https://maps.google.ca/maps?q=Revive+Fitness+Sage+Creek&hl=en&ll=49.833886,-97.049017&spn=0.019432,0.045447&sll=49.83444,-97.1521&sspn=0.621812,1.454315&hq=Revive+Fitness+Sage+Creek&t=m&z=15&iwloc=A",
+    allow_assessments=True,
+    note="Classes will move to the new Revive Fitness St. Anne's at 468 St. Anne's Road in mid-October.",
+))
+
+all_courses.append(Course(
     slug="saturday-bootcamp-2014-1",
     name="Saturday Outdoor Bootcamp",
     description="Perfect for all fitness levels this dynamic class offers cardio, resistence training, circuits and plyometrics and is different each and every time. Our small class sizes ensure lots of individual attention from Personal Trainer Specialist Emily Striemer and Certified Personal Trainer Jenna Hobson. Challenge yourself, get in shape and get sweaty!",
