@@ -11,6 +11,6 @@ newrelic==1.8.0.13
 nose==1.2.1
 psycopg2==2.4.5
 python-termstyle==0.1.10
-rednose==0.3.3
+rednose==0.4.1
 requests==0.14.2
 wsgiref==0.1.2
