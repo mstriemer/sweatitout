@@ -3,6 +3,29 @@ from models import Course
 all_courses = []
 
 all_courses.append(Course(
+    slug="fall-bootcamp-st-vital",
+    name="Fall Back to Fitness Bootcamp",
+    description="""
+        Perfect for all fitness levels this dynamic class offers cardio,
+        resistence training, circuits and plyometrics and is different each and
+        every time. Our small class sizes ensure lots of individual attention
+        from our newest instructor Nadine. Challenge yourself, get in shape and
+        get sweaty!
+    """,
+    days=[
+        ("Mondays", "8:45", "9:45pm"),
+        ("Thursdays", "8:45", "9:45pm"),
+    ],
+    start_date="November 3rd",
+    end_date="December 11th, 2014",
+    cost=110,
+    has_space=True,
+    location="Revive Fitness St Vital",
+    map_embed_url="https://www.google.com/maps/embed/v1/place?q=468%20St%20Anne's%20Rd%2C%20Winnipeg%2C%20MB%2C%20Canada&key=AIzaSyAeHWzO8g1Cs7qWZu9Z1eNheQPazYk7zQY",
+    allow_assessments=True,
+))
+
+all_courses.append(Course(
     slug="fall-back-bootcamp",
     name="Fall Back to Fitness Bootcamp",
     description="""

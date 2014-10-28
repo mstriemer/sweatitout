@@ -15,8 +15,8 @@ class Course(object):
     def __init__(self, slug=None, name=None, description=None, days=[],
                  start_date=None, end_date=None, location=None, cost=None,
                  has_space=None, map_image=None, map_url=None,
-                 drop_in_open=False, drop_in_fee=None, note=None,
-                 partial_attendance=False, allow_assessments=False):
+                 map_embed_url=None, drop_in_open=False, drop_in_fee=None,
+                 note=None, partial_attendance=False, allow_assessments=False):
         if len(slug) > COURSE_SLUG_MAX_LENGTH:
             raise ValueError('slug must be {length} characters or less'.format(
                 length=COURSE_SLUG_MAX_LENGTH))
@@ -31,6 +31,7 @@ class Course(object):
         self.has_space = has_space
         self.map_image = map_image
         self.map_url = map_url
+        self.map_embed_url = map_embed_url
         self.drop_in_open = drop_in_open
         self.drop_in_fee = drop_in_fee
         self.note = note
