@@ -27,8 +27,8 @@ all_courses.append(Course(
 ))
 
 all_courses.append(Course(
-    slug="fall-bootcamp-st-vital",
-    name="Fall Back to Fitness Bootcamp",
+    slug="pre-holiday-bootcamp",
+    name="Pre-Holiday Bootcamp",
     description="""
         Perfect for all fitness levels this dynamic class offers cardio,
         resistence training, circuits and plyometrics and is different each and
