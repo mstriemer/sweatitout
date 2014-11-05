@@ -3,30 +3,6 @@ from models import Course
 all_courses = []
 
 all_courses.append(Course(
-    slug="rise-and-shine-fall-2014",
-    name="Rise and Shine Yoga",
-    description="""
-    Greet the morning and wake your body and mind with Rise and Shine Yoga.
-    Jenna will take you through 60 minutes of Hatha yoga, incorporating
-    breathing, stretching, muscle work and relaxation. Perfect for first
-    timers and long timers alike, Rise and Shine Yoga will leave you with
-    strength and zen to take on your weekend.<br>
-    <br>
-    <strong>Add 30 minutes of guided meditation on to the end of every
-    class for only $20!</strong>
-    """,
-    days=[
-        ("Saturdays", "8:15", "9:15am"),
-    ],
-    start_date="November 1st",
-    end_date="December 20th, 2014",
-    cost=80,
-    has_space=True,
-    location="Revive Fitness St Vital",
-    map_embed_url="https://www.google.com/maps/embed/v1/place?q=468%20St%20Anne's%20Rd%2C%20Winnipeg%2C%20MB%2C%20Canada&key=AIzaSyAeHWzO8g1Cs7qWZu9Z1eNheQPazYk7zQY",
-))
-
-all_courses.append(Course(
     slug="pre-holiday-bootcamp",
     name="Pre-Holiday Bootcamp",
     description="""
