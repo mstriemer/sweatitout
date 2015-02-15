@@ -3,6 +3,28 @@ from models import Course
 all_courses = []
 
 all_courses.append(Course(
+    slug="end-of-winter-2015",
+    name="End of Winter Bootcamp",
+    description="""
+        Perfect for all fitness levels this dynamic class offers cardio,
+        resistence training, circuits and plyometrics and is different each and
+        every time. Our small class sizes ensure lots of individual attention
+        from Nadine. Challenge yourself, get in shape and get sweaty!
+    """,
+    days=[
+        ("Mondays", "8:45", "9:45pm"),
+        ("Thursdays", "8:45", "9:45pm"),
+    ],
+    start_date="February 23rd",
+    end_date="April 2nd, 2015",
+    cost=110,
+    has_space=True,
+    location="Revive Fitness St Vital",
+    map_embed_url="https://www.google.com/maps/embed/v1/place?q=468%20St%20Anne's%20Rd%2C%20Winnipeg%2C%20MB%2C%20Canada&key=AIzaSyAeHWzO8g1Cs7qWZu9Z1eNheQPazYk7zQY",
+    allow_assessments=False,
+))
+
+all_courses.append(Course(
     slug="new-year-bootcamp-2015",
     name="New Year's Resolution Bootcamp",
     description="""
