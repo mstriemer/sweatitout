@@ -79,6 +79,11 @@ def render_group_fitness(active_course=None, active_form=None):
                            page_title="Group Fitness")
 
 
+@app.route("/program-design")
+def program_design():
+    return render_template("program_design.html", page_title="Program Design")
+
+
 @app.route("/group-fitness")
 def group_fitness():
     return render_group_fitness()
@@ -167,6 +172,7 @@ def inject_globals():
         'sections': [
             ["/", "Home"],
             ["/group-fitness", "Group Fitness"],
+            ["/program-design", "Program Design"],
             ["/instructors", "Instructors"],
         ],
         'use_google_analytics': production_env,

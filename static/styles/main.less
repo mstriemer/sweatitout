@@ -149,23 +149,27 @@ body.home {
     }
 }
 
+.blurb {
+    .makeColumn(12);
+    padding: 20px 0;
+}
+
+.program-design,
 .instructors {
     .makeRow();
     h1 {
         text-align: center;
         padding: 20px 0 0 10px;
     }
-}
-.instructors:first-of-type h1 {
-    padding-top: 0;
+    &:first-of-type h1 {
+        padding-top: 0;
+    }
 }
 
 .instructor {
     .makeColumn(4);
     h2 {
         text-align: center;
-    }
-    .bio {
     }
     .book-consultation {
         margin-top: 10px;
@@ -290,4 +294,37 @@ a:hover {
 
 .tell-me-more {
     max-width: 500px;
+}
+
+.program-design-package-info {
+    .makeRow();
+
+    div {
+        .makeColumn(4, 4);
+    }
+}
+.program-design-package-list {
+    .makeRow();
+
+    .program-design-package {
+        .makeColumn(3);
+        border: 1px solid gray;
+        height: 200px;
+        margin-bottom: 20px;
+        margin-top: 20px;
+        padding: 20px;
+        text-align: center;
+
+        &.is-promo {
+            border-width: 2px;
+            height: 240px;
+            margin-bottom: 0;
+            margin-left: 0;
+            margin-top: 0;
+        }
+    }
+    .program-design-package:first-of-type {
+        .makeColumn(3, 3);
+        border-right: 0;
+    }
 }
