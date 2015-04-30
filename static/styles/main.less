@@ -3,6 +3,7 @@
 @pink: #FF60AD;
 @blue: #01BAEF;
 @green: #B3DE3B;
+@green-dark: darken(@green, 15%);
 @white: #ffffff;
 
 .lightBorder {
@@ -124,7 +125,7 @@ body.home {
         a {
             text-transform: lowercase;
             color: @white;
-            text-shadow: darken(@green, 15%) 2px 2px 4px;
+            text-shadow: @green-dark 2px 2px 4px;
             border-radius: 8px;
             border: 1px solid darken(@green, 10%);
             padding: 10px 15px;
@@ -264,7 +265,7 @@ a:hover {
 
 .footer {
     color: @white;
-    text-shadow: darken(@green, 15%) 2px 2px 4px;
+    text-shadow: @green-dark 2px 2px 4px;
     border-top: 1px solid darken(@green, 10%);
     padding: 20px 0;
     .footer-content {
@@ -296,35 +297,61 @@ a:hover {
     max-width: 500px;
 }
 
-.program-design-package-info {
-    .makeRow();
-
-    div {
-        .makeColumn(4, 4);
-    }
-}
 .program-design-package-list {
     .makeRow();
+    align-items: stretch;
+    display: flex;
+}
+.program-design-package {
+    .makeColumn(4);
+    background: lighten(@green, 20%);
+    border: 1px solid @green-dark;
+    box-sizing: border-box;
+    text-align: center;
+}
+.program-design-header {
+    background: @green;
+    border-bottom: 1px solid @green-dark;
+    color: @white;
+    padding: 10px;
+    text-shadow: @green-dark 2px 2px 4px;
 
-    .program-design-package {
-        .makeColumn(3);
-        border: 1px solid gray;
-        height: 200px;
-        margin-bottom: 20px;
-        margin-top: 20px;
-        padding: 20px;
-        text-align: center;
+    h2, h3 {
+        font-weight: normal;
+        line-height: 1;
+        margin: 0;
+        padding: 10px 0;
+    }
+    h2 {
+        font-size: 30px;
+    }
+    h3 {
+        font-size: 20px;
+    }
+}
+.program-design-price {
+    font-size: 16px;
+    margin: 0;
+    padding: 10px 0;
+}
+.program-design-dollars {
+    font-size: 25px;
+}
+.program-design-features {
+    list-style-type: none;
+    margin: 0;
+    padding: 10px;
 
-        &.is-promo {
-            border-width: 2px;
-            height: 240px;
-            margin-bottom: 0;
-            margin-left: 0;
-            margin-top: 0;
+    li {
+        font-size: 15px;
+        padding: 5px 0;
+
+        &:first-of-type {
+            font-weight: bold;
         }
     }
-    .program-design-package:first-of-type {
-        .makeColumn(3, 3);
-        border-right: 0;
-    }
+}
+.program-design-more-info {
+    padding-top: 20px;
+    text-align: center;
 }
