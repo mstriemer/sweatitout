@@ -23,6 +23,9 @@ jQuery(function ($) {
     $('input[name="payment_type"][checked]').each(show_payment_form);
     $('input[name="payment_type"]').on('click', show_payment_form);
 
+    $('.program-design-modal').on('shown', function () {
+        $(this).find('[name="name"]').focus();
+    });
     $('.program-design-form').on('submit', function (e) {
         e.preventDefault();
 
