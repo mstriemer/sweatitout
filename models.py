@@ -324,3 +324,14 @@ def parse_human_date(date_string, year_fallback=None):
     if parsed is None:
         raise ValueError("could not parse {} to datetime".format(date_string))
     return parsed
+
+
+class ProgramDesignRegistration(Base):
+    __tablename__ = 'program_design_registration'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(255))
+    email = Column(String(255))
+    trainer = Column(String(255))
+    package = Column(String(255))
+    registration_date = Column(DateTime)

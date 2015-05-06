@@ -1,11 +1,13 @@
+from datetime import datetime
 import os
 from functools import wraps
 
-from flask import Flask, render_template, request, redirect, session, abort
+from flask import (Flask, jsonify, render_template, request, redirect, session,
+                   abort)
 
 from database import db_session
 
-from models import Registration, RegistrationForm
+from models import ProgramDesignRegistration, Registration, RegistrationForm
 from courses import (active_courses, all_courses, upcoming_courses)
 
 from auth import login_required
@@ -77,6 +79,41 @@ def render_group_fitness(active_course=None, active_form=None):
                            upcoming_courses=make_forms(upcoming_courses),
                            active_courses=make_forms(active_courses),
                            page_title="Group Fitness")
+
+
+@app.route("/program-design", methods=["POST"])
+def program_design_signup():
+    print 'hi'
+    print request.data
+    data = request.get_json()
+    print data
+    if not request.json:
+        response = jsonify(**{'errors': {'request': ['is not valid JSON']}})
+        response.status_code = 400
+        return response
+    fields = ('name', 'email', 'trainer', 'package')
+    values = {}
+    errors = {}
+    for field in fields:
+        values[field] = request.json.get(field)
+        if not values[field]:
+            errors[field] = ['is required']
+        elif len(values[field]) > 255:
+            errors[field] = ['must be less than 255 characters long']
+    if errors:
+        response = jsonify(**{'errors': errors})
+        response.status_code = 422
+        return response
+    else:
+        registration = ProgramDesignRegistration(**values)
+        registration.registration_date = datetime.now()
+        db_session.add(registration)
+        db_session.commit()
+        json_data = {field: getattr(registration, field)
+                     for field in fields + ('id', 'registration_date')}
+        response = jsonify(**json_data)
+        response.status_code = 201
+        return response
 
 
 @app.route("/program-design")
