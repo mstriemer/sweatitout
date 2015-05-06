@@ -91,7 +91,7 @@ def program_design_signup():
         response = jsonify(**{'errors': {'request': ['is not valid JSON']}})
         response.status_code = 400
         return response
-    fields = ('name', 'email', 'trainer', 'package')
+    fields = ['name', 'email', 'trainer', 'package']
     values = {}
     errors = {}
     for field in fields:
@@ -110,7 +110,7 @@ def program_design_signup():
         db_session.add(registration)
         db_session.commit()
         json_data = {field: getattr(registration, field)
-                     for field in fields + ('id', 'registration_date')}
+                     for field in fields + ['id', 'registration_date']}
         response = jsonify(**json_data)
         response.status_code = 201
         return response
