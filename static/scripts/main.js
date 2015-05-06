@@ -23,10 +23,56 @@ jQuery(function ($) {
     $('input[name="payment_type"][checked]').each(show_payment_form);
     $('input[name="payment_type"]').on('click', show_payment_form);
 
+    $('.program-design-form').on('submit', function (e) {
+        e.preventDefault();
+
+        var $form = $(this);
+        var data = {};
+        $.each($form.serializeArray(), function (i, field) {
+            data[field.name] = field.value;
+        });
+
+        $.ajax({
+            url: $form.attr('action'),
+            type: 'POST',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            contentType: 'application/json',
+        }).then(function (data, textStatus, jqXHR) {
+            $form
+                .find('.modal-body')
+                .empty()
+                .append($('<p/>').text(
+                    "Thanks! " + data.trainer + " will contact you at " +
+                    data.email + " with how to get started!"));
+            $form
+                .find('.modal-footer')
+                .empty()
+                .append($('<button/>')
+                    .text('Close')
+                    .addClass('btn btn-green')
+                    .attr('data-dismiss', 'modal'));
+        }, function (jqXHR, textStatus, errorThrown) {
+            $form
+                .find('.modal-body')
+                .empty()
+                .append($('<p/>').text(
+                    "Uh oh! Something went wrong. Please try again later."));
+            $form
+                .find('.modal-footer')
+                .empty()
+                .append($('<button/>')
+                    .text('Close')
+                    .addClass('btn btn-green')
+                    .attr('data-dismiss', 'modal'));
+
+        });
+    });
+
     function assessmentsInfo($el) {
         var link = $('<a href="#tell-me-more">Tell me more</a>');
         var explainationText = "Want a little extra help attaining your fitness goals? Add our new accountability package onto any group fitness class. This package gives you 3 assessments at the beginning, mid point and end of the session which include weight, measurements and photos to track your progress. Simply select the accountability add on when you complete your registration, and get ready to see results! $20.00 with any group fitness registration.";
-        var explainationInner = $('<div class="controls tell-me-more"></div>')
+        var explainationInner = $('<div class="controls tell-me-more"></div>');
         var explaination = $('<div style="display: none;" class="control-group"></div>');
         explainationInner.text(explainationText);
         explaination.html(explainationInner);
@@ -51,10 +97,10 @@ jQuery(function ($) {
         show_element($form);
         if (payment_type == 'paypal') {
             var $email = $form.find('[name="paypal_email"]');
-            if ($email.val() == '')
+            if ($email.val() === '')
                 $email.val($form.find('[name="email"]').val());
         }
-    };
+    }
 
     function show_element($el) {
         var scrollTo = $el.offset().top + $el.height() - window.innerHeight;

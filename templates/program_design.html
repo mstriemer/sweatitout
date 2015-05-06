@@ -24,6 +24,7 @@
             <li>Ongoing changes to program as needed</li>
             <li>Access to you trainer vie email and text</li>
         </ul>
+        <a class="program-design-sign-up btn btn-blue" href="#modal-one-month" role="button" data-toggle="modal">Make Me Sweaty!</a>
     </div>
     <div class="program-design-package">
         <div class="program-design-header">
@@ -41,6 +42,7 @@
             <li>Ongoing changes to program as needed</li>
             <li>Access to you trainer vie email and text</li>
         </ul>
+        <a class="program-design-sign-up btn btn-blue" href="#modal-three-month" role="button" data-toggle="modal">Make Me Sweaty!</a>
     </div>
     <div class="program-design-package">
         <div class="program-design-header">
@@ -58,14 +60,50 @@
             <li>Ongoing changes to program as needed</li>
             <li>Access to you trainer vie email and text</li>
         </ul>
+        <a class="program-design-sign-up btn btn-blue" href="#modal-shared" role="button" data-toggle="modal">Make Me Sweaty!</a>
     </div>
-</div>
-<div class="row program-design-more-info">
-    <button class="program-design-sign-up btn btn-blue btn-large">
-        Make Me Sweaty!
-    </button>
 </div>
 <p class="program-design-more-info">
     Need more information? Email <a href="mailto:info@sweatitoutfit.com">info@sweatitoutfit.com</a> and one of our fully certified trainers will get back to you right away!
 </p>
+{% for program, name in [("one-month", "Get Sweaty"), ("three-month", "Commit to Sweaty"), ("shared", "Sweaty Friends")] %}
+<div class="modal hide fade program-design-modal" id="modal-{{ program }}">
+    <form class="program-design-form" action="/program-design" method="post">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>{{ name }}</h3>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" name="package" value="{{ program }}">
+            {% for field, type in [("name", "text"), ("email", "email")] %}
+            <div class="control-group">
+                <label class="control-label" for="id-{{ field }}-{{ program }}">{{ field|capitalize }}</label>
+                <div class="controls">
+                    <input id="id-{{ field }}-{{ program }}"
+                        name="{{ field }}"
+                        type="{{ type }}"
+                        maxlength="255"
+                        required>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="control-group">
+                <label class="control-label" for="id-trainer-{{ program }}">Trainer</label>
+                <div class="controls">
+                    {% for trainer in ["Megan", "Emily", "Jenna"] %}
+                        <label class="radio inline">
+                            <input value="{{ trainer }}" type="radio" name="trainer"{% if loop.first %} checked="checked"{% endif %}>
+                            {{ trainer }}
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+            <button href="#" class="btn btn-green" type="submit">Sign Up!</button>
+        </div>
+    </form>
+</div>
+{% endfor %}
 {% endblock %}
