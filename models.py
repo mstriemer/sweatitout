@@ -335,3 +335,7 @@ class ProgramDesignRegistration(Base):
     trainer = Column(String(255))
     package = Column(String(255))
     registration_date = Column(DateTime)
+
+    @property
+    def trainer_email(self):
+        return self.trainer.lower() + '@sweatitoutfit.com'

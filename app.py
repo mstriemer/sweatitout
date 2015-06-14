@@ -1,5 +1,9 @@
-from datetime import datetime
 import os
+import smtplib
+import threading
+from collections import OrderedDict
+from datetime import datetime
+from email.mime.text import MIMEText
 from functools import wraps
 
 from flask import (Flask, jsonify, render_template, request, redirect, session,
@@ -34,24 +38,46 @@ def https_required(f):
         return f(*args, **kwargs)
     return decorated
 
+smtp_host, smtp_port = 'smtp.gmail.com', 587
+sender = 'admin@sweatitoutfit.com'
+sender_password = os.environ.get('ERROR_SMTP_PASSWORD')
 production_env = os.environ.get('APP_ENV', None) == 'production'
+
 if production_env:
     app.secret_key = os.environ['FLASK_SECRET_KEY']
+    if not sender_password:
+        raise RuntimeError('ERROR_SMTP_PASSWORD required')
     ADMINS = ['mstriemer@gmail.com']
     import logging
     from logging.handlers import SMTPHandler
     mail_handler = SMTPHandler(
-        ('smtp.gmail.com', 587),
-        'admin@sweatitoutfit.com',
+        (smtp_host, smtp_port),
+        sender,
         ADMINS,
         '[Sweat It Out][Error] An Error Occurred',
-        ('admin@sweatitoutfit.com', os.environ['ERROR_SMTP_PASSWORD']),
+        (sender, sender_password),
         ()
     )
     mail_handler.setLevel(logging.ERROR)
     app.logger.addHandler(mail_handler)
 else:
     app.secret_key = 'a0s9fa09sfj01h389gef981g38fgq32f23f93'
+
+
+def send_mail(recipients, subject, text):
+    if not production_env:
+        # Skip sending mail in development.
+        return
+    msg = MIMEText(text)
+    msg['Subject'] = subject
+    msg['From'] = sender
+    msg['To'] = ','.join(recipients)
+    server = smtplib.SMTP('{smtp_host}:{smtp_port}'.format(
+        smtp_host=smtp_host, smtp_port=smtp_port))
+    server.starttls()
+    server.login(sender, sender_password)
+    server.sendmail(sender, recipients, msg.as_string())
+    server.quit()
 
 
 @app.route("/")
@@ -83,10 +109,6 @@ def render_group_fitness(active_course=None, active_form=None):
 
 @app.route("/program-design", methods=["POST"])
 def program_design_signup():
-    print 'hi'
-    print request.data
-    data = request.get_json()
-    print data
     if not request.json:
         response = jsonify(**{'errors': {'request': ['is not valid JSON']}})
         response.status_code = 400
@@ -109,11 +131,39 @@ def program_design_signup():
         registration.registration_date = datetime.now()
         db_session.add(registration)
         db_session.commit()
+        # Send an email later.
+        threading.Thread(
+            target=send_mail,
+            args=(
+                ADMINS + [registration.trainer_email],
+                '[Sweat It Out] New program design registration',
+                registration_email_text(registration),
+            ),
+        ).start()
         json_data = {field: getattr(registration, field)
                      for field in fields + ['id', 'registration_date']}
         response = jsonify(**json_data)
         response.status_code = 201
         return response
+
+
+def registration_email_text(registration):
+    registration_data = OrderedDict([
+        ('name', registration.name),
+        ('email', registration.email),
+        ('trainer', registration.trainer),
+        ('package', registration.package),
+        ('registration_date', registration.registration_date.strftime('%c')),
+    ])
+    return '\n'.join('{k}: {v}'.format(k=k, v=v)
+                     for k, v in registration_data.items())
+
+
+def send_registration_email(pk):
+    registration = db_session.query(ProgramDesignRegistration).get(pk)
+    to = ADMINS + [registration.trainer_email]
+    message = registration_email_text(registration)
+    send_mail(to, '[Sweat It Out] New program design registration', message)
 
 
 @app.route("/program-design")
