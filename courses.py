@@ -1,6 +1,35 @@
 from models import Course
 
+
+def google_map_embed_url(place):
+    return ("https://www.google.com/maps/embed/v1/place"
+            "?q={place}&"
+            "key=AIzaSyAeHWzO8g1Cs7qWZu9Z1eNheQPazYk7zQY").format(place=place)
+
 all_courses = []
+
+all_courses.append(Course(
+    slug="summer-bootcamp-2015",
+    name="Summer Bootcamp",
+    description="""
+        Perfect for all fitness levels this dynamic class offers cardio,
+        resistence training, circuits and plyometrics and is different each and
+        every time. Our small class sizes ensure lots of individual attention
+        from Jenna. Challenge yourself, get in shape and get sweaty!
+    """,
+    days=[
+        ("Tuesdays", "7:00", "8:00pm"),
+        ("Thursdays", "7:00", "8:00pm"),
+    ],
+    start_date="July 21st",
+    end_date="August 27th, 2015",
+    cost=110,
+    has_space=True,
+    location="Ron Duhamel Park",
+    map_embed_url=google_map_embed_url(
+        place="265 Sage Creek Boulevard, Winnipeg, MB, Canada"),
+    allow_assessments=False,
+))
 
 all_courses.append(Course(
     slug="spring-bootcamp-2015",
